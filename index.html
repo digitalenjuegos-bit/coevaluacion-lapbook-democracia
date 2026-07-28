@@ -758,7 +758,7 @@
             c4: { name: "C4 Voz y presentación", max: 1, tip: "mejorar el volumen y la claridad de la voz, y cuidar la correcta presentación del uniforme" }
         };
 
-        function buildFeedback(v1, v2, v3, v4) {
+        function buildFeedback(v1, v2, v3, v4, finalAvg) {
             const vals = { c1: v1, c2: v2, c3: v3, c4: v4 };
             if (Object.values(vals).some(v => v === null || v === undefined || isNaN(v))) return "—";
             // Criterio "bajo": en C1-C3 equivale a 2, 1 o 0 (promedio < 2.5); en C4 a 0.5 o 0 (promedio < 0.75)
@@ -768,7 +768,20 @@
                 const threshold = c.max === 3 ? 2.5 : 0.75;
                 if (vals[k] < threshold) lows.push({ key: k, ratio: vals[k] / c.max, severe: c.max === 3 ? vals[k] < 1.5 : vals[k] < 0.25 });
             });
-            if (lows.length === 0) return "✅ Excelente desempeño en todos los criterios. Mantener el nivel demostrado.";
+            if (lows.length === 0) {
+                // REGLA OBLIGATORIA: promedio final < 7/10 siempre lleva retroalimentación,
+                // aunque ningún criterio esté bajo el umbral (salvaguarda explícita).
+                if (typeof finalAvg === 'number' && !isNaN(finalAvg) && finalAvg < 7) {
+                    let minK = 'c1', minR = Infinity;
+                    Object.keys(CRIT_FEEDBACK).forEach(k => {
+                        const r = vals[k] / CRIT_FEEDBACK[k].max;
+                        if (r < minR) { minR = r; minK = k; }
+                    });
+                    const c = CRIT_FEEDBACK[minK];
+                    return "⚠️ Nota bajo 7/10 — Reforzar: " + c.name + " — debe " + c.tip + ".";
+                }
+                return "✅ Excelente desempeño en todos los criterios. Mantener el nivel demostrado.";
+            }
             const minRatio = Math.min(...lows.map(l => l.ratio));
             const parts = lows.map(l => {
                 const c = CRIT_FEEDBACK[l.key];
@@ -798,7 +811,7 @@
                 const finalR = aF !== null ? Math.round(aF) : null;
                 let color = "text-gray-400";
                 if (finalR !== null) color = finalR >= 7 ? "score-green" : (finalR >= 6 ? "score-blue" : "score-red");
-                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4) : "—";
+                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF) : "—";
                 const fbClass = fb.startsWith("✅") ? "text-green-700" : (fb.includes("Prioritario") ? "text-red-700" : "text-amber-700");
                 return '<tr>' +
                     '<td class="border p-2 text-xs">' + shortName(student) + '</td>' +
@@ -861,7 +874,7 @@
                     csv += ['"' + (e.paralelo || "") + '"', '"' + shortName(e.evaluator) + '"', '"' + (e.evaluatorTeam || "") + '"',
                         '"' + shortName(e.evaluated) + '"', '"' + (e.teamLabel || "") + '"',
                         e.c1, e.c2, e.c3, e.c4, e.finalScore,
-                        '"' + buildFeedback(parseFloat(e.c1), parseFloat(e.c2), parseFloat(e.c3), parseFloat(e.c4)).replace(/"/g, "'") + '"',
+                        '"' + buildFeedback(parseFloat(e.c1), parseFloat(e.c2), parseFloat(e.c3), parseFloat(e.c4), parseFloat(e.finalScore)).replace(/"/g, "'") + '"',
                         '"' + (e.timestamp || "") + '"'].join(",") + "\n";
                 });
                 const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + csv);
