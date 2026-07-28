@@ -61,7 +61,7 @@
                         <li><b>C2. Fluidez y lenguaje (3 pts):</b> expone sin leer, con lenguaje claro, preciso y apropiado.</li>
                         <li><b>C3. Análisis del material (3 pts):</b> analiza las secciones del lapbook, la relación pasado-presente y sustenta una postura propia con propuesta ciudadana.</li>
                         <li><b>C4. Voz y presentación (1 pt):</b> volumen y claridad de voz, correcta presentación del uniforme.</li>
-                        <li><b>Regla:</b> evalúas a cada <b>equipo</b> una sola vez (una calificación por equipo evaluado). No puedes evaluar a tu propio equipo.</li>
+                        <li><b>Regla:</b> tras seleccionar el equipo, calificas a <b>cada integrante de forma individual</b> (una nota por compañero, una sola vez). No puedes evaluarte a ti mismo ni evaluar a tu propio equipo.</li>
                         <li><b>Colores de Nota Final:</b>
                             <span class="bg-green-100 text-green-800 px-2 rounded ml-1">Verde (≥7)</span>,
                             <span class="bg-blue-100 text-blue-800 px-2 rounded ml-1">Azul (6)</span>,
@@ -105,16 +105,16 @@
                 <!-- REPORTE POR EQUIPO -->
                 <div class="mb-6 p-4 bg-white rounded border">
                     <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
-                        <h4 class="font-semibold">3. Reporte de Notas en Vivo — promedio por equipo</h4>
+                        <h4 class="font-semibold">3. Reporte de Notas en Vivo — promedio por estudiante</h4>
                         <button onclick="exportToCSV()" class="bg-green-700 text-white px-3 py-1 rounded text-sm font-bold hover:bg-green-800">⬇ Descargar Excel/CSV</button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-3">Cada fila es un equipo evaluado del paralelo seleccionado. La nota del equipo es el promedio (sin decimales) de todas las coevaluaciones recibidas.</p>
+                    <p class="text-xs text-gray-500 mb-3">Cada fila es un estudiante del paralelo seleccionado. Su nota es el promedio (sin decimales) de todas las coevaluaciones individuales recibidas.</p>
                     <div class="overflow-x-auto mb-4">
                         <table class="w-full text-sm border-collapse">
                             <thead>
                                 <tr class="bg-blue-100 text-blue-800">
-                                    <th class="border p-2 text-left">Equipo Evaluado</th>
-                                    <th class="border p-2 text-left">Tema</th>
+                                    <th class="border p-2 text-left">Estudiante Evaluado</th>
+                                    <th class="border p-2 text-left">Equipo</th>
                                     <th class="border p-2 text-center">Nº Coevaluaciones</th>
                                     <th class="border p-2 text-center">C1</th>
                                     <th class="border p-2 text-center">C2</th>
@@ -431,16 +431,17 @@
             select.innerHTML = '<option value="">Seleccione un equipo...</option>';
             if (!evaluator) return;
             const myTeam = findMyTeam(evaluator);
-            const evaluated = new Set(paraleloLogs().filter(l => l.evaluator === evaluator).map(l => l.teamId));
+            const evaluated = new Set(paraleloLogs().filter(l => l.evaluator === evaluator).map(l => l.evaluated));
             let available = 0;
             getData().teams.forEach((team, i) => {
                 if (myTeam && team.id === myTeam.id) return;
-                const done = evaluated.has(team.id) ? ' ✓ (ya evaluado)' : '';
+                const pending = team.members.filter(m => !evaluated.has(m)).length;
+                const done = pending === 0 ? ' ✓ (ya evaluado completo)' : '';
                 select.innerHTML += '<option value="' + i + '">Equipo ' + (i + 1) + ' — ' + team.members.map(shortName).join(', ') + done + '</option>';
-                if (!done) available++;
+                if (pending > 0) available++;
             });
             if (available === 0) {
-                select.innerHTML = '<option value="">¡Has evaluado a todos los equipos! 🎉</option>';
+                select.innerHTML = '<option value="">¡Has evaluado a todos tus compañeros! 🎉</option>';
             }
         }
 
@@ -450,102 +451,111 @@
             const evalArea = document.getElementById('evaluationArea');
             const backBox = document.getElementById('backToEvalBox');
             if (teamIndex === "" || isNaN(parseInt(teamIndex, 10))) { evalArea.innerHTML = ''; backBox.classList.add('hidden'); return; }
-            const team = getData().teams[parseInt(teamIndex, 10)];
-            const already = paraleloLogs().find(l => l.evaluator === evaluator && l.teamId === team.id);
+            const ti = parseInt(teamIndex, 10);
+            const team = getData().teams[ti];
+            const myLogs = paraleloLogs().filter(l => l.evaluator === evaluator);
 
-            const critHtml = rubric.map((c, ci) => {
-                const btns = c.levels.map(lvl =>
-                    '<button type="button" onclick="selectLevel(\'' + c.key + '\', ' + lvl.pts + ', this)" class="lvl-btn flex-1 px-2 py-2 border rounded bg-white text-gray-700 border-gray-300 hover:bg-blue-50 text-xs md:text-sm">' +
-                    '<span class="block font-bold">' + lvl.label + ' (' + lvl.pts + (lvl.pts === 1 && c.max === 3 ? ' pt' : ' pts') + ')</span>' +
-                    '<span class="block text-[10px] text-gray-500 mt-1 leading-tight">' + lvl.text + '</span></button>'
-                ).join('');
-                return '<div id="card-' + c.key + '" class="flex flex-col p-3 bg-gray-50 rounded border">' +
-                    '<label class="block text-sm font-bold text-gray-800 mb-1">' + (ci + 1) + '. ' + c.title + ' (' + c.max + ' pts)</label>' +
-                    '<p class="text-xs text-gray-500 mb-2">' + c.desc + '</p>' +
-                    '<div class="flex gap-2 flex-col md:flex-row">' + btns + '</div>' +
-                    '<input type="hidden" id="score-' + c.key + '" value=""></div>';
+            const membersHtml = team.members.map(member => {
+                const sid = safeKey(member);
+                const prev = myLogs.find(l => l.evaluated === member);
+                const critHtml = rubric.map((c, ci) => {
+                    const btns = c.levels.map(lvl =>
+                        '<button type="button" onclick="selectLevel(\'' + c.key + '\', \'' + sid + '\', ' + lvl.pts + ', this)" class="lvl-btn flex-1 px-2 py-2 border rounded bg-white text-gray-700 border-gray-300 hover:bg-blue-50 text-xs">' +
+                        '<span class="block font-bold">' + lvl.label + ' (' + lvl.pts + (lvl.pts === 1 && c.max === 3 ? ' pt' : ' pts') + ')</span>' +
+                        '<span class="block text-[10px] text-gray-500 mt-1 leading-tight">' + lvl.text + '</span></button>'
+                    ).join('');
+                    return '<div id="card-' + c.key + '-' + sid + '" class="flex flex-col p-2 bg-gray-50 rounded border">' +
+                        '<label class="block text-xs font-bold text-gray-800 mb-1">' + (ci + 1) + '. ' + c.title + ' (' + c.max + ' pts)</label>' +
+                        '<div class="flex gap-1 flex-col md:flex-row">' + btns + '</div>' +
+                        '<input type="hidden" id="score-' + c.key + '-' + sid + '" value=""></div>';
+                }).join('');
+                const prevBanner = prev ?
+                    '<div class="p-2 mb-2 bg-amber-50 border border-amber-300 rounded text-xs text-amber-800">⚠️ Ya evaluaste a este compañero (nota: <b>' + prev.finalScore + '/10</b>). Si guardas de nuevo, se <b>reemplaza</b>.</div>' : '';
+                return '<div class="border rounded-lg p-3 mb-3 bg-white">' +
+                    '<div class="flex justify-between items-center mb-2"><h4 class="font-bold text-gray-800">' + shortName(member) + '</h4>' +
+                    '<span class="px-3 py-1 rounded-full text-sm ' + (prev ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-500') + '">' + (prev ? prev.finalScore + '/10 ✓' : 'Pendiente') + '</span></div>' +
+                    prevBanner +
+                    '<div class="space-y-2">' + critHtml + '</div>' +
+                    '<div class="mt-3 flex flex-wrap items-center gap-4">' +
+                    '<div class="text-base font-bold text-blue-900">Total: <span id="totalPreview-' + sid + '">—</span> / 10</div>' +
+                    '<button id="saveBtn-' + sid + '" onclick="saveEvaluation(\'' + encodeURIComponent(member) + '\', ' + ti + ')" class="bg-green-600 text-white px-5 py-2 rounded text-sm hover:bg-green-700 font-bold">Guardar Nota</button>' +
+                    '</div></div>';
             }).join('');
 
-            const alreadyBanner = already ?
-                '<div class="p-2 mb-3 bg-amber-50 border border-amber-300 rounded text-sm text-amber-800">⚠️ Ya evaluaste a este equipo (nota registrada: <b>' + already.finalScore + '/10</b>). Si guardas de nuevo, se <b>reemplaza</b> tu calificación anterior.</div>' : '';
-
             evalArea.innerHTML = '<div class="bg-gray-50 p-4 rounded-lg border">' +
-                '<div class="mb-3 border-b pb-2"><h3 class="font-bold text-blue-900 text-lg">Equipo ' + (parseInt(teamIndex, 10) + 1) + ' — ' + team.topic + '</h3>' +
-                '<p class="text-sm text-gray-600">Integrantes: ' + team.members.map(shortName).join(', ') + '</p></div>' +
-                alreadyBanner +
-                '<p class="text-xs text-gray-500 mb-3">Selecciona un nivel por criterio. La nota es la <b>sumatoria (sin decimales)</b> de los 4 criterios, sobre 10 puntos. Se emite <b>una sola calificación por equipo</b>.</p>' +
-                '<div class="space-y-3">' + critHtml + '</div>' +
-                '<div class="mt-4 flex flex-wrap items-center gap-4">' +
-                '<div class="text-lg font-bold text-blue-900">Total: <span id="totalPreview">—</span> / 10</div>' +
-                '<button id="saveBtn" onclick="saveEvaluation(\'' + team.id + '\', ' + parseInt(teamIndex, 10) + ')" class="bg-green-600 text-white px-6 py-3 rounded text-sm hover:bg-green-700 font-bold">Guardar Calificación del Equipo</button>' +
-                '</div></div>';
+                '<div class="mb-3 border-b pb-2"><h3 class="font-bold text-blue-900 text-lg">Equipo ' + (ti + 1) + ' — ' + team.topic + '</h3>' +
+                '<p class="text-xs text-gray-500">Califica a <b>cada integrante de forma individual</b>. La nota de cada uno es la <b>sumatoria (sin decimales)</b> de los 4 criterios, sobre 10 puntos.</p></div>' +
+                membersHtml + '</div>';
             backBox.classList.remove('hidden');
         }
 
-        function selectLevel(key, pts, btn) {
-            document.getElementById('score-' + key).value = pts;
+        function selectLevel(key, sid, pts, btn) {
+            document.getElementById('score-' + key + '-' + sid).value = pts;
             btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
-            document.getElementById('card-' + key).classList.remove('missing-score');
-            updateTotalPreview();
+            document.getElementById('card-' + key + '-' + sid).classList.remove('missing-score');
+            updateTotalPreview(sid);
         }
 
-        function updateTotalPreview() {
+        function updateTotalPreview(sid) {
             let total = 0, complete = true;
             rubric.forEach(c => {
-                const v = document.getElementById('score-' + c.key).value;
+                const v = document.getElementById('score-' + c.key + '-' + sid).value;
                 if (v === "") complete = false; else total += parseFloat(v);
             });
-            document.getElementById('totalPreview').textContent = complete ? Math.round(total) : '—';
+            document.getElementById('totalPreview-' + sid).textContent = complete ? Math.round(total) : '—';
         }
 
-        async function saveEvaluation(teamId, teamIndex) {
+        async function saveEvaluation(encMember, teamIndex) {
+            const member = decodeURIComponent(encMember);
+            const sid = safeKey(member);
             try {
                 if (!evaluationsActive) { alert("🔒 El tiempo para registrar coevaluaciones ha finalizado."); return; }
                 const evaluator = document.getElementById('evaluator').value;
                 if (!evaluator) { alert("Primero selecciona tu nombre en el recuadro amarillo 'Evaluador'."); return; }
+                if (evaluator === member) { alert("No puedes evaluarte a ti mismo."); return; }
+                const team = getData().teams[teamIndex];
                 const myTeam = findMyTeam(evaluator);
-                if (myTeam && myTeam.id === teamId) { alert("No puedes evaluar a tu propio equipo."); return; }
+                if (myTeam && myTeam.id === team.id) { alert("No puedes evaluar a tu propio equipo."); return; }
 
                 const scores = {}; const missing = [];
                 let rawScore = 0;
                 rubric.forEach(c => {
-                    const v = document.getElementById('score-' + c.key).value;
-                    if (v === "") { missing.push(c.title); document.getElementById('card-' + c.key).classList.add('missing-score'); }
+                    const v = document.getElementById('score-' + c.key + '-' + sid).value;
+                    if (v === "") { missing.push(c.title); document.getElementById('card-' + c.key + '-' + sid).classList.add('missing-score'); }
                     else { scores[c.key] = parseFloat(v); rawScore += parseFloat(v); }
                 });
                 if (missing.length > 0) {
-                    alert("⚠️ Faltan niveles por seleccionar en:\n\n• " + missing.join("\n• ") + "\n\nElige Excelente, Bueno o Limitado en cada criterio antes de guardar.");
+                    alert("⚠️ Faltan niveles por seleccionar para " + shortName(member) + ":\n\n• " + missing.join("\n• ") + "\n\nElige Excelente, Bueno o Limitado en cada criterio antes de guardar.");
                     return;
                 }
                 const finalScore = Math.round(rawScore);
-                const team = getData().teams[teamIndex];
                 const myTeamName = myTeam ? "Equipo " + (getData().teams.indexOf(myTeam) + 1) : "Sin equipo";
 
-                const saveBtn = document.getElementById('saveBtn');
+                const saveBtn = document.getElementById('saveBtn-' + sid);
                 if (saveBtn) { saveBtn.disabled = true; saveBtn.innerText = "Guardando..."; saveBtn.classList.add("opacity-50", "cursor-not-allowed"); }
 
                 if (!db) throw new Error("No hay conexión con la base de datos (Firebase no cargó).");
 
-                const logKey = safeKey(currentParalelo) + '__' + safeKey(evaluator) + '__' + teamId;
+                const logKey = safeKey(currentParalelo) + '__' + safeKey(evaluator) + '__' + sid;
                 await db.ref(DB_NODE + '/' + logKey).set({
                     timestamp: new Date().toLocaleString('es-EC'),
                     paralelo: currentParalelo,
                     evaluator: evaluator,
                     evaluatorTeam: myTeamName,
-                    teamId: teamId,
+                    evaluated: member,
+                    teamId: team.id,
                     teamLabel: "Equipo " + (teamIndex + 1),
-                    members: team.members.join(' | '),
                     c1: scores.c1, c2: scores.c2, c3: scores.c3, c4: scores.c4,
                     finalScore: finalScore
                 });
-                showToast("✅ Calificación enviada a la nube: Equipo " + (teamIndex + 1) + " → " + finalScore + "/10");
-                goBackToTeamSelection();
+                showToast("✅ Nota enviada a la nube: " + shortName(member) + " → " + finalScore + "/10");
+                if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "✓ Guardada (puedes corregirla)"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); saveBtn.classList.replace("bg-green-600", "bg-blue-600"); }
             } catch (e) {
                 console.error("Error guardando en Firebase:", e);
                 alert("❌ Error al guardar en la nube: " + e.message);
-                const saveBtn = document.getElementById('saveBtn');
-                if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "Guardar Calificación del Equipo"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); }
+                const saveBtn = document.getElementById('saveBtn-' + sid);
+                if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "Guardar Nota"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); }
             }
         }
 
@@ -563,22 +573,24 @@
             const tbody = document.getElementById('liveGradesBody');
             if (!tbody) return;
             const logs = paraleloLogs();
-            const teams = getData().teams;
-            if (teams.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="border p-2 text-center text-gray-400">Sin equipos.</td></tr>'; return; }
-            tbody.innerHTML = teams.map((team, i) => {
-                const tLogs = logs.filter(l => l.teamId === team.id);
-                const n = tLogs.length;
-                const a1 = avg(tLogs.map(l => parseFloat(l.c1)));
-                const a2 = avg(tLogs.map(l => parseFloat(l.c2)));
-                const a3 = avg(tLogs.map(l => parseFloat(l.c3)));
-                const a4 = avg(tLogs.map(l => parseFloat(l.c4)));
-                const aF = avg(tLogs.map(l => parseFloat(l.finalScore)));
+            const data = getData();
+            if (data.roster.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="border p-2 text-center text-gray-400">Sin estudiantes.</td></tr>'; return; }
+            tbody.innerHTML = data.roster.map(student => {
+                const sLogs = logs.filter(l => l.evaluated === student);
+                const n = sLogs.length;
+                const team = data.teams.find(t => t.members.includes(student));
+                const teamLabel = team ? 'Equipo ' + (data.teams.indexOf(team) + 1) : 'Sin equipo';
+                const a1 = avg(sLogs.map(l => parseFloat(l.c1)));
+                const a2 = avg(sLogs.map(l => parseFloat(l.c2)));
+                const a3 = avg(sLogs.map(l => parseFloat(l.c3)));
+                const a4 = avg(sLogs.map(l => parseFloat(l.c4)));
+                const aF = avg(sLogs.map(l => parseFloat(l.finalScore)));
                 const finalR = aF !== null ? Math.round(aF) : null;
                 let color = "text-gray-400";
                 if (finalR !== null) color = finalR >= 7 ? "score-green" : (finalR >= 6 ? "score-blue" : "score-red");
                 return '<tr>' +
-                    '<td class="border p-2 text-xs font-bold">Equipo ' + (i + 1) + '<br><span class="font-normal text-gray-500">' + team.members.map(shortName).join('<br>') + '</span></td>' +
-                    '<td class="border p-2 text-xs">' + team.topic + '</td>' +
+                    '<td class="border p-2 text-xs">' + shortName(student) + '</td>' +
+                    '<td class="border p-2 text-xs">' + teamLabel + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + n + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + (a1 !== null ? a1.toFixed(1) : '—') + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + (a2 !== null ? a2.toFixed(1) : '—') + '</td>' +
@@ -595,7 +607,7 @@
             if (logs.length === 0) { container.innerHTML = '<p class="text-gray-400 text-sm p-2 text-center">No hay registros de coevaluación en este paralelo.</p>'; return; }
             container.innerHTML = logs.map(log =>
                 '<div class="flex justify-between items-center text-xs p-2 border-l-4 border-red-300 bg-white rounded shadow-sm">' +
-                '<div class="flex-1 mr-2"><strong class="text-gray-800">' + shortName(log.evaluator) + '</strong> (' + log.evaluatorTeam + ') evaluó al <strong class="text-gray-800">' + log.teamLabel + '</strong><br>' +
+                '<div class="flex-1 mr-2"><strong class="text-gray-800">' + shortName(log.evaluator) + '</strong> (' + log.evaluatorTeam + ') evaluó a <strong class="text-gray-800">' + shortName(log.evaluated) + '</strong> (' + log.teamLabel + ')<br>' +
                 '<span class="text-gray-500">Nota: ' + log.finalScore + '/10 | C1:' + log.c1 + ' C2:' + log.c2 + ' C3:' + log.c3 + ' C4:' + log.c4 + ' | ' + log.timestamp + '</span></div>' +
                 '<button onclick="deleteEvalLog(\'' + log.logId + '\')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 font-bold">Eliminar</button></div>'
             ).join('');
@@ -631,10 +643,10 @@
         function exportToCSV() {
             try {
                 if (allLogs.length === 0) { alert("⚠️ No hay coevaluaciones registradas para exportar."); return; }
-                let csv = "Paralelo,Evaluador,Equipo del Evaluador,Equipo Evaluado,Integrantes del Equipo Evaluado,C1 Conocimiento (3),C2 Fluidez (3),C3 Analisis (3),C4 Voz y Uniforme (1),Nota Final /10,Fecha\n";
+                let csv = "Paralelo,Evaluador,Equipo del Evaluador,Estudiante Evaluado,Equipo Evaluado,C1 Conocimiento (3),C2 Fluidez (3),C3 Analisis (3),C4 Voz y Uniforme (1),Nota Final /10,Fecha\n";
                 allLogs.forEach(e => {
                     csv += ['"' + (e.paralelo || "") + '"', '"' + shortName(e.evaluator) + '"', '"' + (e.evaluatorTeam || "") + '"',
-                        '"' + (e.teamLabel || "") + '"', '"' + (e.members || "").split(' | ').map(shortName).join('; ') + '"',
+                        '"' + shortName(e.evaluated) + '"', '"' + (e.teamLabel || "") + '"',
                         e.c1, e.c2, e.c3, e.c4, e.finalScore, '"' + (e.timestamp || "") + '"'].join(",") + "\n";
                 });
                 const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + csv);
