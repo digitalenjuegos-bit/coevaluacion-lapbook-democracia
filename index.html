@@ -130,7 +130,7 @@
                     </div>
                     <div class="flex flex-wrap gap-3 items-center border-t pt-3">
                         <button onclick="saveTeamsToCloud()" class="bg-green-700 text-white px-5 py-2 rounded font-bold text-sm hover:bg-green-800">☁️ Guardar equipos en la nube</button>
-                        <button onclick="resetTeamsToDefault()" class="bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600">↩ Restaurar equipos originales</button>
+                        <button onclick="resetTeamsToDefault(this)" class="bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600">↩ Restaurar equipos originales</button>
                         <span id="teamsCloudStatus" class="text-xs text-gray-500"></span>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                 </div>
 
                 <div class="border-t pt-4 flex gap-4 items-center flex-wrap">
-                    <button onclick="clearCloudData()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar TODAS las coevaluaciones ADA 3 (nube)</button>
+                    <button onclick="clearCloudData(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar TODAS las coevaluaciones ADA 3 (nube)</button>
                 </div>
             </div>
         </div>
@@ -448,8 +448,29 @@
             } catch (e) { alert('Error al guardar equipos: ' + e.message); }
         }
 
-        async function resetTeamsToDefault() {
-            if (!confirm('¿Restaurar los equipos originales de ' + currentParalelo + '? (los equipos actuales en edición se descartan)')) return;
+        // Confirmación en dos pasos sin window.confirm (bloqueado en iframes de Moodle).
+        // Devuelve true solo en el segundo click dentro de la ventana de 6 segundos.
+        function armButton(btn, textoConfirmar) {
+            if (!btn) return true; // sin botón de referencia, no bloquear
+            if (btn.dataset.armed === "1") { btn.dataset.armed = ""; return true; }
+            btn.dataset.armed = "1";
+            btn.dataset.origText = btn.textContent;
+            btn.textContent = textoConfirmar;
+            btn.classList.add("ring-2", "ring-red-300");
+            setTimeout(() => {
+                if (btn.isConnected && btn.dataset.armed === "1") {
+                    btn.dataset.armed = "";
+                    btn.textContent = btn.dataset.origText;
+                    btn.classList.remove("ring-2", "ring-red-300");
+                }
+            }, 6000);
+            return false;
+        }
+
+        async function resetTeamsToDefault(btn) {
+            if (!armButton(btn, "¿Confirmar restaurar " + currentParalelo + "?")) return;
+            btn.textContent = btn.dataset.origText;
+            btn.classList.remove("ring-2", "ring-red-300");
             const def = DEFAULT_TEAMS[currentParalelo] || [];
             paralelos[currentParalelo].teams = JSON.parse(JSON.stringify(def)).map(t => { t.maxMembers = 4; return t; });
             renderTeamEditor();
@@ -841,7 +862,7 @@
                 '<div class="flex justify-between items-center text-xs p-2 border-l-4 border-red-300 bg-white rounded shadow-sm">' +
                 '<div class="flex-1 mr-2"><strong class="text-gray-800">' + shortName(log.evaluator) + '</strong> (' + log.evaluatorTeam + ') evaluó a <strong class="text-gray-800">' + shortName(log.evaluated) + '</strong> (' + log.teamLabel + ')<br>' +
                 '<span class="text-gray-500">Nota: ' + log.finalScore + '/10 | C1:' + log.c1 + ' C2:' + log.c2 + ' C3:' + log.c3 + ' C4:' + log.c4 + ' | ' + log.timestamp + '</span></div>' +
-                '<button onclick="deleteEvalLog(\'' + log.logId + '\')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 font-bold">Eliminar</button></div>'
+                '<button onclick="deleteEvalLog(\'' + log.logId + '\', this)" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 font-bold whitespace-nowrap">Eliminar</button></div>'
             ).join('');
         }
 
@@ -856,19 +877,47 @@
             document.getElementById('statMin').textContent = scores.length ? Math.min(...scores) : 'N/A';
         }
 
-        async function deleteEvalLog(logId) {
-            if (confirm("¿Eliminar este registro de la nube?")) {
-                try { await db.ref(DB_NODE + '/' + logId).remove(); showToast("Registro eliminado."); }
-                catch (e) { alert("Error al eliminar: " + e.message); }
+        async function deleteEvalLog(logId, btn) {
+            if (!db) { showToast("Sin conexión a la nube."); return; }
+            // Confirmación en dos pasos SIN window.confirm (los diálogos nativos
+            // se bloquean cuando la página corre dentro del iframe de Moodle/Hyperclass).
+            if (btn && btn.dataset.armed !== "1") {
+                btn.dataset.armed = "1";
+                btn.textContent = "¿Confirmar?";
+                btn.classList.remove("bg-red-500");
+                btn.classList.add("bg-red-700", "ring-2", "ring-red-300");
+                setTimeout(() => {
+                    if (btn.isConnected && btn.dataset.armed === "1") {
+                        btn.dataset.armed = "";
+                        btn.textContent = "Eliminar";
+                        btn.classList.add("bg-red-500");
+                        btn.classList.remove("bg-red-700", "ring-2", "ring-red-300");
+                    }
+                }, 5000);
+                return;
+            }
+            try {
+                if (btn) { btn.disabled = true; btn.textContent = "Eliminando..."; }
+                await db.ref(DB_NODE + '/' + logId).remove();
+                showToast("Registro eliminado de la nube.");
+            } catch (e) {
+                showToast("Error al eliminar: " + e.message);
+                if (btn) { btn.disabled = false; btn.textContent = "Eliminar"; btn.dataset.armed = ""; }
             }
         }
 
-        async function clearCloudData() {
-            if (confirm("¿Borrar TODAS las coevaluaciones del ADA 3 (lapbook) de la nube? Esta acción NO afecta las notas del ADA 1.")) {
-                if (confirm("Confirmación final: se borrarán los registros de los 3 paralelos. ¿Continuar?")) {
-                    try { await db.ref(DB_NODE).remove(); showToast("🗑 Coevaluaciones ADA 3 borradas."); }
-                    catch (e) { alert("Error: " + e.message); }
-                }
+        async function clearCloudData(btn) {
+            if (!armButton(btn, "⚠️ ¿SEGURO? Borra los 3 paralelos — click de nuevo")) return;
+            try {
+                btn.disabled = true; btn.textContent = "Borrando...";
+                await db.ref(DB_NODE).remove();
+                showToast("🗑 Coevaluaciones ADA 3 borradas.");
+                btn.disabled = false; btn.textContent = btn.dataset.origText;
+                btn.classList.remove("ring-2", "ring-red-300");
+            } catch (e) {
+                showToast("Error: " + e.message);
+                btn.disabled = false; btn.textContent = btn.dataset.origText;
+                btn.classList.remove("ring-2", "ring-red-300");
             }
         }
 
