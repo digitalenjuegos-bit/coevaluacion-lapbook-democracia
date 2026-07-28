@@ -177,10 +177,6 @@
                 <div class="mb-6 p-4 bg-white rounded border">
                     <h4 class="font-semibold mb-1">4. Rúbrica del Docente — Lapbook (nota grupal sobre 10)</h4>
                     <p class="text-xs text-gray-500 mb-3">Evalúa cada equipo con la rúbrica del lapbook. La nota es <b>grupal</b> (la misma para los 4 integrantes) y se promedia con la coevaluación individual de cada alumno en la columna "Nota Final" del reporte.</p>
-                    <div class="mb-3 flex items-center gap-3 flex-wrap">
-                        <button onclick="borrarNotaGrupal(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar Nota Grupal del Docente (equipo actual)</button>
-                        <span id="docDeleteStatus" class="text-xs text-gray-500"></span>
-                    </div>
                     <div id="docenteRubricaArea" class="text-sm"></div>
                 </div>
 
@@ -933,6 +929,10 @@
                 ' <span class="text-gray-500">(promedio de ' + cuenta + ' criterio(s) calificado(s))</span>' +
                 '<button onclick="docGuardar(\'' + eqId + '\')" class="ml-3 bg-green-700 text-white px-4 py-1.5 rounded font-bold hover:bg-green-800">☁️ Guardar nota grupal</button>' +
                 '<span id="docSaveStatus" class="text-xs text-gray-500 ml-2"></span></div>';
+            // Botón de borrar nota grupal debajo de la última fila (Bibliografía), para estética
+            html += '<div class="mt-3 flex items-center gap-3 flex-wrap">' +
+                '<button onclick="borrarNotaGrupal(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar Nota Grupal del Docente (equipo actual)</button>' +
+                '<span id="docDeleteStatus" class="text-xs text-gray-500"></span></div>';
             container.innerHTML = html;
         }
 
