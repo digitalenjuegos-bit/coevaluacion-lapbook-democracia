@@ -141,24 +141,25 @@
                         <h4 class="font-semibold">3. Reporte de Notas en Vivo — promedio por estudiante</h4>
                         <button onclick="exportToCSV()" class="bg-green-700 text-white px-3 py-1 rounded text-sm font-bold hover:bg-green-800">⬇ Descargar Excel/CSV</button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-3">Cada fila es un estudiante del paralelo seleccionado. Su nota es el promedio (sin decimales) de todas las coevaluaciones individuales recibidas.</p>
+                    <p class="text-xs text-gray-500 mb-3">Cada fila es un estudiante del paralelo seleccionado. <b>Nota Final</b> = Nota Docente (grupal, sobre 10) × <span id="pesoDocRep">60</span>% + Nota Coevaluación (individual) × <span id="pesoCoeRep">40</span>%. Mientras el docente no evalúe el equipo, la nota final queda "Pendiente".</p>
                     <div class="overflow-x-auto mb-4">
                         <table class="w-full text-sm border-collapse">
                             <thead>
                                 <tr class="bg-blue-100 text-blue-800">
                                     <th class="border p-2 text-left">Estudiante Evaluado</th>
                                     <th class="border p-2 text-left">Equipo</th>
-                                    <th class="border p-2 text-center">Nº Coevaluaciones</th>
+                                    <th class="border p-2 text-center">Nº Coev.</th>
                                     <th class="border p-2 text-center">C1</th>
                                     <th class="border p-2 text-center">C2</th>
                                     <th class="border p-2 text-center">C3</th>
                                     <th class="border p-2 text-center">C4</th>
-                                    <th class="border p-2 text-center">Nota Promedio /10</th>
+                                    <th class="border p-2 text-center">Nota Docente (grupal)</th>
+                                    <th class="border p-2 text-center">Nota Final /10</th>
                                     <th class="border p-2 text-left" style="min-width:260px">Retroalimentación (criterios más bajos)</th>
                                 </tr>
                             </thead>
                             <tbody id="liveGradesBody">
-                                <tr><td colspan="9" class="border p-2 text-center text-gray-400">Conectando a la nube...</td></tr>
+                                <tr><td colspan="10" class="border p-2 text-center text-gray-400">Conectando a la nube...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -170,6 +171,26 @@
 
                 <div class="border-t pt-4 flex gap-4 items-center flex-wrap">
                     <button onclick="clearCloudData(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar TODAS las coevaluaciones ADA 3 (nube)</button>
+                </div>
+
+                <!-- RÚBRICA DEL DOCENTE (grupal, sobre 10) -->
+                <div class="mb-6 p-4 bg-white rounded border">
+                    <h4 class="font-semibold mb-1">4. Rúbrica del Docente — Lapbook (nota grupal sobre 10)</h4>
+                    <p class="text-xs text-gray-500 mb-3">Evalúa cada equipo con la rúbrica del lapbook. La nota es <b>grupal</b> (la misma para los 4 integrantes) y se promedia con la coevaluación individual de cada alumno en la columna "Nota Final" del reporte.</p>
+                    <div id="docenteRubricaArea" class="text-sm"></div>
+                </div>
+
+                <!-- CONFIGURACIÓN DE PESOS -->
+                <div class="mb-6 p-4 bg-white rounded border">
+                    <h4 class="font-semibold mb-1">5. Peso de la nota final (docente vs coevaluación)</h4>
+                    <p class="text-xs text-gray-500 mb-3">Nota Final = Nota Docente × <b id="pesoDocLabel">60</b>% + Nota Coevaluación × <b id="pesoCoevalLabel">40</b>%. Ajusta y guarda; se aplica al instante a todos los dispositivos.</p>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <label class="text-sm">% Docente:</label>
+                        <input id="pesoDocenteInput" type="number" min="0" max="100" value="60" class="border rounded px-2 py-1 w-20 text-sm" oninput="pesoPreview()">
+                        <span class="text-sm text-gray-500">% Coevaluación: <b id="pesoCoevalPreview">40</b>%</span>
+                        <button onclick="guardarPesos()" class="bg-blue-700 text-white px-3 py-1.5 rounded text-sm font-bold hover:bg-blue-800">☁️ Guardar pesos</button>
+                        <span id="pesoStatus" class="text-xs text-gray-500"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -229,6 +250,8 @@
             appId: "1:878859292504:web:94a313961d347d1d5cdf2d"
         };
         const DB_NODE = 'evaluations_ada3_lapbook';
+        const DOCENTE_NODE = 'docente_ada3_lapbook';
+        const CONFIG_NODE = 'config_pesos_ada3_lapbook';
         const LOCK_NODE = 'config_ada3_lapbook/evaluationsActive';
 
         let db = null;
@@ -308,6 +331,9 @@
         let currentParalelo = "1BGU A";
         let evaluationsActive = true;
         let allLogs = [];
+        let docenteScores = {}; // { paralelo: { equipoId: {nota, peso, timestamp} } }
+        // Peso configurable: docente por defecto 60%, coevaluación 40% (recomendación pedagógica)
+        let pesoDocente = 0.60, pesoCoeval = 0.40;
 
         const customNames = {
             "DEL SALTO PALACIOS, MARIA D": "DEL SALTO MARIA DEL MAR",
@@ -509,6 +535,22 @@
                     renderEvalLogList();
                     updateStats();
                 });
+                // Sincronización en vivo de notas del docente (rúbrica grupal lapbook)
+                db.ref(DOCENTE_NODE).on('value', snap => {
+                    docenteScores = snap.val() || {};
+                    renderLiveGrades();
+                });
+                // Sincronización en vivo de pesos (docente vs coevaluación)
+                db.ref(CONFIG_NODE).on('value', snap => {
+                    const w = snap.val();
+                    if (w && typeof w.pesoDocente === 'number' && typeof w.pesoCoeval === 'number') {
+                        pesoDocente = w.pesoDocente; pesoCoeval = w.pesoCoeval;
+                    }
+                    const pw = document.getElementById('pesoDocenteInput');
+                    if (pw) pw.value = Math.round(pesoDocente * 100);
+                    const pc = document.getElementById('pesoCoevalLabel');
+                    if (pc) pc.textContent = Math.round(pesoCoeval * 100) + '%';
+                });
                 // Sincronización en vivo de equipos: cambios del docente llegan al instante a todos
                 db.ref('teams_ada3_lapbook').on('value', snap => {
                     const all = snap.val() || {};
@@ -551,7 +593,7 @@
             if (document.getElementById('passwordInput').value === 'docente2026') {
                 document.getElementById('teacher-panel').classList.remove('hidden');
                 document.getElementById('statsBar').classList.remove('hidden');
-                renderLiveGrades(); renderEvalLogList(); updateStats(); renderTeamEditor();
+                renderLiveGrades(); renderEvalLogList(); updateStats(); renderTeamEditor(); renderDocenteRubrica();
             } else { showToast('Contraseña incorrecta.'); }
         }
 
@@ -583,7 +625,7 @@
             renderEvaluators(); handleEvaluatorChange();
             renderLiveGrades(); renderEvalLogList(); updateStats();
             const panel = document.getElementById('teacher-panel');
-            if (panel && !panel.classList.contains('hidden')) renderTeamEditor();
+            if (panel && !panel.classList.contains('hidden')) { renderTeamEditor(); renderDocenteRubrica(); }
         }
         function changeStudentParalelo() {
             currentParalelo = document.getElementById('studentParaleloSelect').value;
@@ -819,12 +861,140 @@
             return frases.join(". ") + ". Confiamos en que con práctica y constancia lo logrará.";
         }
 
+        // --- RÚBRICA DEL DOCENTE (grupal, sobre 10, solo acceso docente) ---
+        const RUBRICA_DOCENTE = [
+            { id: 'r1', nombre: 'Portada creativa' },
+            { id: 'r2', nombre: 'Grecia y Roma: Cuna del pensamiento político' },
+            { id: 'r3', nombre: 'De Grecia a la República Romana y al Ecuador democrático' },
+            { id: 'r4', nombre: 'Funciones del Estado ecuatoriano' },
+            { id: 'r5', nombre: 'Aciertos y desaciertos democráticos' },
+            { id: 'r6', nombre: 'Problemas y desafíos actuales de la democracia en Ecuador' },
+            { id: 'r7', nombre: 'Nuestra propuesta como ciudadanos' },
+            { id: 'r8', nombre: 'Espacio creativo (opcional)' },
+            { id: 'r9', nombre: 'Bibliografía' }
+        ];
+        const NIVELES_DOC = [
+            { v: 10, label: '10-9' }, { v: 8, label: '8-7' }, { v: 6, label: '6-5' },
+            { v: 4, label: '4-3' }, { v: 2, label: '2-1' }, { v: 0, label: '0' }
+        ];
+        let docEvalTemp = {}; // { equipoId: { r1: 10, r2: 8, ... } }
+
+        function renderDocenteRubrica() {
+            const container = document.getElementById('docenteRubricaArea');
+            if (!container) return;
+            const teams = getData().teams;
+            if (!teams || teams.length === 0) { container.innerHTML = '<p class="text-gray-500 text-sm">No hay equipos configurados para este paralelo.</p>'; return; }
+            let html = '<div class="mb-3"><label class="text-sm font-semibold">Equipo a evaluar:</label> ' +
+                '<select id="docEquipoSelect" onchange="docEquipoCambio()" class="border rounded px-2 py-1 text-sm">' +
+                teams.map(t => '<option value="' + t.id + '">' + t.id + (t.topic ? ' — ' + t.topic : '') + '</option>').join('') +
+                '</select></div>';
+            const eqId = document.getElementById('docEquipoSelect') ? document.getElementById('docEquipoSelect').value : teams[0].id;
+            if (!docEvalTemp[eqId]) docEvalTemp[eqId] = {};
+            html += '<div class="overflow-x-auto"><table class="w-full border-collapse text-xs">' +
+                '<thead><tr class="bg-blue-100"><th class="border p-2 text-left">Sección del lapbook</th>' +
+                NIVELES_DOC.map(n => '<th class="border p-2 text-center">' + n.label + '</th>').join('') +
+                '<th class="border p-2 text-center">Nota</th></tr></thead><tbody>';
+            RUBRICA_DOCENTE.forEach(c => {
+                const sel = docEvalTemp[eqId][c.id];
+                html += '<tr><td class="border p-2 font-medium">' + c.nombre + (c.id === 'r8' ? ' <span class="text-gray-400">(opcional)</span>' : '') + '</td>' +
+                    NIVELES_DOC.map(n => {
+                        const isSel = (sel === n.v);
+                        return '<td class="border p-1 text-center"><button onclick="docSelNivel(\'' + eqId + '\',\'' + c.id + '\',' + n.v + ')" class="lvl-btn px-2 py-1 rounded border ' + (isSel ? 'selected' : 'border-gray-300 hover:bg-gray-100') + '">' + n.v + '</button></td>';
+                    }).join('') +
+                    '<td class="border p-2 text-center font-bold ' + (sel !== undefined ? 'text-blue-700' : 'text-gray-400') + '">' + (sel !== undefined ? sel : '—') + '</td></tr>';
+            });
+            html += '</tbody></table></div>';
+            let suma = 0, cuenta = 0;
+            RUBRICA_DOCENTE.forEach(c => {
+                const val = docEvalTemp[eqId][c.id];
+                if (c.id === 'r8' && val === undefined) return;
+                if (val === undefined) return;
+                suma += val; cuenta++;
+            });
+            const notaGrupal = cuenta > 0 ? (suma / cuenta) : null;
+            html += '<div class="mt-3 p-3 bg-blue-50 rounded border border-blue-200 text-sm">' +
+                '<b>Nota grupal del docente: </b>' +
+                (notaGrupal !== null ? '<span class="text-2xl font-bold text-blue-800">' + notaGrupal.toFixed(2) + '</span> /10' : '<span class="text-gray-400">pendiente</span>') +
+                ' <span class="text-gray-500">(promedio de ' + cuenta + ' criterio(s) calificado(s))</span>' +
+                '<button onclick="docGuardar(\'' + eqId + '\')" class="ml-3 bg-green-700 text-white px-4 py-1.5 rounded font-bold hover:bg-green-800">☁️ Guardar nota grupal</button>' +
+                '<span id="docSaveStatus" class="text-xs text-gray-500 ml-2"></span></div>';
+            container.innerHTML = html;
+        }
+
+        function docEquipoCambio() {
+            const eqId = document.getElementById('docEquipoSelect').value;
+            if (!docEvalTemp[eqId]) docEvalTemp[eqId] = {};
+            renderDocenteRubrica();
+        }
+        function docSelNivel(eqId, critId, v) { if (!docEvalTemp[eqId]) docEvalTemp[eqId] = {}; docEvalTemp[eqId][critId] = v; renderDocenteRubrica(); }
+        async function docGuardar(eqId) {
+            if (!db) { showToast("Sin conexión a la nube."); return; }
+            let suma = 0, cuenta = 0;
+            RUBRICA_DOCENTE.forEach(c => {
+                const val = docEvalTemp[eqId][c.id];
+                if (c.id === 'r8' && val === undefined) return;
+                if (val === undefined) return;
+                suma += val; cuenta++;
+            });
+            if (cuenta === 0) { showToast("Marque al menos un criterio antes de guardar."); return; }
+            const nota = suma / cuenta;
+            const status = document.getElementById('docSaveStatus');
+            try {
+                if (status) status.textContent = "Guardando...";
+                await db.ref(DOCENTE_NODE + '/' + currentParalelo + '/' + eqId).set({
+                    nota: Math.round(nota * 100) / 100,
+                    pesoDocente: pesoDocente, pesoCoeval: pesoCoeval,
+                    equipo: eqId, topic: (getData().teams.find(t => t.id === eqId) || {}).topic || '',
+                    timestamp: new Date().toISOString(), criterios: docEvalTemp[eqId]
+                });
+                if (status) status.textContent = "✅ Guardado " + nota.toFixed(2) + "/10";
+                showToast("Nota grupal de " + eqId + " guardada: " + nota.toFixed(2) + "/10");
+            } catch (e) { if (status) status.textContent = "Error: " + e.message; }
+        }
+
+        function getNotaDocente(equipoId) {
+            const p = docenteScores[currentParalelo];
+            if (p && p[equipoId] && typeof p[equipoId].nota === 'number') return p[equipoId].nota;
+            return null;
+        }
+        function calcNotaFinal(notaDoc, notaCoeval) {
+            if (notaDoc === null && notaCoeval === null) return null;
+            if (notaDoc === null) return notaCoeval;
+            if (notaCoeval === null) return notaDoc;
+            return notaDoc * pesoDocente + notaCoeval * pesoCoeval;
+        }
+
+        function pesoPreview() {
+            const v = parseInt(document.getElementById('pesoDocenteInput').value, 10);
+            const co = (100 - (isNaN(v) ? 0 : v));
+            document.getElementById('pesoCoevalPreview').textContent = co;
+        }
+        async function guardarPesos() {
+            if (!db) { showToast("Sin conexión a la nube."); return; }
+            let d = parseInt(document.getElementById('pesoDocenteInput').value, 10);
+            if (isNaN(d) || d < 0 || d > 100) { showToast("El porcentaje del docente debe estar entre 0 y 100."); return; }
+            const c = 100 - d;
+            pesoDocente = d / 100; pesoCoeval = c / 100;
+            const st = document.getElementById('pesoStatus');
+            try {
+                if (st) st.textContent = "Guardando...";
+                await db.ref(CONFIG_NODE).set({ pesoDocente: pesoDocente, pesoCoeval: pesoCoeval });
+                document.getElementById('pesoDocLabel').textContent = d;
+                document.getElementById('pesoCoevalLabel').textContent = c;
+                document.getElementById('pesoDocRep').textContent = d;
+                document.getElementById('pesoCoeRep').textContent = c;
+                if (st) st.textContent = "✅ Pesos: " + d + "% / " + c + "%";
+                showToast("Pesos guardados: docente " + d + "% / coevaluación " + c + "%");
+                renderLiveGrades();
+            } catch (e) { if (st) st.textContent = "Error: " + e.message; }
+        }
+
         function renderLiveGrades() {
             const tbody = document.getElementById('liveGradesBody');
             if (!tbody) return;
             const logs = paraleloLogs();
             const data = getData();
-            if (data.roster.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="border p-2 text-center text-gray-400">Sin estudiantes.</td></tr>'; return; }
+            if (data.roster.length === 0) { tbody.innerHTML = '<tr><td colspan=\"11\" class=\"border p-2 text-center text-gray-400\">Sin estudiantes.</td></tr>'; return; }
             tbody.innerHTML = data.roster.map(student => {
                 const sLogs = logs.filter(l => l.evaluated === student);
                 const n = sLogs.length;
@@ -836,8 +1006,10 @@
                 const a4 = avg(sLogs.map(l => parseFloat(l.c4)));
                 const aF = avg(sLogs.map(l => parseFloat(l.finalScore)));
                 const finalR = aF !== null ? Math.round(aF) : null;
+                const notaDoc = team ? getNotaDocente(team.id) : null;
+                const notaFinal = calcNotaFinal(notaDoc, aF);
                 let color = "text-gray-400";
-                if (finalR !== null) color = finalR >= 7 ? "score-green" : (finalR >= 6 ? "score-blue" : "score-red");
+                if (notaFinal !== null) color = notaFinal >= 7 ? "score-green" : (notaFinal >= 6 ? "score-blue" : "score-red");
                 const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF) : "Aún sin coevaluaciones.";
                 const fbClass = n === 0 ? "text-gray-400" : (fb.startsWith("Felicitaciones") ? "text-green-700" : (fb.includes("con urgencia") || fb.includes("muy importante") ? "text-red-700" : "text-amber-700"));
                 return '<tr>' +
@@ -848,7 +1020,8 @@
                     '<td class="border p-2 text-center text-xs">' + (a2 !== null ? a2.toFixed(1) : '—') + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + (a3 !== null ? a3.toFixed(1) : '—') + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + (a4 !== null ? a4.toFixed(1) : '—') + '</td>' +
-                    '<td class="border p-2 text-center text-sm ' + color + '">' + (finalR !== null ? finalR : 'Pendiente') + '</td>' +
+                    '<td class="border p-2 text-center text-sm font-bold ' + (notaDoc !== null ? 'text-blue-700' : 'text-gray-400') + '">' + (notaDoc !== null ? notaDoc.toFixed(1) : 'Pend.') + '</td>' +
+                    '<td class="border p-2 text-center text-sm ' + color + '">' + (notaFinal !== null ? notaFinal.toFixed(1) : 'Pendiente') + '</td>' +
                     '<td class="border p-2 text-[11px] leading-snug ' + fbClass + '">' + fb + '</td></tr>';
             }).join('');
         }
@@ -932,7 +1105,31 @@
                         '"' + buildFeedback(parseFloat(e.c1), parseFloat(e.c2), parseFloat(e.c3), parseFloat(e.c4), parseFloat(e.finalScore)).replace(/"/g, "'") + '"',
                         '"' + (e.timestamp || "") + '"'].join(",") + "\n";
                 });
-                const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + csv);
+                // SEGUNDA HOJA: resumen por estudiante con nota del docente y nota final ponderada
+                csv += "\n\nRESUMEN POR ESTUDIANTE (Nota Final = Docente x" + Math.round(pesoDocente*100) + "% + Coevaluacion x" + Math.round(pesoCoeval*100) + "%)\n";
+                csv += "Paralelo,Estudiante,Equipo,Nº Coev,C1,C2,C3,C4,Nota Coev Individual /10,Nota Docente Grupal /10,Nota Final /10,Retroalimentacion\n";
+                const data = getData();
+                data.roster.forEach(student => {
+                    const sLogs = paraleloLogs().filter(l => l.evaluated === student);
+                    const n = sLogs.length;
+                    const team = data.teams.find(t => t.members.includes(student));
+                    const teamLabel = team ? 'Equipo ' + (data.teams.indexOf(team) + 1) : 'Sin equipo';
+                    const a1 = avg(sLogs.map(l => parseFloat(l.c1)));
+                    const a2 = avg(sLogs.map(l => parseFloat(l.c2)));
+                    const a3 = avg(sLogs.map(l => parseFloat(l.c3)));
+                    const a4 = avg(sLogs.map(l => parseFloat(l.c4)));
+                    const aF = avg(sLogs.map(l => parseFloat(l.finalScore)));
+                    const notaDoc = team ? getNotaDocente(team.id) : null;
+                    const notaFinal = calcNotaFinal(notaDoc, aF);
+                    const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF) : "Aun sin coevaluaciones.";
+                    csv += ['"' + currentParalelo + '"', '"' + shortName(student) + '"', '"' + teamLabel + '"', n,
+                        a1 !== null ? a1.toFixed(1) : "", a2 !== null ? a2.toFixed(1) : "", a3 !== null ? a3.toFixed(1) : "", a4 !== null ? a4.toFixed(1) : "",
+                        aF !== null ? aF.toFixed(1) : "Pendiente",
+                        notaDoc !== null ? notaDoc.toFixed(1) : "Pendiente",
+                        notaFinal !== null ? notaFinal.toFixed(1) : "Pendiente",
+                        '"' + fb.replace(/"/g, "'") + '"'].join(",") + "\n";
+                });
+                const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('﻿' + csv);
                 const link = document.createElement("a");
                 link.setAttribute("href", uri);
                 link.setAttribute("download", "Reporte_Coevaluacion_Lapbook_ADA3.csv");
