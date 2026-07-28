@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADA 3: Democracia: Ayer y Hoy - Coevaluación Lapbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-database-compat.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1555993539-1732b0258235?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-attachment: fixed; background-position: center; min-height: 100vh;
+        }
+        .glass-panel { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .score-green { background-color: #dcfce7; color: #166534; font-weight: bold; }
+        .score-blue { background-color: #dbeafe; color: #1e40af; font-weight: bold; }
+        .score-red { background-color: #fee2e2; color: #991b1b; font-weight: bold; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 8px; opacity: 0; transition: opacity 0.3s; z-index: 9999; pointer-events: none; }
+        .student-tile { transition: all 0.2s ease; }
+        .missing-score { border-color: #ef4444 !important; background-color: #fef2f2 !important; }
+        .lvl-btn { transition: all 0.15s ease; }
+        .lvl-btn.selected { background-color: #1d4ed8 !important; color: white !important; border-color: #1d4ed8 !important; font-weight: bold; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="max-w-7xl mx-auto p-4 glass-panel shadow-2xl rounded-lg mt-6 mb-6 border border-gray-200">
+        <header class="border-b-2 border-blue-800 pb-4 mb-4 flex justify-between items-center flex-wrap gap-4 bg-blue-50/50 p-4 rounded-t-lg">
+            <div>
+                <h1 class="text-3xl font-bold text-blue-900">Historia y Ciudadanía - 1BGU</h1>
+                <p class="text-lg text-gray-700 font-semibold">ADA 3: Democracia: Ayer y Hoy — Coevaluación del Lapbook</p>
+            </div>
+            <div id="statsBar" class="hidden text-right text-sm bg-white p-2 rounded-lg border border-blue-200 shadow-sm">
+                <span class="font-bold text-blue-800" id="statEvals">0 coevaluaciones</span><br>
+                <span class="text-xs text-gray-500">Prom: <b id="statProm">N/A</b> | Máx: <b id="statMax">N/A</b> | Mín: <b id="statMin">N/A</b></span>
+            </div>
+        </header>
+
+        <div class="flex border-b mb-4">
+            <button onclick="showTab(1)" class="px-4 py-2 bg-blue-600 text-white rounded-t-md tab-btn active" id="tab1-btn">Introducción</button>
+            <button onclick="showTab(2)" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-t-md ml-2 tab-btn" id="tab2-btn">Coevaluación</button>
+        </div>
+
+        <!-- PESTAÑA 1 -->
+        <div id="tab1" class="tab-content active">
+            <div class="prose max-w-none">
+                <h2 class="text-2xl font-semibold text-blue-800">DEMOCRACIA: AYER Y HOY</h2>
+                <p class="italic text-gray-600">¿Qué de la democracia que inventaron Grecia y Roma sigue vivo —y qué está en riesgo— en la democracia ecuatoriana de hoy?</p>
+                <p>En esta ADA investigaste cómo nacieron la democracia y la ciudadanía en Grecia y Roma, y cómo esas ideas llegaron, se transformaron y se pusieron a prueba en el Ecuador. A través del trabajo colaborativo, la investigación con fuentes y la elaboración de un <b>lapbook</b>, conectaste el pensamiento político antiguo con las funciones del Estado ecuatoriano y con los aciertos, problemas y desafíos de nuestra democracia.</p>
+                <p>Ahora, como cierre, cada equipo presenta su lapbook y tú participas como <b>coevaluador</b>: valorarás la exposición de los demás equipos con la rúbrica oficial, dentro de un marco de respeto, objetividad, equilibrio, escucha activa y ética. Recuerda que la coevaluación no es crítica destructiva, sino una oportunidad para brindar retroalimentación constructiva.</p>
+
+                <div class="bg-blue-50 p-4 rounded-md border border-blue-200 mt-4">
+                    <h3 class="text-xl font-semibold text-blue-800">Rúbrica de Coevaluación (sobre 10 puntos)</h3>
+                    <p class="font-mono bg-white p-2 rounded mt-2 text-center text-lg">Nota final /10 = C1 (3) + C2 (3) + C3 (3) + C4 (1) — sumatoria, sin decimales</p>
+                    <ul class="list-disc pl-5 mt-2 text-sm">
+                        <li><b>C1. Conocimiento del tema (3 pts):</b> dominio del origen grecorromano de la democracia y su evolución en el Ecuador, con terminología histórica y cívica precisa.</li>
+                        <li><b>C2. Fluidez y lenguaje (3 pts):</b> expone sin leer, con lenguaje claro, preciso y apropiado.</li>
+                        <li><b>C3. Análisis del material (3 pts):</b> analiza las secciones del lapbook, la relación pasado-presente y sustenta una postura propia con propuesta ciudadana.</li>
+                        <li><b>C4. Voz y presentación (1 pt):</b> volumen y claridad de voz, correcta presentación del uniforme.</li>
+                        <li><b>Regla:</b> evalúas a cada <b>equipo</b> una sola vez (una calificación por equipo evaluado). No puedes evaluar a tu propio equipo.</li>
+                        <li><b>Colores de Nota Final:</b>
+                            <span class="bg-green-100 text-green-800 px-2 rounded ml-1">Verde (≥7)</span>,
+                            <span class="bg-blue-100 text-blue-800 px-2 rounded ml-1">Azul (6)</span>,
+                            <span class="bg-red-100 text-red-800 px-2 rounded ml-1">Rojo (&lt;6)</span>.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <button onclick="toggleTeacherAccess()" class="text-sm text-gray-500 hover:text-blue-600">🔒 Acceso Docente / Configuración</button>
+                <div id="teacher-login" class="hidden mt-2 p-4 bg-gray-50 rounded-md border inline-block">
+                    <label class="block text-sm font-medium text-gray-700">Contraseña:</label>
+                    <input type="password" id="passwordInput" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
+                    <button onclick="authenticateTeacher()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">Ingresar</button>
+                </div>
+            </div>
+
+            <!-- PANEL DOCENTE -->
+            <div id="teacher-panel" class="hidden mt-8 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                <h3 class="text-xl font-bold text-blue-900 mb-4">Panel de Administración Docente</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="p-4 bg-white rounded border">
+                        <h4 class="font-semibold mb-2">1. Paralelo a visualizar</h4>
+                        <select id="paraleloSelect" onchange="changeParalelo()" class="w-full px-2 py-1 border rounded">
+                            <option value="1BGU A">1BGU A</option>
+                            <option value="1BGU B">1BGU B</option>
+                            <option value="1BGU C">1BGU C</option>
+                        </select>
+                    </div>
+                    <div class="p-4 bg-white rounded border flex flex-wrap justify-between items-center gap-4">
+                        <div>
+                            <h4 class="font-semibold">2. Control de Evaluaciones (global, en la nube)</h4>
+                            <p class="text-xs text-gray-500">Al cerrarlas, se bloquean en TODOS los dispositivos.</p>
+                        </div>
+                        <button id="toggleEvaluationsBtn" onclick="toggleEvaluations()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-green-700 shadow-sm">🟢 Evaluaciones Abiertas</button>
+                    </div>
+                </div>
+
+                <!-- REPORTE POR EQUIPO -->
+                <div class="mb-6 p-4 bg-white rounded border">
+                    <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
+                        <h4 class="font-semibold">3. Reporte de Notas en Vivo — promedio por equipo</h4>
+                        <button onclick="exportToCSV()" class="bg-green-700 text-white px-3 py-1 rounded text-sm font-bold hover:bg-green-800">⬇ Descargar Excel/CSV</button>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-3">Cada fila es un equipo evaluado del paralelo seleccionado. La nota del equipo es el promedio (sin decimales) de todas las coevaluaciones recibidas.</p>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="w-full text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-blue-100 text-blue-800">
+                                    <th class="border p-2 text-left">Equipo Evaluado</th>
+                                    <th class="border p-2 text-left">Tema</th>
+                                    <th class="border p-2 text-center">Nº Coevaluaciones</th>
+                                    <th class="border p-2 text-center">C1</th>
+                                    <th class="border p-2 text-center">C2</th>
+                                    <th class="border p-2 text-center">C3</th>
+                                    <th class="border p-2 text-center">C4</th>
+                                    <th class="border p-2 text-center">Nota Promedio /10</th>
+                                </tr>
+                            </thead>
+                            <tbody id="liveGradesBody">
+                                <tr><td colspan="8" class="border p-2 text-center text-gray-400">Conectando a la nube...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h5 class="text-xs font-bold text-gray-600 mt-4 mb-1">Historial detallado (para eliminar registros):</h5>
+                    <div id="evalLogList" class="space-y-2 max-h-48 overflow-y-auto p-1 border rounded bg-gray-50">
+                        <p class="text-gray-400 text-sm p-2 text-center">No hay registros.</p>
+                    </div>
+                </div>
+
+                <div class="border-t pt-4 flex gap-4 items-center flex-wrap">
+                    <button onclick="clearCloudData()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar TODAS las coevaluaciones ADA 3 (nube)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA 2: VISTA DEL ALUMNO -->
+        <div id="tab2" class="tab-content">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4">Coevaluación de la exposición del lapbook</h2>
+
+            <div class="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-md">
+                <label class="block text-sm font-bold text-gray-700">Paso 0: Selecciona tu Paralelo</label>
+                <select id="studentParaleloSelect" onchange="changeStudentParalelo()" class="mt-1 block w-full md:w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white">
+                    <option value="1BGU A">1BGU A</option>
+                    <option value="1BGU B">1BGU B</option>
+                    <option value="1BGU C">1BGU C</option>
+                </select>
+            </div>
+
+            <div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+                <label class="block text-sm font-bold text-gray-700">Paso 1: Selecciona tu nombre (Evaluador)</label>
+                <select id="evaluator" onchange="handleEvaluatorChange()" class="mt-1 block w-full md:w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white">
+                    <option value="">Seleccione su nombre...</option>
+                </select>
+            </div>
+
+            <div id="teamSelectionBox" class="hidden mb-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
+                <label class="block text-sm font-bold text-gray-700">Paso 2: Selecciona el equipo a evaluar</label>
+                <select id="teamToEvaluate" onchange="loadSelectedTeam()" class="mt-1 block w-full md:w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white">
+                    <option value="">Seleccione un equipo...</option>
+                </select>
+            </div>
+
+            <div id="evaluationArea" class="space-y-6"></div>
+
+            <div id="backToEvalBox" class="hidden mt-6 text-center">
+                <button onclick="goBackToTeamSelection()" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 shadow-md">↩ Volver a Evaluar otro Equipo</button>
+            </div>
+        </div>
+
+        <footer class="mt-10 pt-6 border-t border-gray-200 text-center text-xs text-gray-500">
+            <p>&copy; 2026 Mr. Alberto Ottati R. Todos los derechos reservados. Cualquier manipulación o uso indebido de esta rúbrica será debidamente penalizada.</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        "use strict";
+
+        // --- CONFIGURACIÓN FIREBASE (misma base, nodo separado para ADA 3) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-iRwZ9AUya0F7tkU4uQUWE7eJbgeFZwM",
+            authDomain: "coevaluacionhistoria.firebaseapp.com",
+            databaseURL: "https://coevaluacionhistoria-default-rtdb.firebaseio.com",
+            projectId: "coevaluacionhistoria",
+            storageBucket: "coevaluacionhistoria.firebasestorage.app",
+            messagingSenderId: "878859292504",
+            appId: "1:878859292504:web:94a313961d347d1d5cdf2d"
+        };
+        const DB_NODE = 'evaluations_ada3_lapbook';
+        const LOCK_NODE = 'config_ada3_lapbook/evaluationsActive';
+
+        let db = null;
+        try {
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+            } else { console.error("Firebase SDK no cargó."); }
+        } catch(e) { console.error("Error inicializando Firebase:", e); }
+
+        // --- RÚBRICA OFICIAL: EXPOSICIÓN LAPBOOK (sumatoria /10, sin decimales) ---
+        const rubric = [
+            { key: 'c1', title: 'Conocimiento del tema', max: 3,
+              desc: 'Origen grecorromano de la democracia y su evolución en el Ecuador, con terminología histórica y cívica precisa.',
+              levels: [
+                { pts: 1, label: 'Limitado', text: 'Muestra muy poco conocimiento del tema.' },
+                { pts: 2, label: 'Bueno', text: 'Conocimientos adecuados con varias inexactitudes notables.' },
+                { pts: 3, label: 'Excelente', text: 'Demuestra un conocimiento profundo del tema asignado.' }
+              ]},
+            { key: 'c2', title: 'Fluidez sin materiales de lectura, uso claro y preciso del lenguaje', max: 3,
+              desc: 'Expone sin leer, con lenguaje preciso y apropiado.',
+              levels: [
+                { pts: 1, label: 'Limitado', text: 'Lee constantemente, incapaz de presentar sin leer. Lenguaje confuso y con múltiples errores.' },
+                { pts: 2, label: 'Bueno', text: 'Usa notas regularmente, afectando la fluidez. Lenguaje adecuado, pero con errores evidentes.' },
+                { pts: 3, label: 'Excelente', text: 'Presenta sin referirse a notas, completamente fluido. Lenguaje preciso, sin errores lingüísticos.' }
+              ]},
+            { key: 'c3', title: 'Análisis del material del lapbook', max: 3,
+              desc: 'Analiza las secciones del lapbook, la relación pasado-presente y sustenta una postura propia con propuesta ciudadana.',
+              levels: [
+                { pts: 1, label: 'Limitado', text: 'Poco o ningún análisis relevante del lapbook y sus secciones.' },
+                { pts: 2, label: 'Bueno', text: 'Análisis superficial; comprensión básica del contenido del lapbook.' },
+                { pts: 3, label: 'Excelente', text: 'Analiza el lapbook de manera excepcional, conectando pasado y presente con profundo entendimiento.' }
+              ]},
+            { key: 'c4', title: 'Volumen, claridad de voz y presentación del uniforme', max: 1,
+              desc: 'Voz audible y clara; correcta presentación del uniforme.',
+              levels: [
+                { pts: 0, label: 'Limitado', text: 'La voz es inaudible y/o extremadamente difícil de entender.' },
+                { pts: 0.5, label: 'Bueno', text: 'Volumen y claridad inconsistentes, a veces no audibles.' },
+                { pts: 1, label: 'Excelente', text: 'La voz es clara y fuerte, fácilmente audible para todos.' }
+              ]}
+        ];
+
+        const rosterA = ["ALBAN ALTAMIRANO, IVANNA FE", "ARTEAGA PLAZA, MARIA EMILIA", "BEJAR JIMENEZ, HELENA VICTO", "CADENA RUIZ, ABIGAIL", "CARDENAS ASTUDILLO, JUAN A", "CARRILLO PEREZ, MIGUEL ADRI", "CASTILLO RAMIREZ, MARCO AN", "CHONG QUI PEÑAFIEL, MARIA E", "DEL SALTO PALACIOS, MARIA D", "DIAZ VELIZ, EDUARDO ANTONIO", "ESTRADA VERA, ARIANA ISABEL", "FARFAN LEON, LUCIANA SOFIA", "FERNANDEZ GONZABAY, AMAN", "FIALLOS CONSTANTE, BRUNO", "GALEFSKI MERINO, ALANIS BE", "GARATE ANDRADE, MANUEL IS", "LEON HIDALGO, JORGE ENRIQ", "MEDINA GOMEZ, NICOLAS MAR", "MEDINA MOREJON, FABIANNA", "MOHR MOSCOL, LUCAS AGUST", "MONCADA TAPIA, PEDRO ARTU", "MONTIEL CEDEÑO, RUTH PAUL", "NAVIA ALCIVAR, MIGUEL IVAN", "SALAZAR CAMPUZANO, THELM", "VARGAS CARVAJAL, MATIAS A"];
+        const rosterB = ["CARDENAS VASQUEZ, VALENTIN", "DARQUEA GUERRERO, ISABELLA", "DVORQUEZ SAMAN, EITAN", "ENCALADA ZAMBRANO, PATRIC", "FLORES SANCHEZ, VALENTINA", "GARCES CABEZAS, DOMENICA I", "GONZALEZ LOPEZ, ISABELLA A", "GONZALEZ VELASCO, ESTEFANIA", "HIDALGO DROUET, SAMANTHA A", "HOYOS ESPIN, AMANDA LIA", "LABRE GALARZA, RAFAELLA", "MOSCOSO MARTINEZ, ALICIA M", "MUECKAY SALVATIERRA, LUCA", "NAHT MUÑOZ, DOMENICA ANTO", "NARANJO OJEDA, MAIHA", "ORTIZ CABRERA, DYLAN ANTO", "RODRIGUEZ RUIZ, DANNA VALE", "SANTA CRUZ CERON, MATTIAS", "SOLORZANO REYES, SEBASTI", "TAPIA GARZON, ANDRES JESUS", "VALLEJO HERDOIZA, NICOLAS", "WENDT LANDIVAR, NATHALIE F", "ZAMBRANO MOREIRA, MARIA V", "ZAPATIER PEREZ, LEONARDO"];
+        const rosterC = ["ALAVA PONCE, ISABELLA EDITH", "ALVARADO CASTRO, RICARDO E", "BONILLA CHAVARRIA, JUAN DIE", "CELLERI RAMIREZ, FELIPE ALEJ", "CHACON REYES, BELEN ALEJAN", "CRUZ PINEDA, DOMENICA ALEJA", "DE LA CUADRA GARCES, EILEEN", "ENCALADA ZAMBRANO, SURI PO", "GARCIA VELEZ, GRACE VALENT", "GAVILANES MENDEZ, WILSON", "GILER CAÑARTE, LUCCIANA IS", "MARTINEZ VELASQUEZ, WLADI", "MORALES FLORES, EMILIO ALE", "OLIVEIRA YEPEZ, ELIANE ANN", "PALACIOS RECALDE, EDUARDO", "QUIMI CEDILLO, KRYSTELL LIS", "REINA SANCHEZ, NISHMA VALE", "RIVADENEIRA LUZARDO, AMAN", "RIVERA TINOCO, ALEXA MARIA", "TOLEDO CASTILLO, ROBERTO", "TRUJILLO HAILLARD, PEPO TIM", "VELEZ ZAMBRANO, SAMUEL EN", "VERA GILER, DARMIN MATIAS", "YCAZA MONTJOY, RICARDO XA"];
+
+        const teamsA = [
+            { id: 'A1', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["BEJAR JIMENEZ, HELENA VICTO", "CHONG QUI PEÑAFIEL, MARIA E", "VARGAS CARVAJAL, MATIAS A", "MEDINA MOREJON, FABIANNA"] },
+            { id: 'A2', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["SALAZAR CAMPUZANO, THELM", "MEDINA GOMEZ, NICOLAS MAR", "CASTILLO RAMIREZ, MARCO AN"] },
+            { id: 'A3', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["CARDENAS ASTUDILLO, JUAN A", "CARRILLO PEREZ, MIGUEL ADRI", "FIALLOS CONSTANTE, BRUNO", "DIAZ VELIZ, EDUARDO ANTONIO"] },
+            { id: 'A4', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["MONTIEL CEDEÑO, RUTH PAUL", "FERNANDEZ GONZABAY, AMAN", "ALBAN ALTAMIRANO, IVANNA FE"] },
+            { id: 'A5', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["NAVIA ALCIVAR, MIGUEL IVAN", "MOHR MOSCOL, LUCAS AGUST", "LEON HIDALGO, JORGE ENRIQ", "MONCADA TAPIA, PEDRO ARTU"] },
+            { id: 'A6', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["GALEFSKI MERINO, ALANIS BE", "CADENA RUIZ, ABIGAIL", "FARFAN LEON, LUCIANA SOFIA", "DEL SALTO PALACIOS, MARIA D"] }
+        ];
+        const teamsB = [
+            { id: 'B1', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["GONZALEZ LOPEZ, ISABELLA A", "HOYOS ESPIN, AMANDA LIA", "DVORQUEZ SAMAN, EITAN", "ZAMBRANO MOREIRA, MARIA V"] },
+            { id: 'B2', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["MUECKAY SALVATIERRA, LUCA", "DARQUEA GUERRERO, ISABELLA", "GARCES CABEZAS, DOMENICA I", "SOLORZANO REYES, SEBASTI"] },
+            { id: 'B3', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["HIDALGO DROUET, SAMANTHA A", "NARANJO OJEDA, MAIHA", "FLORES SANCHEZ, VALENTINA", "ZAPATIER PEREZ, LEONARDO"] },
+            { id: 'B4', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["CARDENAS VASQUEZ, VALENTIN", "WENDT LANDIVAR, NATHALIE F", "LABRE GALARZA, RAFAELLA", "MOSCOSO MARTINEZ, ALICIA M"] },
+            { id: 'B5', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["ENCALADA ZAMBRANO, PATRIC", "RODRIGUEZ RUIZ, DANNA VALE", "GONZALEZ VELASCO, ESTEFANIA", "NAHT MUÑOZ, DOMENICA ANTO"] },
+            { id: 'B6', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["ORTIZ CABRERA, DYLAN ANTO", "TAPIA GARZON, ANDRES JESUS", "VALLEJO HERDOIZA, NICOLAS", "SANTA CRUZ CERON, MATTIAS"] }
+        ];
+        const teamsC = [
+            { id: 'C1', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["REINA SANCHEZ, NISHMA VALE", "BONILLA CHAVARRIA, JUAN DIE", "QUIMI CEDILLO, KRYSTELL LIS", "GARCIA VELEZ, GRACE VALENT"] },
+            { id: 'C2', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["CHACON REYES, BELEN ALEJAN", "MARTINEZ VELASQUEZ, WLADI", "TRUJILLO HAILLARD, PEPO TIM", "VELEZ ZAMBRANO, SAMUEL EN"] },
+            { id: 'C3', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["ALAVA PONCE, ISABELLA EDITH", "RIVADENEIRA LUZARDO, AMAN", "DE LA CUADRA GARCES, EILEEN", "CRUZ PINEDA, DOMENICA ALEJA"] },
+            { id: 'C5', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["GILER CAÑARTE, LUCCIANA IS", "TOLEDO CASTILLO, ROBERTO", "ALVARADO CASTRO, RICARDO E", "ENCALADA ZAMBRANO, SURI PO"] },
+            { id: 'C6', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["GAVILANES MENDEZ, WILSON", "PALACIOS RECALDE, EDUARDO", "OLIVEIRA YEPEZ, ELIANE ANN", "RIVERA TINOCO, ALEXA MARIA"] },
+            { id: 'C7', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["VERA GILER, DARMIN MATIAS", "YCAZA MONTJOY, RICARDO XA", "MORALES FLORES, EMILIO ALE", "CELLERI RAMIREZ, FELIPE ALEJ"] }
+        ];
+
+        const paralelos = {
+            "1BGU A": { roster: rosterA, teams: teamsA },
+            "1BGU B": { roster: rosterB, teams: teamsB },
+            "1BGU C": { roster: rosterC, teams: teamsC }
+        };
+        let currentParalelo = "1BGU A";
+        let evaluationsActive = true;
+        let allLogs = [];
+
+        const customNames = {
+            "DEL SALTO PALACIOS, MARIA D": "DEL SALTO MARIA DEL MAR",
+            "CHONG QUI PEÑAFIEL, MARIA E": "CHONG-QUI MA. EMILIA",
+            "CARDENAS VASQUEZ, VALENTIN": "CARDENAS VALENTINA",
+            "ENCALADA ZAMBRANO, PATRIC": "ENCALADA PATRICK",
+            "MUECKAY SALVATIERRA, LUCA": "MUECKAY LUCAS",
+            "SOLORZANO REYES, SEBASTI": "SOLORZANO SEBASTIAN",
+            "ZAMBRANO MOREIRA, MARIA V": "ZAMBRANO MARIA VICTORIA",
+            "SANTA CRUZ CERON, MATTIAS": "SANTA CRUZ MATTIAS",
+            "BONILLA CHAVARRIA, JUAN DIE": "BONILLA JUAN DIEGO",
+            "MARTINEZ VELASQUEZ, WLADI": "MARTINEZ WLADIMIR",
+            "TRUJILLO HAILLARD, PEPO TIM": "TRUJILLO TIMOTHEÉ",
+            "RIVADENEIRA LUZARDO, AMAN": "RIVADENEIRA AMANDA"
+        };
+
+        function shortName(fullName) {
+            if (!fullName) return "";
+            let nameStr = fullName.trim().toUpperCase();
+            if (customNames[nameStr]) return customNames[nameStr];
+            if (nameStr.includes(',')) {
+                let parts = nameStr.split(',');
+                let surnamePart = parts[0].trim().split(' ').filter(w => !["DE", "LA", "DEL", "LOS", "LAS"].includes(w.toUpperCase()));
+                let namePart = parts[1].trim().split(' ');
+                let surname = surnamePart.length > 0 ? surnamePart[0] : parts[0].trim().split(' ')[0];
+                return (surname + ' ' + namePart[0]).toUpperCase();
+            }
+            return nameStr;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg; t.style.opacity = 1;
+            setTimeout(() => { t.style.opacity = 0; }, 3000);
+        }
+
+        function getData() { return paralelos[currentParalelo]; }
+        function safeKey(str) { return str ? str.replace(/[.#$/\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '_') : ''; }
+
+        window.onload = function() {
+            renderEvaluators();
+            if (db) {
+                db.ref(LOCK_NODE).on('value', snap => {
+                    const v = snap.val();
+                    evaluationsActive = (v === null) ? true : !!v;
+                    updateToggleBtn();
+                    handleEvaluatorChange();
+                });
+                db.ref(DB_NODE).on('value', snap => {
+                    const data = snap.val();
+                    allLogs = data ? Object.entries(data).map(([k, v]) => ({ ...v, logId: k })) : [];
+                    renderLiveGrades();
+                    renderEvalLogList();
+                    updateStats();
+                });
+            }
+        };
+
+        function showTab(i) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active', 'bg-blue-600', 'text-white');
+                el.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            document.getElementById('tab' + i).classList.add('active');
+            const btn = document.getElementById('tab' + i + '-btn');
+            btn.classList.add('active', 'bg-blue-600', 'text-white');
+            btn.classList.remove('bg-gray-200', 'text-gray-700');
+            if (i === 2) handleEvaluatorChange();
+        }
+
+        function toggleTeacherAccess() { document.getElementById('teacher-login').classList.toggle('hidden'); }
+        function authenticateTeacher() {
+            if (document.getElementById('passwordInput').value === 'docente2026') {
+                document.getElementById('teacher-panel').classList.remove('hidden');
+                document.getElementById('statsBar').classList.remove('hidden');
+                renderLiveGrades(); renderEvalLogList(); updateStats();
+            } else { alert('Contraseña incorrecta.'); }
+        }
+
+        async function toggleEvaluations() {
+            if (!db) { alert("Sin conexión a la nube."); return; }
+            try {
+                await db.ref(LOCK_NODE).set(!evaluationsActive);
+                showToast(!evaluationsActive ? "✅ Evaluaciones Activadas (todos los dispositivos)" : "🛑 Evaluaciones Cerradas (todos los dispositivos)");
+            } catch(e) { alert("Error: " + e.message); }
+        }
+
+        function updateToggleBtn() {
+            const btn = document.getElementById('toggleEvaluationsBtn');
+            if (!btn) return;
+            if (evaluationsActive) {
+                btn.textContent = "🟢 Evaluaciones Abiertas";
+                btn.className = "bg-green-600 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-green-700 shadow-sm";
+            } else {
+                btn.textContent = "🔴 Evaluaciones Cerradas";
+                btn.className = "bg-red-600 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-red-700 shadow-sm";
+            }
+        }
+
+        function changeParalelo() {
+            currentParalelo = document.getElementById('paraleloSelect').value;
+            const s = document.getElementById('studentParaleloSelect');
+            if (s) s.value = currentParalelo;
+            document.getElementById('evaluator').value = "";
+            renderEvaluators(); handleEvaluatorChange();
+            renderLiveGrades(); renderEvalLogList(); updateStats();
+        }
+        function changeStudentParalelo() {
+            currentParalelo = document.getElementById('studentParaleloSelect').value;
+            const p = document.getElementById('paraleloSelect');
+            if (p) p.value = currentParalelo;
+            document.getElementById('evaluator').value = "";
+            renderEvaluators(); handleEvaluatorChange();
+            renderLiveGrades(); renderEvalLogList(); updateStats();
+        }
+
+        function renderEvaluators() {
+            const select = document.getElementById('evaluator');
+            const currentVal = select.value;
+            select.innerHTML = '<option value="">Seleccione su nombre...</option>';
+            getData().roster.forEach(name => {
+                select.innerHTML += '<option value="' + name + '">' + shortName(name) + '</option>';
+            });
+            select.value = currentVal;
+        }
+
+        function findMyTeam(student) {
+            return getData().teams.find(t => t.members.includes(student)) || null;
+        }
+        function paraleloLogs() { return allLogs.filter(l => l.paralelo === currentParalelo); }
+
+        function handleEvaluatorChange() {
+            const evaluator = document.getElementById('evaluator').value;
+            const teamSelectBox = document.getElementById('teamSelectionBox');
+            const evalArea = document.getElementById('evaluationArea');
+            const backBox = document.getElementById('backToEvalBox');
+            if (!evaluationsActive) {
+                teamSelectBox.classList.add('hidden');
+                evalArea.innerHTML = '<p class="text-red-700 bg-red-50 p-4 text-center rounded border border-red-200 font-bold text-lg">🔒 El tiempo para registrar coevaluaciones ha finalizado. Gracias por participar.</p>';
+                backBox.classList.add('hidden');
+                return;
+            }
+            if (evaluator) teamSelectBox.classList.remove('hidden');
+            else teamSelectBox.classList.add('hidden');
+            evalArea.innerHTML = '';
+            backBox.classList.add('hidden');
+            populateTeamDropdown();
+        }
+
+        function populateTeamDropdown() {
+            const evaluator = document.getElementById('evaluator').value;
+            const select = document.getElementById('teamToEvaluate');
+            select.innerHTML = '<option value="">Seleccione un equipo...</option>';
+            if (!evaluator) return;
+            const myTeam = findMyTeam(evaluator);
+            const evaluated = new Set(paraleloLogs().filter(l => l.evaluator === evaluator).map(l => l.teamId));
+            let available = 0;
+            getData().teams.forEach((team, i) => {
+                if (myTeam && team.id === myTeam.id) return;
+                const done = evaluated.has(team.id) ? ' ✓ (ya evaluado)' : '';
+                select.innerHTML += '<option value="' + i + '">Equipo ' + (i + 1) + ' — ' + team.members.map(shortName).join(', ') + done + '</option>';
+                if (!done) available++;
+            });
+            if (available === 0) {
+                select.innerHTML = '<option value="">¡Has evaluado a todos los equipos! 🎉</option>';
+            }
+        }
+
+        function loadSelectedTeam() {
+            const teamIndex = document.getElementById('teamToEvaluate').value;
+            const evaluator = document.getElementById('evaluator').value;
+            const evalArea = document.getElementById('evaluationArea');
+            const backBox = document.getElementById('backToEvalBox');
+            if (teamIndex === "" || isNaN(parseInt(teamIndex, 10))) { evalArea.innerHTML = ''; backBox.classList.add('hidden'); return; }
+            const team = getData().teams[parseInt(teamIndex, 10)];
+            const already = paraleloLogs().find(l => l.evaluator === evaluator && l.teamId === team.id);
+
+            const critHtml = rubric.map((c, ci) => {
+                const btns = c.levels.map(lvl =>
+                    '<button type="button" onclick="selectLevel(\'' + c.key + '\', ' + lvl.pts + ', this)" class="lvl-btn flex-1 px-2 py-2 border rounded bg-white text-gray-700 border-gray-300 hover:bg-blue-50 text-xs md:text-sm">' +
+                    '<span class="block font-bold">' + lvl.label + ' (' + lvl.pts + (lvl.pts === 1 && c.max === 3 ? ' pt' : ' pts') + ')</span>' +
+                    '<span class="block text-[10px] text-gray-500 mt-1 leading-tight">' + lvl.text + '</span></button>'
+                ).join('');
+                return '<div id="card-' + c.key + '" class="flex flex-col p-3 bg-gray-50 rounded border">' +
+                    '<label class="block text-sm font-bold text-gray-800 mb-1">' + (ci + 1) + '. ' + c.title + ' (' + c.max + ' pts)</label>' +
+                    '<p class="text-xs text-gray-500 mb-2">' + c.desc + '</p>' +
+                    '<div class="flex gap-2 flex-col md:flex-row">' + btns + '</div>' +
+                    '<input type="hidden" id="score-' + c.key + '" value=""></div>';
+            }).join('');
+
+            const alreadyBanner = already ?
+                '<div class="p-2 mb-3 bg-amber-50 border border-amber-300 rounded text-sm text-amber-800">⚠️ Ya evaluaste a este equipo (nota registrada: <b>' + already.finalScore + '/10</b>). Si guardas de nuevo, se <b>reemplaza</b> tu calificación anterior.</div>' : '';
+
+            evalArea.innerHTML = '<div class="bg-gray-50 p-4 rounded-lg border">' +
+                '<div class="mb-3 border-b pb-2"><h3 class="font-bold text-blue-900 text-lg">Equipo ' + (parseInt(teamIndex, 10) + 1) + ' — ' + team.topic + '</h3>' +
+                '<p class="text-sm text-gray-600">Integrantes: ' + team.members.map(shortName).join(', ') + '</p></div>' +
+                alreadyBanner +
+                '<p class="text-xs text-gray-500 mb-3">Selecciona un nivel por criterio. La nota es la <b>sumatoria (sin decimales)</b> de los 4 criterios, sobre 10 puntos. Se emite <b>una sola calificación por equipo</b>.</p>' +
+                '<div class="space-y-3">' + critHtml + '</div>' +
+                '<div class="mt-4 flex flex-wrap items-center gap-4">' +
+                '<div class="text-lg font-bold text-blue-900">Total: <span id="totalPreview">—</span> / 10</div>' +
+                '<button id="saveBtn" onclick="saveEvaluation(\'' + team.id + '\', ' + parseInt(teamIndex, 10) + ')" class="bg-green-600 text-white px-6 py-3 rounded text-sm hover:bg-green-700 font-bold">Guardar Calificación del Equipo</button>' +
+                '</div></div>';
+            backBox.classList.remove('hidden');
+        }
+
+        function selectLevel(key, pts, btn) {
+            document.getElementById('score-' + key).value = pts;
+            btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('card-' + key).classList.remove('missing-score');
+            updateTotalPreview();
+        }
+
+        function updateTotalPreview() {
+            let total = 0, complete = true;
+            rubric.forEach(c => {
+                const v = document.getElementById('score-' + c.key).value;
+                if (v === "") complete = false; else total += parseFloat(v);
+            });
+            document.getElementById('totalPreview').textContent = complete ? Math.round(total) : '—';
+        }
+
+        async function saveEvaluation(teamId, teamIndex) {
+            try {
+                if (!evaluationsActive) { alert("🔒 El tiempo para registrar coevaluaciones ha finalizado."); return; }
+                const evaluator = document.getElementById('evaluator').value;
+                if (!evaluator) { alert("Primero selecciona tu nombre en el recuadro amarillo 'Evaluador'."); return; }
+                const myTeam = findMyTeam(evaluator);
+                if (myTeam && myTeam.id === teamId) { alert("No puedes evaluar a tu propio equipo."); return; }
+
+                const scores = {}; const missing = [];
+                let rawScore = 0;
+                rubric.forEach(c => {
+                    const v = document.getElementById('score-' + c.key).value;
+                    if (v === "") { missing.push(c.title); document.getElementById('card-' + c.key).classList.add('missing-score'); }
+                    else { scores[c.key] = parseFloat(v); rawScore += parseFloat(v); }
+                });
+                if (missing.length > 0) {
+                    alert("⚠️ Faltan niveles por seleccionar en:\n\n• " + missing.join("\n• ") + "\n\nElige Excelente, Bueno o Limitado en cada criterio antes de guardar.");
+                    return;
+                }
+                const finalScore = Math.round(rawScore);
+                const team = getData().teams[teamIndex];
+                const myTeamName = myTeam ? "Equipo " + (getData().teams.indexOf(myTeam) + 1) : "Sin equipo";
+
+                const saveBtn = document.getElementById('saveBtn');
+                if (saveBtn) { saveBtn.disabled = true; saveBtn.innerText = "Guardando..."; saveBtn.classList.add("opacity-50", "cursor-not-allowed"); }
+
+                if (!db) throw new Error("No hay conexión con la base de datos (Firebase no cargó).");
+
+                const logKey = safeKey(currentParalelo) + '__' + safeKey(evaluator) + '__' + teamId;
+                await db.ref(DB_NODE + '/' + logKey).set({
+                    timestamp: new Date().toLocaleString('es-EC'),
+                    paralelo: currentParalelo,
+                    evaluator: evaluator,
+                    evaluatorTeam: myTeamName,
+                    teamId: teamId,
+                    teamLabel: "Equipo " + (teamIndex + 1),
+                    members: team.members.join(' | '),
+                    c1: scores.c1, c2: scores.c2, c3: scores.c3, c4: scores.c4,
+                    finalScore: finalScore
+                });
+                showToast("✅ Calificación enviada a la nube: Equipo " + (teamIndex + 1) + " → " + finalScore + "/10");
+                goBackToTeamSelection();
+            } catch (e) {
+                console.error("Error guardando en Firebase:", e);
+                alert("❌ Error al guardar en la nube: " + e.message);
+                const saveBtn = document.getElementById('saveBtn');
+                if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "Guardar Calificación del Equipo"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); }
+            }
+        }
+
+        function goBackToTeamSelection() {
+            document.getElementById('evaluationArea').innerHTML = '';
+            document.getElementById('backToEvalBox').classList.add('hidden');
+            document.getElementById('teamToEvaluate').value = '';
+            populateTeamDropdown();
+        }
+
+        // --- PANEL DOCENTE: REPORTES ---
+        function avg(arr) { return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null; }
+
+        function renderLiveGrades() {
+            const tbody = document.getElementById('liveGradesBody');
+            if (!tbody) return;
+            const logs = paraleloLogs();
+            const teams = getData().teams;
+            if (teams.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="border p-2 text-center text-gray-400">Sin equipos.</td></tr>'; return; }
+            tbody.innerHTML = teams.map((team, i) => {
+                const tLogs = logs.filter(l => l.teamId === team.id);
+                const n = tLogs.length;
+                const a1 = avg(tLogs.map(l => parseFloat(l.c1)));
+                const a2 = avg(tLogs.map(l => parseFloat(l.c2)));
+                const a3 = avg(tLogs.map(l => parseFloat(l.c3)));
+                const a4 = avg(tLogs.map(l => parseFloat(l.c4)));
+                const aF = avg(tLogs.map(l => parseFloat(l.finalScore)));
+                const finalR = aF !== null ? Math.round(aF) : null;
+                let color = "text-gray-400";
+                if (finalR !== null) color = finalR >= 7 ? "score-green" : (finalR >= 6 ? "score-blue" : "score-red");
+                return '<tr>' +
+                    '<td class="border p-2 text-xs font-bold">Equipo ' + (i + 1) + '<br><span class="font-normal text-gray-500">' + team.members.map(shortName).join('<br>') + '</span></td>' +
+                    '<td class="border p-2 text-xs">' + team.topic + '</td>' +
+                    '<td class="border p-2 text-center text-xs">' + n + '</td>' +
+                    '<td class="border p-2 text-center text-xs">' + (a1 !== null ? a1.toFixed(1) : '—') + '</td>' +
+                    '<td class="border p-2 text-center text-xs">' + (a2 !== null ? a2.toFixed(1) : '—') + '</td>' +
+                    '<td class="border p-2 text-center text-xs">' + (a3 !== null ? a3.toFixed(1) : '—') + '</td>' +
+                    '<td class="border p-2 text-center text-xs">' + (a4 !== null ? a4.toFixed(1) : '—') + '</td>' +
+                    '<td class="border p-2 text-center text-sm ' + color + '">' + (finalR !== null ? finalR : 'Pendiente') + '</td></tr>';
+            }).join('');
+        }
+
+        function renderEvalLogList() {
+            const container = document.getElementById('evalLogList');
+            if (!container) return;
+            const logs = paraleloLogs();
+            if (logs.length === 0) { container.innerHTML = '<p class="text-gray-400 text-sm p-2 text-center">No hay registros de coevaluación en este paralelo.</p>'; return; }
+            container.innerHTML = logs.map(log =>
+                '<div class="flex justify-between items-center text-xs p-2 border-l-4 border-red-300 bg-white rounded shadow-sm">' +
+                '<div class="flex-1 mr-2"><strong class="text-gray-800">' + shortName(log.evaluator) + '</strong> (' + log.evaluatorTeam + ') evaluó al <strong class="text-gray-800">' + log.teamLabel + '</strong><br>' +
+                '<span class="text-gray-500">Nota: ' + log.finalScore + '/10 | C1:' + log.c1 + ' C2:' + log.c2 + ' C3:' + log.c3 + ' C4:' + log.c4 + ' | ' + log.timestamp + '</span></div>' +
+                '<button onclick="deleteEvalLog(\'' + log.logId + '\')" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 font-bold">Eliminar</button></div>'
+            ).join('');
+        }
+
+        function updateStats() {
+            const logs = paraleloLogs();
+            const el = document.getElementById('statEvals');
+            if (!el) return;
+            el.textContent = logs.length + ' coevaluaciones (' + currentParalelo + ')';
+            const scores = logs.map(l => parseFloat(l.finalScore));
+            document.getElementById('statProm').textContent = scores.length ? avg(scores).toFixed(1) : 'N/A';
+            document.getElementById('statMax').textContent = scores.length ? Math.max(...scores) : 'N/A';
+            document.getElementById('statMin').textContent = scores.length ? Math.min(...scores) : 'N/A';
+        }
+
+        async function deleteEvalLog(logId) {
+            if (confirm("¿Eliminar este registro de la nube?")) {
+                try { await db.ref(DB_NODE + '/' + logId).remove(); showToast("Registro eliminado."); }
+                catch (e) { alert("Error al eliminar: " + e.message); }
+            }
+        }
+
+        async function clearCloudData() {
+            if (confirm("¿Borrar TODAS las coevaluaciones del ADA 3 (lapbook) de la nube? Esta acción NO afecta las notas del ADA 1.")) {
+                if (confirm("Confirmación final: se borrarán los registros de los 3 paralelos. ¿Continuar?")) {
+                    try { await db.ref(DB_NODE).remove(); showToast("🗑 Coevaluaciones ADA 3 borradas."); }
+                    catch (e) { alert("Error: " + e.message); }
+                }
+            }
+        }
+
+        function exportToCSV() {
+            try {
+                if (allLogs.length === 0) { alert("⚠️ No hay coevaluaciones registradas para exportar."); return; }
+                let csv = "Paralelo,Evaluador,Equipo del Evaluador,Equipo Evaluado,Integrantes del Equipo Evaluado,C1 Conocimiento (3),C2 Fluidez (3),C3 Analisis (3),C4 Voz y Uniforme (1),Nota Final /10,Fecha\n";
+                allLogs.forEach(e => {
+                    csv += ['"' + (e.paralelo || "") + '"', '"' + shortName(e.evaluator) + '"', '"' + (e.evaluatorTeam || "") + '"',
+                        '"' + (e.teamLabel || "") + '"', '"' + (e.members || "").split(' | ').map(shortName).join('; ') + '"',
+                        e.c1, e.c2, e.c3, e.c4, e.finalScore, '"' + (e.timestamp || "") + '"'].join(",") + "\n";
+                });
+                const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + csv);
+                const link = document.createElement("a");
+                link.setAttribute("href", uri);
+                link.setAttribute("download", "Reporte_Coevaluacion_Lapbook_ADA3.csv");
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                showToast("✅ Reporte CSV descargado.");
+            } catch (err) { console.error(err); alert("Error al generar CSV: " + err.message); }
+        }
+    </script>
+</body>
+</html>
