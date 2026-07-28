@@ -928,11 +928,9 @@
                 (notaGrupal !== null ? '<span class="text-2xl font-bold text-blue-800">' + notaGrupal.toFixed(2) + '</span> /10' : '<span class="text-gray-400">pendiente</span>') +
                 ' <span class="text-gray-500">(promedio de ' + cuenta + ' criterio(s) calificado(s))</span>' +
                 '<button onclick="docGuardar(\'' + eqId + '\')" class="ml-3 bg-green-700 text-white px-4 py-1.5 rounded font-bold hover:bg-green-800">☁️ Guardar nota grupal</button>' +
+                '<button onclick="borrarNotaGrupal(this)" class="ml-2 bg-red-500 text-white px-4 py-1.5 rounded font-bold hover:bg-red-600">🗑 Borrar nota</button>' +
+                '<span id="docDeleteStatus" class="text-xs text-gray-500 ml-2"></span>' +
                 '<span id="docSaveStatus" class="text-xs text-gray-500 ml-2"></span></div>';
-            // Botón de borrar nota grupal debajo de la última fila (Bibliografía), para estética
-            html += '<div class="mt-3 flex items-center gap-3 flex-wrap">' +
-                '<button onclick="borrarNotaGrupal(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-medium text-sm">🗑 Borrar Nota Grupal del Docente (equipo actual)</button>' +
-                '<span id="docDeleteStatus" class="text-xs text-gray-500"></span></div>';
             container.innerHTML = html;
         }
 
