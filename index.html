@@ -791,7 +791,8 @@
                     teamId: team.id,
                     teamLabel: "Equipo " + (teamIndex + 1),
                     c1: scores.c1, c2: scores.c2, c3: scores.c3, c4: scores.c4,
-                    finalScore: finalScore
+                    finalScore: finalScore,
+                    teamDocente: (getNotaDocente(team.id) !== null ? getNotaDocente(team.id) : "")
                 });
                 showToast("✅ Nota enviada a la nube: " + shortName(member) + " → " + finalScore + "/10");
                 if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "✓ Guardada (puedes corregirla)"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); saveBtn.classList.replace("bg-green-600", "bg-blue-600"); }
@@ -821,9 +822,13 @@
             c4: { name: "C4", aspecto: "la voz y la presentación personal", max: 1, tip: "proyectar la voz con mayor volumen y claridad, y cuidar la correcta presentación del uniforme" }
         };
 
-        function buildFeedback(v1, v2, v3, v4, finalAvg) {
+        function buildFeedback(v1, v2, v3, v4, finalAvg, notaGrupalDocente) {
             const vals = { c1: v1, c2: v2, c3: v3, c4: v4 };
             if (Object.values(vals).some(v => v === null || v === undefined || isNaN(v))) return "Sin datos suficientes.";
+            // Mensaje sobre el LAPBOOK cuando la nota grupal del docente es menor a 7/10 (obligatorio, sumado a lo demás)
+            const msgLapbook = (typeof notaGrupalDocente === 'number' && !isNaN(notaGrupalDocente) && notaGrupalDocente < 7)
+                ? "Respecto al lapbook en sí (evaluación del docente): su equipo obtuvo " + notaGrupalDocente.toFixed(1) + " sobre diez, por debajo de siete. Revise las secciones de la rúbrica del lapbook (portada, Grecia y Roma, República Romana y Ecuador democrático, funciones del Estado, aciertos y desaciertos, problemas actuales, propuesta ciudadana, bibliografía) y refuerce aquellas donde el trabajo fue más débil para mejorar el producto final."
+                : null;
             // Criterio "bajo": en C1-C3 equivale a 2, 1 o 0 (promedio < 2.5); en C4 a 0.5 o 0 (promedio < 0.75)
             const lows = [];
             Object.keys(CRIT_FEEDBACK).forEach(k => {
@@ -831,6 +836,7 @@
                 const threshold = c.max === 3 ? 2.5 : 0.75;
                 if (vals[k] < threshold) lows.push({ key: k, ratio: vals[k] / c.max, severe: c.max === 3 ? vals[k] < 1.5 : vals[k] < 0.25 });
             });
+            let coevol = "";
             if (lows.length === 0) {
                 // REGLA OBLIGATORIA: promedio final < 7/10 siempre lleva retroalimentación,
                 // aunque ningún criterio esté bajo el umbral (salvaguarda explícita).
@@ -841,24 +847,29 @@
                         if (r < minR) { minR = r; minK = k; }
                     });
                     const c = CRIT_FEEDBACK[minK];
-                    return "Su promedio quedó por debajo de siete sobre diez, aunque ningún criterio resultó especialmente bajo. Para su próxima exposición le sugerimos " + c.tip + ". Con un poco más de preparación alcanzará el nivel que buscamos.";
+                    coevol = "Su promedio quedó por debajo de siete sobre diez, aunque ningún criterio resultó especialmente bajo. Para su próxima exposición le sugerimos " + c.tip + ". Con un poco más de preparación alcanzará el nivel que buscamos.";
+                } else {
+                    coevol = "Felicitaciones por su desempeño: sus compañeros valoraron muy bien todos los aspectos de la exposición. Le animamos a mantener ese mismo nivel de preparación y compromiso.";
                 }
-                return "Felicitaciones por su desempeño: sus compañeros valoraron muy bien todos los aspectos de la exposición. Le animamos a mantener ese mismo nivel de preparación y compromiso.";
-            }
-            // Ordenar del criterio más débil (en términos relativos) al menos débil
-            lows.sort((a, b) => a.ratio - b.ratio);
-            const frases = lows.map((l, idx) => {
-                const c = CRIT_FEEDBACK[l.key];
-                if (idx === 0) {
+            } else {
+                // Ordenar del criterio más débil (en términos relativos) al menos débil
+                lows.sort((a, b) => a.ratio - b.ratio);
+                const frases = lows.map((l, idx) => {
+                    const c = CRIT_FEEDBACK[l.key];
+                    if (idx === 0) {
+                        return l.severe
+                            ? "Su principal oportunidad de mejora está en " + c.aspecto + ", por lo que necesita con urgencia " + c.tip
+                            : "Su principal oportunidad de mejora está en " + c.aspecto + ", por lo que le sugerimos " + c.tip;
+                    }
                     return l.severe
-                        ? "Su principal oportunidad de mejora está en " + c.aspecto + ", por lo que necesita con urgencia " + c.tip
-                        : "Su principal oportunidad de mejora está en " + c.aspecto + ", por lo que le sugerimos " + c.tip;
-                }
-                return l.severe
-                    ? "También es muy importante que se dedique a " + c.tip
-                    : "Además, le vendría bien " + c.tip;
-            });
-            return frases.join(". ") + ". Confiamos en que con práctica y constancia lo logrará.";
+                        ? "También es muy importante que se dedique a " + c.tip
+                        : "Además, le vendría bien " + c.tip;
+                });
+                coevol = frases.join(". ") + ". Confiamos en que con práctica y constancia lo logrará.";
+            }
+            // Ensamblar: retroalimentación de coevaluación + (si aplica) mensaje del lapbook
+            if (msgLapbook) return coevol + " " + msgLapbook;
+            return coevol;
         }
 
         // --- RÚBRICA DEL DOCENTE (grupal, sobre 10, solo acceso docente) ---
@@ -1010,7 +1021,7 @@
                 const notaFinal = calcNotaFinal(notaDoc, aF);
                 let color = "text-gray-400";
                 if (notaFinal !== null) color = notaFinal >= 7 ? "score-green" : (notaFinal >= 6 ? "score-blue" : "score-red");
-                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF) : "Aún sin coevaluaciones.";
+                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF, notaDoc) : "Aún sin coevaluaciones.";
                 const fbClass = n === 0 ? "text-gray-400" : (fb.startsWith("Felicitaciones") ? "text-green-700" : (fb.includes("con urgencia") || fb.includes("muy importante") ? "text-red-700" : "text-amber-700"));
                 return '<tr>' +
                     '<td class="border p-2 text-xs">' + shortName(student) + '</td>' +
@@ -1102,7 +1113,7 @@
                     csv += ['"' + (e.paralelo || "") + '"', '"' + shortName(e.evaluator) + '"', '"' + (e.evaluatorTeam || "") + '"',
                         '"' + shortName(e.evaluated) + '"', '"' + (e.teamLabel || "") + '"',
                         e.c1, e.c2, e.c3, e.c4, e.finalScore,
-                        '"' + buildFeedback(parseFloat(e.c1), parseFloat(e.c2), parseFloat(e.c3), parseFloat(e.c4), parseFloat(e.finalScore)).replace(/"/g, "'") + '"',
+                        '"' + buildFeedback(parseFloat(e.c1), parseFloat(e.c2), parseFloat(e.c3), parseFloat(e.c4), parseFloat(e.finalScore), parseFloat(e.teamDocente !== undefined ? e.teamDocente : "")).replace(/"/g, "'") + '"',
                         '"' + (e.timestamp || "") + '"'].join(",") + "\n";
                 });
                 // SEGUNDA HOJA: resumen por estudiante con nota del docente y nota final ponderada
