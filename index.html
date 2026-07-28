@@ -102,6 +102,39 @@
                     </div>
                 </div>
 
+                <!-- GESTIÓN DE EQUIPOS -->
+                <div class="mb-6 p-4 bg-white rounded border">
+                    <h4 class="font-semibold mb-1">2.5 Gestión de Equipos del Paralelo (parametrizable)</h4>
+                    <p class="text-xs text-gray-500 mb-3">Si los alumnos forman nuevos grupos, edítalos aquí y presiona <b>Guardar equipos en la nube</b>: se aplican al instante en los dispositivos de todos los estudiantes del paralelo. Las notas ya registradas no se pierden (están ligadas al estudiante, no al equipo).</p>
+                    <div class="flex flex-wrap gap-4 items-end mb-4">
+                        <div>
+                            <label class="block text-xs font-medium">Nº de Equipos (1-20)</label>
+                            <input type="number" id="numTeams" min="1" max="20" value="6" class="w-24 px-2 py-1 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium">Máx. integrantes por equipo</label>
+                            <input type="number" id="numMembers" min="1" max="8" value="4" class="w-24 px-2 py-1 border rounded">
+                        </div>
+                        <button onclick="editorGenerateTeams()" class="bg-blue-600 text-white px-4 py-1.5 rounded text-sm hover:bg-blue-700">Generar Estructura</button>
+                        <button onclick="editorRandomAssign()" class="bg-purple-600 text-white px-4 py-1.5 rounded text-sm hover:bg-purple-700">🎲 Asignación Aleatoria</button>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <h5 class="text-sm font-bold mb-2 bg-gray-100 p-1 rounded">Estudiantes Sin Equipo (<span id="unassignedCount">0</span>)</h5>
+                            <div id="unassignedList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-96 overflow-y-auto p-1 bg-gray-50 rounded border"></div>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-bold mb-2 bg-blue-100 p-1 rounded">Equipos del Paralelo</h5>
+                            <div id="teamBuilder" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-96 overflow-y-auto p-1 bg-gray-50 rounded border"></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 items-center border-t pt-3">
+                        <button onclick="saveTeamsToCloud()" class="bg-green-700 text-white px-5 py-2 rounded font-bold text-sm hover:bg-green-800">☁️ Guardar equipos en la nube</button>
+                        <button onclick="resetTeamsToDefault()" class="bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600">↩ Restaurar equipos originales</button>
+                        <span id="teamsCloudStatus" class="text-xs text-gray-500"></span>
+                    </div>
+                </div>
+
                 <!-- REPORTE POR EQUIPO -->
                 <div class="mb-6 p-4 bg-white rounded border">
                     <div class="flex flex-wrap justify-between items-center mb-2 gap-2">
@@ -239,7 +272,7 @@
 
         const rosterA = ["ALBAN ALTAMIRANO, IVANNA FE", "ARTEAGA PLAZA, MARIA EMILIA", "BEJAR JIMENEZ, HELENA VICTO", "CADENA RUIZ, ABIGAIL", "CARDENAS ASTUDILLO, JUAN A", "CARRILLO PEREZ, MIGUEL ADRI", "CASTILLO RAMIREZ, MARCO AN", "CHONG QUI PEÑAFIEL, MARIA E", "DEL SALTO PALACIOS, MARIA D", "DIAZ VELIZ, EDUARDO ANTONIO", "ESTRADA VERA, ARIANA ISABEL", "FARFAN LEON, LUCIANA SOFIA", "FERNANDEZ GONZABAY, AMAN", "FIALLOS CONSTANTE, BRUNO", "GALEFSKI MERINO, ALANIS BE", "GARATE ANDRADE, MANUEL IS", "LEON HIDALGO, JORGE ENRIQ", "MEDINA GOMEZ, NICOLAS MAR", "MEDINA MOREJON, FABIANNA", "MOHR MOSCOL, LUCAS AGUST", "MONCADA TAPIA, PEDRO ARTU", "MONTIEL CEDEÑO, RUTH PAUL", "NAVIA ALCIVAR, MIGUEL IVAN", "SALAZAR CAMPUZANO, THELM", "VARGAS CARVAJAL, MATIAS A"];
         const rosterB = ["CARDENAS VASQUEZ, VALENTIN", "DARQUEA GUERRERO, ISABELLA", "DVORQUEZ SAMAN, EITAN", "ENCALADA ZAMBRANO, PATRIC", "FLORES SANCHEZ, VALENTINA", "GARCES CABEZAS, DOMENICA I", "GONZALEZ LOPEZ, ISABELLA A", "GONZALEZ VELASCO, ESTEFANIA", "HIDALGO DROUET, SAMANTHA A", "HOYOS ESPIN, AMANDA LIA", "LABRE GALARZA, RAFAELLA", "MOSCOSO MARTINEZ, ALICIA M", "MUECKAY SALVATIERRA, LUCA", "NAHT MUÑOZ, DOMENICA ANTO", "NARANJO OJEDA, MAIHA", "ORTIZ CABRERA, DYLAN ANTO", "RODRIGUEZ RUIZ, DANNA VALE", "SANTA CRUZ CERON, MATTIAS", "SOLORZANO REYES, SEBASTI", "TAPIA GARZON, ANDRES JESUS", "VALLEJO HERDOIZA, NICOLAS", "WENDT LANDIVAR, NATHALIE F", "ZAMBRANO MOREIRA, MARIA V", "ZAPATIER PEREZ, LEONARDO"];
-        const rosterC = ["ALAVA PONCE, ISABELLA EDITH", "ALVARADO CASTRO, RICARDO E", "BONILLA CHAVARRIA, JUAN DIE", "CELLERI RAMIREZ, FELIPE ALEJ", "CHACON REYES, BELEN ALEJAN", "CRUZ PINEDA, DOMENICA ALEJA", "DE LA CUADRA GARCES, EILEEN", "ENCALADA ZAMBRANO, SURI PO", "GARCIA VELEZ, GRACE VALENT", "GAVILANES MENDEZ, WILSON", "GILER CAÑARTE, LUCCIANA IS", "MARTINEZ VELASQUEZ, WLADI", "MORALES FLORES, EMILIO ALE", "OLIVEIRA YEPEZ, ELIANE ANN", "PALACIOS RECALDE, EDUARDO", "QUIMI CEDILLO, KRYSTELL LIS", "REINA SANCHEZ, NISHMA VALE", "RIVADENEIRA LUZARDO, AMAN", "RIVERA TINOCO, ALEXA MARIA", "TOLEDO CASTILLO, ROBERTO", "TRUJILLO HAILLARD, PEPO TIM", "VELEZ ZAMBRANO, SAMUEL EN", "VERA GILER, DARMIN MATIAS", "YCAZA MONTJOY, RICARDO XA"];
+        const rosterC = ["ALAVA PONCE, ISABELLA EDITH", "ALVARADO CASTRO, RICARDO E", "BONILLA CHAVARRIA, JUAN DIE", "CELLERI RAMIREZ, FELIPE ALEJ", "CHACON REYES, BELEN ALEJAN", "CRUZ PINEDA, DOMENICA ALEJA", "DE LA CUADRA GARCES, EILEEN", "ENCALADA ZAMBRANO, SURI PO", "GARCIA VELEZ, GRACE VALENT", "GAVILANES MENDEZ, WILSON", "GILER CAÑARTE, LUCCIANA IS", "MARTINEZ VELASQUEZ, WLADI", "MORALES FLORES, EMILIO ALE", "OLIVEIRA YEPEZ, ELIANE ANN", "PALACIOS RECALDE, EDUARDO", "QUIMI CEDILLO, KRYSTELL LIS", "REINA SANCHEZ, NISHMA VALE", "RIVADENEIRA LUZARDO, AMAN", "RIVERA TINOCO, ALEXA MARIA", "TOLEDO CASTILLO, ROBERTO", "VELEZ ZAMBRANO, SAMUEL EN", "VERA GILER, DARMIN MATIAS", "YCAZA MONTJOY, RICARDO XA"];
 
         const teamsA = [
             { id: 'A1', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["BEJAR JIMENEZ, HELENA VICTO", "CHONG QUI PEÑAFIEL, MARIA E", "VARGAS CARVAJAL, MATIAS A", "MEDINA MOREJON, FABIANNA"] },
@@ -259,7 +292,7 @@
         ];
         const teamsC = [
             { id: 'C1', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["REINA SANCHEZ, NISHMA VALE", "BONILLA CHAVARRIA, JUAN DIE", "QUIMI CEDILLO, KRYSTELL LIS", "GARCIA VELEZ, GRACE VALENT"] },
-            { id: 'C2', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["CHACON REYES, BELEN ALEJAN", "MARTINEZ VELASQUEZ, WLADI", "TRUJILLO HAILLARD, PEPO TIM", "VELEZ ZAMBRANO, SAMUEL EN"] },
+            { id: 'C2', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["CHACON REYES, BELEN ALEJAN", "MARTINEZ VELASQUEZ, WLADI", "VELEZ ZAMBRANO, SAMUEL EN"] },
             { id: 'C3', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["ALAVA PONCE, ISABELLA EDITH", "RIVADENEIRA LUZARDO, AMAN", "DE LA CUADRA GARCES, EILEEN", "CRUZ PINEDA, DOMENICA ALEJA"] },
             { id: 'C5', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["GILER CAÑARTE, LUCCIANA IS", "TOLEDO CASTILLO, ROBERTO", "ALVARADO CASTRO, RICARDO E", "ENCALADA ZAMBRANO, SURI PO"] },
             { id: 'C6', topic: 'Lapbook: Democracia Ayer y Hoy', members: ["GAVILANES MENDEZ, WILSON", "PALACIOS RECALDE, EDUARDO", "OLIVEIRA YEPEZ, ELIANE ANN", "RIVERA TINOCO, ALEXA MARIA"] },
@@ -286,7 +319,7 @@
             "SANTA CRUZ CERON, MATTIAS": "SANTA CRUZ MATTIAS",
             "BONILLA CHAVARRIA, JUAN DIE": "BONILLA JUAN DIEGO",
             "MARTINEZ VELASQUEZ, WLADI": "MARTINEZ WLADIMIR",
-            "TRUJILLO HAILLARD, PEPO TIM": "TRUJILLO TIMOTHEÉ",
+            "SALAZAR CAMPUZANO, THELM": "SALAZAR THELMO",
             "RIVADENEIRA LUZARDO, AMAN": "RIVADENEIRA AMANDA"
         };
 
@@ -311,8 +344,132 @@
             setTimeout(() => { t.style.opacity = 0; }, 3000);
         }
 
-        function getData() { return paralelos[currentParalelo]; }
+        // --- GESTIÓN DE EQUIPOS (Panel Docente, parametrizable, en la nube) ---
+        const DEFAULT_TEAMS = {
+            "1BGU A": JSON.parse(JSON.stringify(teamsA)),
+            "1BGU B": JSON.parse(JSON.stringify(teamsB)),
+            "1BGU C": JSON.parse(JSON.stringify(teamsC))
+        };
+
+        function editorData() { return paralelos[currentParalelo].teams; }
+
+        function editorGenerateTeams() {
+            const n = parseInt(document.getElementById('numTeams').value, 10) || 0;
+            const max = parseInt(document.getElementById('numMembers').value, 10) || 0;
+            if (n <= 0 || max <= 0) { alert("Ingrese un número válido de equipos e integrantes."); return; }
+            const prev = editorData();
+            const ts = Date.now();
+            const out = [];
+            for (let i = 0; i < n; i++) {
+                const id = currentParalelo.slice(-1) + (i + 1);
+                let topic = 'Lapbook: Democracia Ayer y Hoy';
+                let members = [];
+                if (prev[i]) { if (prev[i].topic) topic = prev[i].topic; if (prev[i].members) members = prev[i].members; }
+                out.push({ id: id, topic: topic, members: members });
+            }
+            out.forEach(t => { t.maxMembers = max; });
+            paralelos[currentParalelo].teams = out;
+            renderTeamEditor();
+            showToast('Estructura de ' + n + ' equipos generada (aún no se guarda en la nube).');
+        }
+
+        function editorRandomAssign() {
+            const teams = editorData();
+            if (teams.length === 0) { alert("Primero presione 'Generar Estructura'."); return; }
+            const max = teams[0].maxMembers || 4;
+            teams.forEach(t => { t.members = []; });
+            const shuffled = [...paralelos[currentParalelo].roster];
+            for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; }
+            let idx = 0;
+            shuffled.forEach(s => {
+                let placed = false, tries = 0;
+                while (!placed && tries < teams.length) {
+                    if (teams[idx].members.length < max) { teams[idx].members.push(s); placed = true; }
+                    idx = (idx + 1) % teams.length; tries++;
+                }
+                if (!placed) teams[0].members.push(s);
+            });
+            renderTeamEditor();
+            showToast('🎲 Asignación aleatoria aplicada (aún no se guarda en la nube).');
+        }
+
+        function editorRemoveFromTeam(encName, teamIndex) {
+            const name = decodeURIComponent(encName);
+            const teams = editorData();
+            teams[teamIndex].members = teams[teamIndex].members.filter(m => m !== name);
+            renderTeamEditor();
+        }
+        function editorAssignToTeam(encName, teamIndex) {
+            const name = decodeURIComponent(encName);
+            const teams = editorData();
+            teams.forEach(t => { t.members = t.members.filter(m => m !== name); });
+            if (teamIndex >= 0) teams[teamIndex].members.push(name);
+            renderTeamEditor();
+        }
+
+        function renderTeamEditor() {
+            const teams = editorData();
+            const roster = paralelos[currentParalelo].roster;
+            const unassigned = roster.filter(s => !teams.some(t => t.members.includes(s)));
+            document.getElementById('unassignedCount').textContent = unassigned.length;
+            document.getElementById('unassignedList').innerHTML = unassigned.map(name => {
+                const enc = encodeURIComponent(name);
+                return '<div class="student-tile p-2 border rounded bg-white shadow-sm flex flex-col items-center gap-1 text-center">' +
+                    '<span class="text-[11px] font-medium text-gray-800">' + shortName(name) + '</span>' +
+                    '<select onchange="editorAssignToTeam(\'' + enc + '\', this.value)" class="w-full text-[10px] border rounded p-0.5 bg-blue-50 cursor-pointer">' +
+                    '<option value="-1">Asignar a equipo...</option>' +
+                    teams.map((t, i) => '<option value="' + i + '">→ Equipo ' + (i + 1) + '</option>').join('') +
+                    '</select></div>';
+            }).join('') || '<p class="text-gray-400 text-xs col-span-2">Todos asignados.</p>';
+            document.getElementById('teamBuilder').innerHTML = teams.map((team, i) => {
+                const max = team.maxMembers || 4;
+                return '<div class="p-2 border-2 ' + (team.members.length > 0 ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-gray-50') + ' rounded-lg flex flex-col">' +
+                    '<div class="flex justify-between items-center mb-1"><span class="text-xs font-bold text-gray-700">Equipo ' + (i + 1) + '</span>' +
+                    '<span class="text-[10px] ' + (team.members.length >= max ? 'text-red-500 font-bold' : 'text-gray-500') + '">' + team.members.length + '/' + max + '</span></div>' +
+                    '<input type="text" value="' + team.topic + '" onchange="editorData()[' + i + '].topic = this.value" class="w-full px-1 py-0.5 border rounded text-[10px] font-medium mb-2" placeholder="Tema...">' +
+                    '<div class="space-y-1 flex-grow">' +
+                    (team.members.length > 0 ? team.members.map(m => {
+                        const encM = encodeURIComponent(m);
+                        return '<div class="p-1 bg-white rounded border flex justify-between items-center shadow-sm"><span class="text-[10px] truncate flex-1 mr-1">' + shortName(m) + '</span>' +
+                            '<button onclick="editorRemoveFromTeam(\'' + encM + '\', ' + i + ')" class="text-red-500 font-bold text-xs px-1 hover:bg-red-100 rounded">✕</button></div>';
+                    }).join('') : '<span class="text-[10px] text-gray-400 italic">Vacío</span>') +
+                    '</div></div>';
+            }).join('') || '<p class="text-gray-400 text-xs col-span-3">Genere la estructura.</p>';
+        }
+
+        async function saveTeamsToCloud() {
+            try {
+                if (!db) throw new Error("Sin conexión a la nube.");
+                const payload = { teams: editorData() };
+                await db.ref('teams_ada3_lapbook/' + currentParalelo).set(payload);
+                document.getElementById('teamsCloudStatus').textContent = '✅ Guardado en la nube el ' + new Date().toLocaleTimeString('es-EC');
+                showToast('Equipos de ' + currentParalelo + ' guardados en la nube.');
+            } catch (e) { alert('Error al guardar equipos: ' + e.message); }
+        }
+
+        async function resetTeamsToDefault() {
+            if (!confirm('¿Restaurar los equipos originales de ' + currentParalelo + '? (los equipos actuales en edición se descartan)')) return;
+            const def = DEFAULT_TEAMS[currentParalelo] || [];
+            paralelos[currentParalelo].teams = JSON.parse(JSON.stringify(def)).map(t => { t.maxMembers = 4; return t; });
+            renderTeamEditor();
+            showToast('Equipos restaurados a los originales (presione Guardar en la nube para aplicarlos).');
+        }
+
+        async function loadTeamsFromCloud() {
+            if (!db) return;
+            const snap = await db.ref('teams_ada3_lapbook/' + currentParalelo).once('value');
+            const data = snap.val();
+            if (data && Array.isArray(data.teams) && data.teams.length > 0) {
+                paralelos[currentParalelo].teams = data.teams.map(t => {
+                    if (!Array.isArray(t.members)) t.members = [];
+                    if (typeof t.maxMembers !== 'number') t.maxMembers = 4;
+                    return t;
+                });
+            }
+            if (document.getElementById('teacher-panel') && !document.getElementById('teacher-panel').classList.contains('hidden')) renderTeamEditor();
+        }
         function safeKey(str) { return str ? str.replace(/[.#$/\[\]]/g, '').replace(/[^a-zA-Z0-9]/g, '_') : ''; }
+        function getData() { return paralelos[currentParalelo]; }
 
         window.onload = function() {
             renderEvaluators();
@@ -329,6 +486,27 @@
                     renderLiveGrades();
                     renderEvalLogList();
                     updateStats();
+                });
+                // Sincronización en vivo de equipos: cambios del docente llegan al instante a todos
+                db.ref('teams_ada3_lapbook').on('value', snap => {
+                    const all = snap.val() || {};
+                    Object.keys(paralelos).forEach(p => {
+                        const d = all[p];
+                        if (d && Array.isArray(d.teams) && d.teams.length > 0) {
+                            paralelos[p].teams = d.teams.map(t => {
+                                if (!Array.isArray(t.members)) t.members = [];
+                                if (typeof t.maxMembers !== 'number') t.maxMembers = 4;
+                                return t;
+                            });
+                        } else {
+                            paralelos[p].teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS[p] || []));
+                        }
+                    });
+                    // refrescar vistas dependientes de equipos
+                    populateTeamDropdown();
+                    renderLiveGrades();
+                    const panel = document.getElementById('teacher-panel');
+                    if (panel && !panel.classList.contains('hidden')) renderTeamEditor();
                 });
             }
         };
@@ -351,7 +529,7 @@
             if (document.getElementById('passwordInput').value === 'docente2026') {
                 document.getElementById('teacher-panel').classList.remove('hidden');
                 document.getElementById('statsBar').classList.remove('hidden');
-                renderLiveGrades(); renderEvalLogList(); updateStats();
+                renderLiveGrades(); renderEvalLogList(); updateStats(); renderTeamEditor();
             } else { alert('Contraseña incorrecta.'); }
         }
 
@@ -382,6 +560,8 @@
             document.getElementById('evaluator').value = "";
             renderEvaluators(); handleEvaluatorChange();
             renderLiveGrades(); renderEvalLogList(); updateStats();
+            const panel = document.getElementById('teacher-panel');
+            if (panel && !panel.classList.contains('hidden')) renderTeamEditor();
         }
         function changeStudentParalelo() {
             currentParalelo = document.getElementById('studentParaleloSelect').value;
