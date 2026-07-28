@@ -752,15 +752,15 @@
 
         // --- RETROALIMENTACIÓN AUTOMÁTICA (basada en los criterios de menor calificación) ---
         const CRIT_FEEDBACK = {
-            c1: { name: "C1 Conocimiento del tema", max: 3, tip: "repasar el origen grecorromano de la democracia y su evolución en el Ecuador, empleando terminología histórica y cívica precisa" },
-            c2: { name: "C2 Fluidez y lenguaje", max: 3, tip: "practicar la exposición oral sin leer, cuidando un lenguaje claro, preciso y apropiado" },
-            c3: { name: "C3 Análisis del material", max: 3, tip: "profundizar el análisis de las secciones del lapbook y la relación pasado-presente, sustentando una postura propia con una propuesta ciudadana" },
-            c4: { name: "C4 Voz y presentación", max: 1, tip: "mejorar el volumen y la claridad de la voz, y cuidar la correcta presentación del uniforme" }
+            c1: { name: "C1", aspecto: "el conocimiento del tema", max: 3, tip: "repasar el origen grecorromano de la democracia y su evolución en el Ecuador, cuidando el uso de terminología histórica y cívica precisa" },
+            c2: { name: "C2", aspecto: "la fluidez y el lenguaje", max: 3, tip: "practicar la exposición oral sin leer, con un lenguaje claro, preciso y apropiado" },
+            c3: { name: "C3", aspecto: "el análisis del material", max: 3, tip: "profundizar el análisis de las secciones del lapbook y la relación entre pasado y presente, sustentando una postura propia con una propuesta ciudadana" },
+            c4: { name: "C4", aspecto: "la voz y la presentación personal", max: 1, tip: "proyectar la voz con mayor volumen y claridad, y cuidar la correcta presentación del uniforme" }
         };
 
         function buildFeedback(v1, v2, v3, v4, finalAvg) {
             const vals = { c1: v1, c2: v2, c3: v3, c4: v4 };
-            if (Object.values(vals).some(v => v === null || v === undefined || isNaN(v))) return "—";
+            if (Object.values(vals).some(v => v === null || v === undefined || isNaN(v))) return "Sin datos suficientes.";
             // Criterio "bajo": en C1-C3 equivale a 2, 1 o 0 (promedio < 2.5); en C4 a 0.5 o 0 (promedio < 0.75)
             const lows = [];
             Object.keys(CRIT_FEEDBACK).forEach(k => {
@@ -778,18 +778,24 @@
                         if (r < minR) { minR = r; minK = k; }
                     });
                     const c = CRIT_FEEDBACK[minK];
-                    return "⚠️ Nota bajo 7/10 — Reforzar: " + c.name + " — debe " + c.tip + ".";
+                    return "Su promedio quedó por debajo de siete sobre diez, aunque ningún criterio resultó especialmente bajo. Para su próxima exposición le sugerimos " + c.tip + ". Con un poco más de preparación alcanzará el nivel que buscamos.";
                 }
-                return "✅ Excelente desempeño en todos los criterios. Mantener el nivel demostrado.";
+                return "Felicitaciones por su desempeño: sus compañeros valoraron muy bien todos los aspectos de la exposición. Le animamos a mantener ese mismo nivel de preparación y compromiso.";
             }
-            const minRatio = Math.min(...lows.map(l => l.ratio));
-            const parts = lows.map(l => {
+            // Ordenar del criterio más débil (en términos relativos) al menos débil
+            lows.sort((a, b) => a.ratio - b.ratio);
+            const frases = lows.map((l, idx) => {
                 const c = CRIT_FEEDBACK[l.key];
-                const flag = l.ratio === minRatio ? "⚠️ " : "";
-                const verb = l.severe ? "Prioritario: " : "Reforzar: ";
-                return flag + verb + c.name + " — debe " + c.tip + ".";
+                if (idx === 0) {
+                    return l.severe
+                        ? "Su principal oportunidad de mejora está en " + c.aspecto + ", por lo que necesita con urgencia " + c.tip
+                        : "Su principal oportunidad de mejora está en " + c.aspecto + ", por lo que le sugerimos " + c.tip;
+                }
+                return l.severe
+                    ? "También es muy importante que se dedique a " + c.tip
+                    : "Además, le vendría bien " + c.tip;
             });
-            return parts.join(" ");
+            return frases.join(". ") + ". Confiamos en que con práctica y constancia lo logrará.";
         }
 
         function renderLiveGrades() {
@@ -811,8 +817,8 @@
                 const finalR = aF !== null ? Math.round(aF) : null;
                 let color = "text-gray-400";
                 if (finalR !== null) color = finalR >= 7 ? "score-green" : (finalR >= 6 ? "score-blue" : "score-red");
-                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF) : "—";
-                const fbClass = fb.startsWith("✅") ? "text-green-700" : (fb.includes("Prioritario") ? "text-red-700" : "text-amber-700");
+                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4, aF) : "Aún sin coevaluaciones.";
+                const fbClass = n === 0 ? "text-gray-400" : (fb.startsWith("Felicitaciones") ? "text-green-700" : (fb.includes("con urgencia") || fb.includes("muy importante") ? "text-red-700" : "text-amber-700"));
                 return '<tr>' +
                     '<td class="border p-2 text-xs">' + shortName(student) + '</td>' +
                     '<td class="border p-2 text-xs">' + teamLabel + '</td>' +
