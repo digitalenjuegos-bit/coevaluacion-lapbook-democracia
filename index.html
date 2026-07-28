@@ -154,10 +154,11 @@
                                     <th class="border p-2 text-center">C3</th>
                                     <th class="border p-2 text-center">C4</th>
                                     <th class="border p-2 text-center">Nota Promedio /10</th>
+                                    <th class="border p-2 text-left" style="min-width:260px">Retroalimentación (criterios más bajos)</th>
                                 </tr>
                             </thead>
                             <tbody id="liveGradesBody">
-                                <tr><td colspan="8" class="border p-2 text-center text-gray-400">Conectando a la nube...</td></tr>
+                                <tr><td colspan="9" class="border p-2 text-center text-gray-400">Conectando a la nube...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -749,12 +750,41 @@
         // --- PANEL DOCENTE: REPORTES ---
         function avg(arr) { return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null; }
 
+        // --- RETROALIMENTACIÓN AUTOMÁTICA (basada en los criterios de menor calificación) ---
+        const CRIT_FEEDBACK = {
+            c1: { name: "C1 Conocimiento del tema", max: 3, tip: "repasar el origen grecorromano de la democracia y su evolución en el Ecuador, empleando terminología histórica y cívica precisa" },
+            c2: { name: "C2 Fluidez y lenguaje", max: 3, tip: "practicar la exposición oral sin leer, cuidando un lenguaje claro, preciso y apropiado" },
+            c3: { name: "C3 Análisis del material", max: 3, tip: "profundizar el análisis de las secciones del lapbook y la relación pasado-presente, sustentando una postura propia con una propuesta ciudadana" },
+            c4: { name: "C4 Voz y presentación", max: 1, tip: "mejorar el volumen y la claridad de la voz, y cuidar la correcta presentación del uniforme" }
+        };
+
+        function buildFeedback(v1, v2, v3, v4) {
+            const vals = { c1: v1, c2: v2, c3: v3, c4: v4 };
+            if (Object.values(vals).some(v => v === null || v === undefined || isNaN(v))) return "—";
+            // Criterio "bajo": en C1-C3 equivale a 2, 1 o 0 (promedio < 2.5); en C4 a 0.5 o 0 (promedio < 0.75)
+            const lows = [];
+            Object.keys(CRIT_FEEDBACK).forEach(k => {
+                const c = CRIT_FEEDBACK[k];
+                const threshold = c.max === 3 ? 2.5 : 0.75;
+                if (vals[k] < threshold) lows.push({ key: k, ratio: vals[k] / c.max, severe: c.max === 3 ? vals[k] < 1.5 : vals[k] < 0.25 });
+            });
+            if (lows.length === 0) return "✅ Excelente desempeño en todos los criterios. Mantener el nivel demostrado.";
+            const minRatio = Math.min(...lows.map(l => l.ratio));
+            const parts = lows.map(l => {
+                const c = CRIT_FEEDBACK[l.key];
+                const flag = l.ratio === minRatio ? "⚠️ " : "";
+                const verb = l.severe ? "Prioritario: " : "Reforzar: ";
+                return flag + verb + c.name + " — debe " + c.tip + ".";
+            });
+            return parts.join(" ");
+        }
+
         function renderLiveGrades() {
             const tbody = document.getElementById('liveGradesBody');
             if (!tbody) return;
             const logs = paraleloLogs();
             const data = getData();
-            if (data.roster.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="border p-2 text-center text-gray-400">Sin estudiantes.</td></tr>'; return; }
+            if (data.roster.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="border p-2 text-center text-gray-400">Sin estudiantes.</td></tr>'; return; }
             tbody.innerHTML = data.roster.map(student => {
                 const sLogs = logs.filter(l => l.evaluated === student);
                 const n = sLogs.length;
@@ -768,6 +798,8 @@
                 const finalR = aF !== null ? Math.round(aF) : null;
                 let color = "text-gray-400";
                 if (finalR !== null) color = finalR >= 7 ? "score-green" : (finalR >= 6 ? "score-blue" : "score-red");
+                const fb = n > 0 ? buildFeedback(a1, a2, a3, a4) : "—";
+                const fbClass = fb.startsWith("✅") ? "text-green-700" : (fb.includes("Prioritario") ? "text-red-700" : "text-amber-700");
                 return '<tr>' +
                     '<td class="border p-2 text-xs">' + shortName(student) + '</td>' +
                     '<td class="border p-2 text-xs">' + teamLabel + '</td>' +
@@ -776,7 +808,8 @@
                     '<td class="border p-2 text-center text-xs">' + (a2 !== null ? a2.toFixed(1) : '—') + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + (a3 !== null ? a3.toFixed(1) : '—') + '</td>' +
                     '<td class="border p-2 text-center text-xs">' + (a4 !== null ? a4.toFixed(1) : '—') + '</td>' +
-                    '<td class="border p-2 text-center text-sm ' + color + '">' + (finalR !== null ? finalR : 'Pendiente') + '</td></tr>';
+                    '<td class="border p-2 text-center text-sm ' + color + '">' + (finalR !== null ? finalR : 'Pendiente') + '</td>' +
+                    '<td class="border p-2 text-[11px] leading-snug ' + fbClass + '">' + fb + '</td></tr>';
             }).join('');
         }
 
@@ -823,11 +856,13 @@
         function exportToCSV() {
             try {
                 if (allLogs.length === 0) { alert("⚠️ No hay coevaluaciones registradas para exportar."); return; }
-                let csv = "Paralelo,Evaluador,Equipo del Evaluador,Estudiante Evaluado,Equipo Evaluado,C1 Conocimiento (3),C2 Fluidez (3),C3 Analisis (3),C4 Voz y Uniforme (1),Nota Final /10,Fecha\n";
+                let csv = "Paralelo,Evaluador,Equipo del Evaluador,Estudiante Evaluado,Equipo Evaluado,C1 Conocimiento (3),C2 Fluidez (3),C3 Analisis (3),C4 Voz y Uniforme (1),Nota Final /10,Retroalimentacion,Fecha\n";
                 allLogs.forEach(e => {
                     csv += ['"' + (e.paralelo || "") + '"', '"' + shortName(e.evaluator) + '"', '"' + (e.evaluatorTeam || "") + '"',
                         '"' + shortName(e.evaluated) + '"', '"' + (e.teamLabel || "") + '"',
-                        e.c1, e.c2, e.c3, e.c4, e.finalScore, '"' + (e.timestamp || "") + '"'].join(",") + "\n";
+                        e.c1, e.c2, e.c3, e.c4, e.finalScore,
+                        '"' + buildFeedback(parseFloat(e.c1), parseFloat(e.c2), parseFloat(e.c3), parseFloat(e.c4)).replace(/"/g, "'") + '"',
+                        '"' + (e.timestamp || "") + '"'].join(",") + "\n";
                 });
                 const uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent('\ufeff' + csv);
                 const link = document.createElement("a");
