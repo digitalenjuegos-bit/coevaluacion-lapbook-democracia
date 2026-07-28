@@ -357,7 +357,7 @@
         function editorGenerateTeams() {
             const n = parseInt(document.getElementById('numTeams').value, 10) || 0;
             const max = parseInt(document.getElementById('numMembers').value, 10) || 0;
-            if (n <= 0 || max <= 0) { alert("Ingrese un número válido de equipos e integrantes."); return; }
+            if (n <= 0 || max <= 0) { showToast("Ingrese un número válido de equipos e integrantes."); return; }
             const prev = editorData();
             const ts = Date.now();
             const out = [];
@@ -376,7 +376,7 @@
 
         function editorRandomAssign() {
             const teams = editorData();
-            if (teams.length === 0) { alert("Primero presione 'Generar Estructura'."); return; }
+            if (teams.length === 0) { showToast("Primero presione 'Generar Estructura'."); return; }
             const max = teams[0].maxMembers || 4;
             teams.forEach(t => { t.members = []; });
             const shuffled = [...paralelos[currentParalelo].roster];
@@ -445,7 +445,7 @@
                 await db.ref('teams_ada3_lapbook/' + currentParalelo).set(payload);
                 document.getElementById('teamsCloudStatus').textContent = '✅ Guardado en la nube el ' + new Date().toLocaleTimeString('es-EC');
                 showToast('Equipos de ' + currentParalelo + ' guardados en la nube.');
-            } catch (e) { alert('Error al guardar equipos: ' + e.message); }
+            } catch (e) { showToast('Error al guardar equipos: ' + e.message); }
         }
 
         // Confirmación en dos pasos sin window.confirm (bloqueado en iframes de Moodle).
@@ -552,15 +552,15 @@
                 document.getElementById('teacher-panel').classList.remove('hidden');
                 document.getElementById('statsBar').classList.remove('hidden');
                 renderLiveGrades(); renderEvalLogList(); updateStats(); renderTeamEditor();
-            } else { alert('Contraseña incorrecta.'); }
+            } else { showToast('Contraseña incorrecta.'); }
         }
 
         async function toggleEvaluations() {
-            if (!db) { alert("Sin conexión a la nube."); return; }
+            if (!db) { showToast("Sin conexión a la nube."); return; }
             try {
                 await db.ref(LOCK_NODE).set(!evaluationsActive);
                 showToast(!evaluationsActive ? "✅ Evaluaciones Activadas (todos los dispositivos)" : "🛑 Evaluaciones Cerradas (todos los dispositivos)");
-            } catch(e) { alert("Error: " + e.message); }
+            } catch(e) { showToast("Error: " + e.message); }
         }
 
         function updateToggleBtn() {
@@ -712,13 +712,13 @@
             const member = decodeURIComponent(encMember);
             const sid = safeKey(member);
             try {
-                if (!evaluationsActive) { alert("🔒 El tiempo para registrar coevaluaciones ha finalizado."); return; }
+                if (!evaluationsActive) { showToast("🔒 El tiempo para registrar coevaluaciones ha finalizado."); return; }
                 const evaluator = document.getElementById('evaluator').value;
-                if (!evaluator) { alert("Primero selecciona tu nombre en el recuadro amarillo 'Evaluador'."); return; }
-                if (evaluator === member) { alert("No puedes evaluarte a ti mismo."); return; }
+                if (!evaluator) { showToast("Primero selecciona tu nombre en el recuadro amarillo 'Evaluador'."); return; }
+                if (evaluator === member) { showToast("No puedes evaluarte a ti mismo."); return; }
                 const team = getData().teams[teamIndex];
                 const myTeam = findMyTeam(evaluator);
-                if (myTeam && myTeam.id === team.id) { alert("No puedes evaluar a tu propio equipo."); return; }
+                if (myTeam && myTeam.id === team.id) { showToast("No puedes evaluar a tu propio equipo."); return; }
 
                 const scores = {}; const missing = [];
                 let rawScore = 0;
@@ -728,7 +728,7 @@
                     else { scores[c.key] = parseFloat(v); rawScore += parseFloat(v); }
                 });
                 if (missing.length > 0) {
-                    alert("⚠️ Faltan niveles por seleccionar para " + shortName(member) + ":\n\n• " + missing.join("\n• ") + "\n\nElige Excelente, Bueno o Limitado en cada criterio antes de guardar.");
+                    showToast("⚠️ Faltan niveles para " + shortName(member) + ": " + missing.join(", ") + ". Elige un nivel en cada criterio.");
                     return;
                 }
                 const finalScore = Math.round(rawScore);
@@ -755,7 +755,7 @@
                 if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "✓ Guardada (puedes corregirla)"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); saveBtn.classList.replace("bg-green-600", "bg-blue-600"); }
             } catch (e) {
                 console.error("Error guardando en Firebase:", e);
-                alert("❌ Error al guardar en la nube: " + e.message);
+                showToast("❌ Error al guardar en la nube: " + e.message);
                 const saveBtn = document.getElementById('saveBtn-' + sid);
                 if (saveBtn) { saveBtn.disabled = false; saveBtn.innerText = "Guardar Nota"; saveBtn.classList.remove("opacity-50", "cursor-not-allowed"); }
             }
@@ -923,7 +923,7 @@
 
         function exportToCSV() {
             try {
-                if (allLogs.length === 0) { alert("⚠️ No hay coevaluaciones registradas para exportar."); return; }
+                if (allLogs.length === 0) { showToast("⚠️ No hay coevaluaciones registradas para exportar."); return; }
                 let csv = "Paralelo,Evaluador,Equipo del Evaluador,Estudiante Evaluado,Equipo Evaluado,C1 Conocimiento (3),C2 Fluidez (3),C3 Analisis (3),C4 Voz y Uniforme (1),Nota Final /10,Retroalimentacion,Fecha\n";
                 allLogs.forEach(e => {
                     csv += ['"' + (e.paralelo || "") + '"', '"' + shortName(e.evaluator) + '"', '"' + (e.evaluatorTeam || "") + '"',
@@ -938,7 +938,7 @@
                 link.setAttribute("download", "Reporte_Coevaluacion_Lapbook_ADA3.csv");
                 document.body.appendChild(link); link.click(); document.body.removeChild(link);
                 showToast("✅ Reporte CSV descargado.");
-            } catch (err) { console.error(err); alert("Error al generar CSV: " + err.message); }
+            } catch (err) { console.error(err); showToast("Error al generar CSV: " + err.message); }
         }
     </script>
 </body>
