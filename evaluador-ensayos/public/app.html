@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluador de Ensayos Argumentativos</title>
+  <!-- Especificación operativa del motor: docs/hermes-evaluador-argumentos-spec.md -->
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #059669;
+      --accent-bg: #ecfdf5;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    .header {
+      background: linear-gradient(135deg, #0f172a, #064e3b);
+      color: white;
+      padding: 24px 0;
+    }
+    .header h1 { margin: 0; font-size: 26px; font-weight: 700; }
+    .header p { margin: 8px 0 0; opacity: 0.85; font-size: 14px; line-height: 1.5; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+    .step {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .step .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .rubric-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      background: #fafafa;
+    }
+    .rubric-item h4 { margin: 6px 0 8px; font-size: 14px; }
+    select, button, input[type="text"] {
+      font: inherit;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .drop {
+      border: 2px dashed var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+    }
+    .drop.over {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .drop input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      font-size: 999px;
+    }
+    .toast {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: #0f172a;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity .2s, transform .2s;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .results { margin-top: 14px; }
+    .results table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      overflow: auto;
+      display: block;
+    }
+    .results th, .results td {
+      text-align: left;
+      padding: 10px;
+      border: 1px solid var(--border);
+    }
+    .results thead { background: #f8fafc; }
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pill-success { background: var(--accent-bg); color: #065f46; }
+    .file-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+    .file-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+    .rubric-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .rubric-title { font-weight: 700; }
+    .rubric-sub { color: var(--muted); font-size: 13px; }
+    .rubric-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+    .stack { display: flex; flex-direction: column; gap: 10px; }
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .muted { color: var(--muted); font-size: 12px; }
+    .score-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+    .score-chip {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px;
+      background: #fafafa;
+      font-size: 12px;
+    }
+    .score-chip strong { display: block; font-size: 16px; color: var(--text); }
+    .empty-state { padding: 12px; color: var(--muted); font-size: 13px; }
+    .history-chip {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="container">
+      <h1>Evaluador de Ensayos Argumentativos</h1>
+      <p>Sube ensayos DOCX/PDF/TXT, evalúalos con una rúbrica y guarda la retroalimentación por curso.</p>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="step">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="badge">1</span>
+        <strong>Configura el contexto del curso</strong>
+      </div>
+      <p style="margin:0;color:var(--muted);font-size:13px">El curso ajusta la rúbrica y organiza los resultados, pero no bloquea la evaluación.</p>
+    </section>
+    <section class="step">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="badge">2</span>
+        <strong>Evalúa ensayos y revisa el resultado</strong>
+      </div>
+      <p style="margin:0;color:var(--muted);font-size:13px">Usa el botón principal o genera ensayos ficticios para revisar el rigor de la rúbrica.</p>
+    </section>
+    <section class="step">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="badge">3</span>
+        <strong>Guarda y explota los resultados</strong>
+      </div>
+      <p style="margin:0;color:var(--muted);font-size:13px">Se guardan por curso y puedes revisarlos después desde el panel derecho.</p>
+    </section>
+
+    <div class="card">
+      <div class="rubric-header">
+        <div>
+          <div class="rubric-title" id="rubricTitle">Rúbrica de evaluación</div>
+          <div class="rubric-sub" id="rubricSub">Selecciona un curso para cargar la rúbrica correspondiente.</div>
+        </div>
+        <div class="rubric-meta">
+          <span class="pill" id="rubricCriteriaCount" style="padding:6px 10px;border:1px solid var(--border);border-radius:12px;font-size:12px;font-weight:400">0 criterios</span>
+          <span class="pill pill-success" id="rubricMaxScore" style="padding:6px 10px;border-radius:12px;font-size:12px">Máx. 0 pts</span>
+        </div>
+      </div>
+      <div class="rubric-grid" id="rubricGrid" style="margin-top:14px"></div>
+    </div>
+
+    <div class="card">
+      <div class="layout">
+        <section class="stack">
+          <label class="section-title" for="teacher">Docente</label>
+          <select id="teacher">
+            <option value="alberto">Mr. Alberto Ottati R. (1BGU)</option>
+            <option value="gunther">Mr. Gunther Vera (3BGU)</option>
+          </select>
+          <div id="teacherCourses" class="muted"></div>
+
+          <div style="display:flex;align-items:center;gap:8px">
+            <label class="section-title" for="course" style="margin-bottom:0">Contexto del curso</label>
+            <span id="courseChip" class="pill pill-success">Sin curso</span>
+          </div>
+          <select id="course" style="font-size:13px">
+            <option value="">Sin curso específico</option>
+            <option value="1bgu">1BGU Historia y Ciudadanía</option>
+            <option value="3bgu">3BGU Historia y Ciudadanía</option>
+          </select>
+
+          <label class="section-title" for="pickFileBtn">Ensayos</label>
+          <div class="drop" id="dropzone">
+            <div style="font-weight:700">Arrastra los ensayos aquí</div>
+            <div style="color:var(--muted);font-size:13px;margin-top:6px">o usá el botón para elegir archivos</div>
+            <input type="file" id="fileInput" multiple accept=".docx,.doc,.pdf,.txt,.md,.csv" style="position:absolute;inset:0;opacity:0;cursor:pointer;font-size:999px" />
+          </div>
+          <button class="ghost" id="pickFileBtn" style="margin-top:8px">Elegir archivos</button>
+          <div id="fileList" style="margin-top:10px"></div>
+          <div class="file-actions">
+            <button class="ghost" id="clearBtn" disabled>Vaciar</button>
+            <button class="ghost" id="downloadBtn" disabled>Descargar todos (ZIP)</button>
+            <button id="evalBtn" disabled>Evaluar</button>
+            <button class="ghost" id="saveResultsBtn" disabled>Guardar resultados</button>
+            <button class="ghost" id="loadResultsBtn" disabled>Cargar resultados guardados</button>
+            <button class="ghost" id="exportPdfBtn" disabled>Exportar informe PDF</button>
+            <button class="ghost" id="exportCsvBtn" disabled>Exportar CSV</button>
+          </div>
+          <button class="ghost" id="generateRandomBtn" style="margin-top:8px">Generar ensayos ficticios aleatorios</button>
+        </section>
+
+        <section class="stack">
+          <label class="section-title">Resultados del curso</label>
+          <div class="student-list" id="courseResults" style="margin-top:0;min-height:60px">
+            <div class="empty-state">Sin resultados guardados para este curso.</div>
+          </div>
+
+          <label class="section-title" style="margin-top:10px">Revisión de rigurosidad</label>
+          <div id="calibrationPanel" style="margin-top:0">
+            <div class="score-grid">
+              <div class="score-chip"><strong>2/10</strong><div>Insuficiente</div></div>
+              <div class="score-chip"><strong>5/10</strong><div>En desarrollo</div></div>
+              <div class="score-chip"><strong>7/10</strong><div>Satisfactorio</div></div>
+              <div class="score-chip"><strong>8/10</strong><div>Satisfactorio alto</div></div>
+              <div class="score-chip"><strong>10/10</strong><div>Sobresaliente</div></div>
+              <div class="score-chip"><strong>Aleatorio</strong><div>Validación aleatoria</div></div>
+            </div>
+            <button class="ghost" id="calibrateBtn" style="margin-top:10px" disabled>Calibrar rúbrica con estos niveles</button>
+          </div>
+        </section>
+      </div>
+      <section class="results" id="results"></section>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const state = {
+      course: '',
+      teacher: 'alberto',
+      files: [],
+      evaluations: [],
+      rubric: null,
+      savedResults: {},
+      evaluationStack: [],
+      lastEvaluationHash: '',
+    };
+
+    const COURSES = {
+      '1bgu': { label: '1BGU Historia y Ciudadanía', teacher: 'alberto', key: '1bgu-a', alias: ['1bgu-a', '1bgu-b', '1bgu-c', '1a'] },
+      '3bgu': { label: '3BGU Historia y Ciudadanía', teacher: 'gunther', key: '3bgu-a', alias: ['3bgu-a', '3bgu-b', '3bgu-c', '3a'] },
+      '3bgu-a': { label: '3A Historia y Ciudadanía', teacher: 'gunther', key: '3bgu-a', alias: ['3a-hist-a', '3a'] },
+      '3bgu-b': { label: '3B Historia y Ciudadanía', teacher: 'gunther', key: '3bgu-b', alias: ['3b-hist-b', '3b'] },
+      '3bgu-c': { label: '3C Historia y Ciudadanía', teacher: 'gunther', key: '3bgu-c', alias: ['3c-hist-c', '3c'] },
+      '1bgu-a': { label: '1BGU Historia y Ciudadanía A', teacher: 'alberto', key: '1bgu-a', alias: ['1a'] },
+      '1bgu-b': { label: '1BGU Historia y Ciudadanía B', teacher: 'alberto', key: '1bgu-b', alias: ['1b'] },
+      '1bgu-c': { label: '1BGU Historia y Ciudadanía C', teacher: 'alberto', key: '1bgu-c', alias: ['1c'] },
+    };
+
+    function hashEvaluations(evals) {
+      return evals.map((e) => `${e.id}::${e.score}::${(e.criteria || []).map((c) => `${c.id}=${c.puntaje}`).join('|')}`).join('||');
+    }
+
+    function resolveCourseKey(course) {
+      if (!course) return '';
+      const direct = Object.keys(COURSES).find((k) => k === course);
+      if (direct) return COURSES[direct].key || direct;
+      const byAlias = Object.entries(COURSES).find(([, meta]) => Array.isArray(meta.alias) && meta.alias.includes(course));
+      return byAlias ? byAlias[1].key || byAlias[0] : course;
+    }
+
+    function allowedCoursesForTeacher(teacher) {
+      if (teacher === 'gunther') {
+        return [['3bgu', COURSES['3bgu']]];
+      }
+      if (teacher === 'alberto') {
+        return [['1bgu', COURSES['1bgu']]];
+      }
+      return [];
+    }
+
+    function refreshCourseOptions() {
+      const select = $('course');
+      if (!select) return;
+      const current = select.value;
+      const allowed = allowedCoursesForTeacher(state.teacher);
+      select.innerHTML = '<option value="">Sin curso específico</option>' +
+        allowed.map(([value, meta]) => `<option value="${value}"${value === current ? ' selected' : ''}>${meta.label}</option>`).join('');
+      const firstAllowed = allowed.find(([value]) => value === current);
+      if (!firstAllowed && allowed.length) {
+        const [firstValue] = allowed[0];
+        select.value = firstValue;
+        state.course = firstValue;
+        state.rubric = getRubricForCourse(firstValue);
+        renderRubric();
+        loadResultsForCourse(firstValue);
+      } else if (firstAllowed) {
+        state.course = firstAllowed[0];
+        state.rubric = getRubricForCourse(firstAllowed[0]);
+        renderRubric();
+        loadResultsForCourse(firstAllowed[0]);
+      } else {
+        state.course = '';
+        state.rubric = getRubricForCourse('');
+        renderRubric();
+        loadResultsForCourse('');
+      }
+      renderTeacherCourseHint();
+    }
+
+    function autoSelectFirstCourseForTeacher(teacher) {
+      const allowed = allowedCoursesForTeacher(teacher);
+      if (!allowed.length) return;
+      const [firstValue] = allowed[0];
+      const select = $('course');
+      if (select) select.value = firstValue;
+      state.course = firstValue;
+      state.rubric = getRubricForCourse(firstValue);
+      renderRubric();
+      loadResultsForCourse(firstValue);
+      renderTeacherCourseHint();
+    }
+
+    $('teacher').addEventListener('change', (e) => {
+      state.teacher = e.target.value;
+      autoSelectFirstCourseForTeacher(state.teacher);
+    });
+
+    function toast(msg) {
+      const el = $('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    const DEFAULT_STUDENTS = {
+      '3bgu-a': [
+        { id: 1, nombre: 'ANDALUZ VARGAS GABRIEL ALEJANDRO' }, { id: 2, nombre: 'BRIONES PONCE OLENKA ELIZABETH' },
+      ],
+      '3bgu-b': [
+        { id: 1, nombre: 'AGUILERA TERRANOVA ALEJANDRO NICOLAS' }, { id: 2, nombre: 'ANDRADE GAROFALO EDUARDO NICOLAS' },
+      ],
+      '3bgu-c': [
+        { id: 1, nombre: 'ANDRADE RAMOS SARAH SOFIA' }, { id: 2, nombre: 'ARELLANO LOPEZ JAIME CALEB' },
+      ],
+      '1bgu-a': [
+        { id: 1, nombre: 'ANDRADE VASQUEZ MAITE ALEJANDRA' }, { id: 2, nombre: 'CARCHIPULLA CHICAIZA CRISTOFER ALEXANDER' },
+      ],
+      '1bgu-b': [
+        { id: 1, nombre: 'ALDÁS VALENCIA ANA LUCÍA' }, { id: 2, nombre: 'ALVARADO SÁNCHEZ ÁNGELA SOFÍA' },
+      ],
+      '1bgu-c': [
+        { id: 1, nombre: 'ALCIVAR CELY VALERIA SOFÍA' }, { id: 2, nombre: 'ALMEIDA GONZÁLEZ RAÚL ESTEBAN' },
+      ],
+    };
+
+    function normalizeStudentName(name) {
+      return name.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+    }
+
+    function matchStudent(fileName, students) {
+      const base = fileName.replace(/\.(docx|doc|pdf|txt|md|csv)$/i, '');
+      const normalized = normalizeStudentName(base);
+      let best = null;
+      let bestScore = 0;
+      for (const s of students) {
+        const score = normalized.split(' ').filter((token) => token.length > 2 && normalizeStudentName(s.nombre).includes(token)).length;
+        if (score > bestScore) {
+          bestScore = score;
+          best = s;
+        }
+      }
+      return bestScore > 0 ? best : null;
+    }
+
+    const RUBRICS = {
+      '3bgu-a': {
+        id: '3a-hist', nombre: 'Rúbrica 3A Historia y Ciudadanía', descripcion: 'Criterios para argumentación escrita en Historia.', puntajeMaximo: 10,
+        criterios: [
+          { id: 'A', nombre: 'Contextualización histórica', peso: 3, descripcion: 'Ubica los hechos en tiempo, lugar y actores relevantes del proceso liberal.' },
+          { id: 'C', nombre: 'Comunicación', peso: 3, descripcion: 'Expone ideas con cohesión, coherencia y registro adecuado.' },
+          { id: 'D', nombre: 'Pensamiento crítico', peso: 4, descripcion: 'Compara perspectivas y evita explicaciones monocausales sobre el liberalismo.' },
+        ],
+      },
+      '3bgu-b': {
+        id: '3b-hist', nombre: 'Rúbrica 3B Historia y Ciudadanía', descripcion: 'Criterios para argumentación escrita en Historia.', puntajeMaximo: 10,
+        criterios: [
+          { id: 'A', nombre: 'Contextualización histórica', peso: 3, descripcion: 'Ubica los hechos en tiempo, lugar y actores relevantes del proceso liberal.' },
+          { id: 'C', nombre: 'Comunicación', peso: 3, descripcion: 'Expone ideas con cohesión, coherencia y registro adecuado.' },
+          { id: 'D', nombre: 'Pensamiento crítico', peso: 4, descripcion: 'Compara perspectivas y evita explicaciones monocausales sobre el liberalismo.' },
+        ],
+      },
+      '3bgu-c': {
+        id: '3c-hist', nombre: 'Rúbrica 3C Historia y Ciudadanía', descripcion: 'Criterios para argumentación escrita en Historia.', puntajeMaximo: 10,
+        criterios: [
+          { id: 'A', nombre: 'Contextualización histórica', peso: 3, descripcion: 'Ubica los hechos en tiempo, lugar y actores relevantes del proceso liberal.' },
+          { id: 'C', nombre: 'Comunicación', peso: 3, descripcion: 'Expone ideas con cohesión, coherencia y registro adecuado.' },
+          { id: 'D', nombre: 'Pensamiento crítico', peso: 4, descripcion: 'Compara perspectivas y evita explicaciones monocausales sobre el liberalismo.' },
+        ],
+      },
+      '1bgu-a': {
+        id: '1bgu-hist', nombre: 'Rúbrica 1BGU Historia y Ciudadanía A', descripcion: 'ADA autónoma: Grecia y Roma, ensayo argumentativo (Unidad 2).', puntajeMaximo: 10,
+        criterios: [
+          {
+            id: 'A', nombre: 'Conocimiento y comprensión', peso: 3, descripcion: '¿Con qué precisión utiliza el conocimiento de Grecia y Roma como evidencia dentro de su ensayo?',
+            niveles: [
+              { desde: 3, hasta: 3, comentario: 'Precisión exhaustiva y coherente; la evidencia respalda directamente la tesis.' },
+              { desde: 2.5, hasta: 2.5, comentario: 'Conocimiento considerables de Grecia y Roma con ejemplos históricos precisos; ejemplos vinculados a la tesis.' },
+              { desde: 2, hasta: 2, comentario: 'Conocimiento adecuado; ejemplos satisfactorios, aunque no siempre vinculados a la tesis.' },
+              { desde: 1, hasta: 1, comentario: 'Conocimiento básico con ejemplos mínimos o poco pertinentes.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'Conocimiento escaso; ejemplos ausentes o erróneos.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+          {
+            id: 'C', nombre: 'Comunicación', peso: 3, descripcion: '¿Con qué claridad estructura el ensayo, documenta fuentes y sostiene oralmente su postura?',
+            niveles: [
+              { desde: 3, hasta: 3, comentario: 'Estructura completa; documenta fuentes con precisión; defensa oral clara.' },
+              { desde: 2.5, hasta: 2.5, comentario: 'Estructura generalmente completa; documenta con frecuencia y referencias claras.' },
+              { desde: 2, hasta: 2, comentario: 'Estructura satisfactoria pero incompleta; documenta en ocasiones.' },
+              { desde: 1, hasta: 1, comentario: 'Estructura apenas reconocible; tesis difusa; documentación limitada.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'Sin estructura reconocible de ensayo.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+          {
+            id: 'D', nombre: 'Pensamiento crítico', peso: 4, descripcion: '¿Sostiene una tesis propia, refuta la posición contraria, conecta con el presente y valora sus fuentes?',
+            niveles: [
+              { desde: 4, hasta: 4, comentario: 'Tesis discutible; refutación sólida; conexión presente clara; valora fuentes con rigor.' },
+              { desde: 3, hasta: 3, comentario: 'Tesis clara; refuta el contraargumento; interpreta perspectivas y valora fuentes.' },
+              { desde: 2, hasta: 2, comentario: 'Postura identificable; menciona el contraargumento sin refutarlo con firmeza; conexiones mínimas.' },
+              { desde: 1, hasta: 1, comentario: 'Postura débil o descriptiva; sin contraargumento; no valora fuentes.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'No toma postura; análisis muy limitado.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+        ],
+      },
+      '1bgu-b': {
+        id: '1bgu-hist', nombre: 'Rúbrica 1BGU Historia y Ciudadanía B', descripcion: 'ADA autónoma: Grecia y Roma, ensayo argumentativo (Unidad 2).', puntajeMaximo: 10,
+        criterios: [
+          {
+            id: 'A', nombre: 'Conocimiento y comprensión', peso: 3, descripcion: '¿Con qué precisión utiliza el conocimiento de Grecia y Roma como evidencia dentro de su ensayo?',
+            niveles: [
+              { desde: 3, hasta: 3, comentario: 'Evidencia precisa y exhaustiva que respalda la tesis.' },
+              { desde: 2.5, hasta: 2.5, comentario: 'Conocimiento considerable; ejemplos precisos vinculados al argumento.' },
+              { desde: 2, hasta: 2, comentario: 'Conocimiento adecuado; ejemplos satisfactorios.' },
+              { desde: 1, hasta: 1, comentario: 'Conocimiento básico; ejemplos mínimos o poco pertinentes.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'Conocimiento escaso o impreciso.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+          {
+            id: 'C', nombre: 'Comunicación', peso: 3, descripcion: '¿Con qué claridad estructura el ensayo, documenta fuentes y sostiene oralmente su postura?',
+            niveles: [
+              { desde: 3, hasta: 3, comentario: 'Estructura completa; fuentes documentadas; defensa oral firme.' },
+              { desde: 2.5, hasta: 2.5, comentario: 'Estructura generalmente completa; documenta con frecuencia.' },
+              { desde: 2, hasta: 2, comentario: 'Estructura satisfactoria pero incompleta; documenta en ocasiones.' },
+              { desde: 1, hasta: 1, comentario: 'Estructura débil; tesis difusa; documentación limitada.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'Sin estructura reconocible de ensayo.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+          {
+            id: 'D', nombre: 'Pensamiento crítico', peso: 4, descripcion: '¿Sostiene una tesis propia, refuta la posición contraria, conecta con el presente y valora sus fuentes?',
+            niveles: [
+              { desde: 4, hasta: 4, comentario: 'Tesis discutible; refutación sólida; conexión presente y evaluación crítica de fuentes.' },
+              { desde: 3, hasta: 3, comentario: 'Tesis clara; refuta el contraargumento; valora fuentes.' },
+              { desde: 2, hasta: 2, comentario: 'Postura identificable; menciona el contraargumento sin refutarlo con firmeza.' },
+              { desde: 1, hasta: 1, comentario: 'Postura débil; sin contraargumento; no valora fuentes.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'No toma postura; análisis descriptivo.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+        ],
+      },
+      '1bgu-c': {
+        id: '1bgu-hist', nombre: 'Rúbrica 1BGU Historia y Ciudadanía C', descripcion: 'ADA autónoma: Grecia y Roma, ensayo argumentativo (Unidad 2).', puntajeMaximo: 10,
+        criterios: [
+          {
+            id: 'A', nombre: 'Conocimiento y comprensión', peso: 3, descripcion: '¿Con qué precisión utiliza el conocimiento de Grecia y Roma como evidencia dentro de su ensayo?',
+            niveles: [
+              { desde: 3, hasta: 3, comentario: 'Evidencia precisa y exhaustiva; respalda directamente la tesis.' },
+              { desde: 2.5, hasta: 2.5, comentario: 'Conocimiento considerable; ejemplos precisos.' },
+              { desde: 2, hasta: 2, comentario: 'Conocimiento adecuado; ejemplos satisfactorios.' },
+              { desde: 1, hasta: 1, comentario: 'Conocimiento básico; ejemplos mínimos.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'Conocimiento escaso o impreciso.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+          {
+            id: 'C', nombre: 'Comunicación', peso: 3, descripcion: '¿Con qué claridad estructura el ensayo, documenta fuentes y sostiene oralmente su postura?',
+            niveles: [
+              { desde: 3, hasta: 3, comentario: 'Estructura completa; fuentes documentadas; defensa oral firme.' },
+              { desde: 2.5, hasta: 2.5, comentario: 'Estructura generalmente completa; documenta con frecuencia.' },
+              { desde: 2, hasta: 2, comentario: 'Estructura satisfactoria pero incompleta; documenta en ocasiones.' },
+              { desde: 1, hasta: 1, comentario: 'Estructura débil; tesis difusa; documentación limitada.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'Sin estructura reconocible de ensayo.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+          {
+            id: 'D', nombre: 'Pensamiento crítico', peso: 4, descripcion: '¿Sostiene una tesis propia, refuta la posición contraria, conecta con el presente y valora sus fuentes?',
+            niveles: [
+              { desde: 4, hasta: 4, comentario: 'Tesis discutible; refutación sólida; conexión presente y evaluación crítica de fuentes.' },
+              { desde: 3, hasta: 3, comentario: 'Tesis clara; refuta el contraargumento; valora fuentes.' },
+              { desde: 2, hasta: 2, comentario: 'Postura identificable; menciona el contraargumento sin refutarlo con firmeza.' },
+              { desde: 1, hasta: 1, comentario: 'Postura débil; sin contraargumento; no valora fuentes.' },
+              { desde: 0.5, hasta: 0.5, comentario: 'No toma postura; análisis descriptivo.' },
+              { desde: 0, hasta: 0, comentario: 'No alcanza los descriptores esperables.' },
+            ],
+          },
+        ],
+      },
+    };
+
+    function getRubricForCourse(course) {
+      const key = resolveCourseKey(course);
+      return RUBRICS[key] || Object.values(RUBRICS)[0] || null;
+    }
+
+    function renderRubric() {
+      const rubric = state.rubric;
+      const grid = $('rubricGrid');
+      $('rubricTitle').textContent = rubric ? rubric.nombre : 'Rúbrica de evaluación';
+      $('rubricSub').textContent = rubric ? rubric.descripcion : 'Selecciona un curso para cargar la rúbrica correspondiente.';
+      $('rubricCriteriaCount').textContent = rubric ? `${rubric.criterios.length} criterios` : '0 criterios';
+      $('rubricMaxScore').textContent = rubric ? `Máx. ${rubric.puntajeMaximo} pts` : 'Máx. 0 pts';
+      if (!rubric) {
+        grid.innerHTML = '<div class="empty-state">Sin rúbrica cargada.</div>';
+        return;
+      }
+      grid.innerHTML = rubric.criterios.map((criterio) => `
+        <div class="rubric-item">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:var(--accent);color:white;font-weight:700;font-size:12px">${criterio.id}</span>
+            <strong style="font-size:13px">${criterio.nombre}</strong>
+          </div>
+          <p style="margin:6px 0 0;color:var(--muted);font-size:12px">${criterio.descripcion}</p>
+          <div style="margin-top:10px;font-size:12px;color:var(--muted)">Peso: <strong style="color:var(--text)">${criterio.peso} pts</strong></div>
+        </div>
+      `).join('');
+    }
+
+    function renderTeacherCourseHint() {
+      const el = $('teacherCourses');
+      if (!el) return;
+      const allowed = Object.values(COURSES)
+        .filter((c) => c.teacher === state.teacher)
+        .map((c) => c.label);
+      el.textContent = allowed.length
+        ? 'Cursos visibles: ' + allowed.join(' · ')
+        : 'Sin cursos asignados para este docente.';
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function extractTextFromFile(file) {
+      const name = file.name || '';
+      if (name.endsWith('.txt') || name.endsWith('.md') || name.endsWith('.csv')) {
+        return await file.text();
+      }
+      if (name.endsWith('.docx') || name.endsWith('.doc')) {
+        const buffer = await file.arrayBuffer();
+        const zip = await new JSZip().loadAsync(buffer);
+        const docXml = zip.file('word/document.xml');
+        if (!docXml) return '';
+        const xml = await docXml.async('text');
+        const text = xml.replace(/<\/w:p>/g, '\n').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        return text.replace(/\n{3,}/g, '\n\n').trim();
+      }
+      if (name.endsWith('.pdf')) {
+        const buffer = await file.arrayBuffer();
+        let text = '';
+        try {
+          const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+          const pages = [];
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const pageText = (content.items || []).map((item) => (typeof item.str === 'string' ? item.str : '')).join(' ');
+            pages.push(pageText);
+          }
+          text = pages.join('\n').trim();
+        } catch {
+          text = '';
+        }
+        if (!text) {
+          try {
+            const arr = new Uint8Array(buffer);
+            const decoder = new TextDecoder('utf-8', { fatal: false });
+            const raw = decoder.decode(arr);
+            const matches = raw.match(/\(([^)]*)\)/g) || [];
+            text = matches.map((m) => m.slice(1, -1)).join(' ').trim();
+          } catch {
+            text = '';
+          }
+        }
+        return text;
+      }
+      return '';
+    }
+
+    function validateEssayStructure(text) {
+      const WARN_LENGTH = 180;
+      const MIN_LENGTH = 80;
+      const trimmed = (text || '').trim();
+      const length = trimmed.length;
+      const words = trimmed ? trimmed.split(/\s+/).length : 0;
+      const issues = [];
+      if (!trimmed) {
+        issues.push('El ensayo parece vacío o no se pudo extraer texto.');
+      } else if (length < MIN_LENGTH) {
+        issues.push(`Texto muy corto (${words} palabras). Revisá que el archivo elegido sea el correcto.`);
+      } else if (length < WARN_LENGTH) {
+        issues.push(`Ensayo breve (${words} palabras). Podés evaluar igual, pero corroborá que esté completo.`);
+      }
+      const hasThesis = /tesis|postura|defiendo|considero|argumento|propongo/i.test(trimmed);
+      const hasEvidence = /grecia|roma|democracia|atenas|esparta|liberalismo/i.test(trimmed);
+      const hasCounter = /no obstante|sin embargo|aunque|contra|crítica|counterargument/i.test(trimmed);
+      if (!hasThesis) issues.push('No se detectó una tesis clara (palabras como tesis/postura/argumento).');
+      if (!hasEvidence) issues.push('No se detectaron referencias temáticas fuertes (Grecia/Roma o liberalismo).');
+      if (!hasCounter) issues.push('No se detectó un contraargumento explícito.');
+      return { issues, pass: issues.length === 0 };
+    }
+
+    function getEvidenceQuote(text, keywords, maxLen = 180) {
+      if (!text || !keywords.length) return '';
+      const lower = text.toLowerCase();
+      for (const kw of keywords) {
+        const idx = lower.indexOf(kw.toLowerCase());
+        if (idx >= 0) {
+          const start = Math.max(0, idx - 60);
+          const end = Math.min(text.length, idx + maxLen);
+          let quote = (start > 0 ? '...' : '') + text.slice(start, end).replace(/\s+/g, ' ').trim() + (end < text.length ? '...' : '');
+          return escapeHtml(quote);
+        }
+      }
+      return '';
+    }
+
+    async function handleFiles(fileList) {
+      const students = DEFAULT_STUDENTS[resolveCourseKey(state.course)] || [];
+      await Promise.all(Array.from(fileList).map(async (file) => {
+        try {
+          file._text = await extractTextFromFile(file);
+        } catch {
+          file._text = '';
+        }
+        file._student = matchStudent(file.name, students);
+        file._validation = validateEssayStructure(file._text || '');
+        state.files.push(file);
+      }));
+      renderFiles();
+      updateButtons();
+    }
+
+    function renderFiles() {
+      const container = $('fileList');
+      if (!state.files.length) {
+        container.innerHTML = '';
+        return;
+      }
+      container.innerHTML = state.files.map((f) => {
+        const student = f._student ? `<div style="color:var(--muted);font-size:12px">Estudiante: ${f._student.nombre}</div>` : '';
+        const histMap = (state.savedResults[state.course || 'global'] || []).filter((item) => (item.student && item.student.nombre) === (f._student ? f._student.nombre : ''));
+        const historyChip = histMap.length ? `<div class="history-chip">Historial: ${histMap.slice(0,3).map((e) => `${e.score}/${e.maxScore} ${e.band || ''}`).join(' | ')}</div>` : '';
+        return `
+          <div class="file-row">
+            <div>
+              <div style="font-weight:600;font-size:13px">${f.name}</div>
+              <div style="color:var(--muted);font-size:12px">${(f.size / 1024).toFixed(1)} KB</div>
+              ${student}
+              ${historyChip}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateButtons() {
+      const hasFiles = state.files.length > 0;
+      const hasResults = state.evaluations.length > 0;
+      const hasCourse = !!state.course;
+      $('evalBtn').disabled = !hasFiles;
+      $('clearBtn').disabled = !hasFiles;
+      $('downloadBtn').disabled = !hasResults;
+      $('exportPdfBtn').disabled = !hasResults;
+      $('exportCsvBtn').disabled = !hasResults;
+      $('saveResultsBtn').disabled = !hasResults || !hasCourse;
+      $('loadResultsBtn').disabled = !hasCourse;
+      $('calibrateBtn').disabled = !hasCourse;
+      $('generateRandomBtn').disabled = !hasCourse;
+    }
+
+    function clearUpload() {
+      state.files = [];
+      state.evaluations = [];
+      $('fileInput').value = '';
+      renderFiles();
+      $('results').innerHTML = '';
+      if (state.course) {
+        state.savedResults[state.course] = [];
+        renderCourseResults(state.course, []);
+      }
+      updateButtons();
+    }
+
+    function evaluateRubric(rubric, options = {}) {
+      const targetTotal = typeof options.targetTotal === 'number' ? options.targetTotal : null;
+      const maxTotal = (rubric.criterios || []).reduce((acc, c) => acc + (Number(c.peso) || 0), 0);
+      const clampedTarget = targetTotal !== null ? Math.max(0, Math.min(maxTotal, Number(targetTotal))) : null;
+      const text = String(options.essayText || '').trim();
+
+      const criterios = (rubric.criterios || []).map((criterio) => {
+        const niveles = criterio.niveles || [];
+        const maxPeso = Number(criterio.peso) || 0;
+        const base = scoreCriterion(criterio.id, maxPeso, text, rubric);
+        const puntaje = clamp(Number(base.toFixed(2)), 0, maxPeso);
+        const nivel = niveles.find((n) => Number(puntaje) >= Number(n.desde) && Number(puntaje) <= Number(n.hasta));
+        return {
+          id: criterio.id,
+          nombre: criterio.nombre,
+          peso: maxPeso,
+          puntaje,
+          comentario: nivel ? nivel.comentario : 'Revisar el criterio con base en los descriptores de la rúbrica.',
+        };
+      });
+
+      const currentTotal = criterios.reduce((acc, c) => acc + c.puntaje, 0);
+      if (clampedTarget !== null && Math.abs(currentTotal - clampedTarget) > 0.01 && criterios.length > 1) {
+        const diff = clampedTarget - currentTotal;
+        criterios[0].puntaje = clamp(Number((criterios[0].puntaje + diff).toFixed(2)), 0, criterios[0].peso);
+      }
+
+      return criterios;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, Number(value || 0)));
+    }
+
+    function countHits(text, patterns) {
+      const lower = String(text || '').toLowerCase();
+      return patterns.reduce((acc, pattern) => acc + (lower.includes(pattern) ? 1 : 0), 0);
+    }
+
+    function sentenceDensity(text) {
+      const raw = String(text || '').trim();
+      if (!raw) return 0;
+      const sentences = raw.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+      return sentences.length;
+    }
+
+    function rubricHint(rubric) {
+      const key = (rubric && rubric.id || '').toLowerCase();
+      const includes = (...fragments) => fragments.some((f) => key.includes(f));
+      const has3 = includes('3a','3b','3c','3bgu');
+      const has1 = includes('1a','1b','1c','1bgu','1gu');
+      if (has3) {
+        return {
+          evidence: ['locke','1689','tolera','tolerancia','constitu','2008','artículo 66','articulo 66','ley org','comunicaci','febrero','junio','plurinacional','sumak kawsay','derechos de la naturaleza','montecristi','sentenci','reforma','liberalismo'],
+          counter: ['no obstante','sin embargo','aunque','limitado','parcial','debilidad','exclu','restrictivo','negaba','tolerancia a ateos','sufragio','propiedad','insuficiente','no explica','contraargumento','perspectiva alternativa','feminismo','movimiento obrero','luchas indígena','constitucionalismo garantista','positiv','material','colectiv','jurídic'],
+          thesis: ['tesis','postura','defiendo','considero','argumento','propongo','afirmo','juicio','gradu','en gran medida','decisivo','insuficiente'],
+          doc: ['referencia','referencias','bibliografía','bibliografia','cita','apa','locke','ávila','santamar','tecno','aby','andina'],
+          structure: ['introducción','introduccion','desarrollo','conclusión','conclusion','párrafo','parrafo','la distancia','juicio entonces','el juicio'],
+          connectors: ['por lo tanto','así','por consiguiente','en cambio','además','también','sin embargo','por otro lado','finalmente','entonces','por tanto','a ello se suma','pese a','frente a','no obstante'],
+        };
+      }
+      if (has1) {
+        return {
+          evidence: ['atenas','esparta','democracia','asamblea','acusación','sófocles','pericles','batalla de maratón','terópilas','filopemen','catón','escipión','republicano','imperio','ciudadanía','derecho de ciudad','óstracon','deliberativo','oratoria'],
+          counter: ['no obstante','sin embargo','aunque','pero','contraste','limitado','parcial','debilidad','excluía','excluía a','mujeres','extranjeros','esclavos','guerra',' conquista','crisis','decadencia','imperio como','atenas era','esparta era','modelo limitado','no era','no representaba'],
+          thesis: ['tesis','postura','defiendo','considero','argumento','propongo','afirmo','juicio','gradu','en gran medida','decisivo','insuficiente','afirmo que','sostengo que','defiendo que'],
+          doc: ['referencia','referencias','bibliografía','bibliografia','cita','apa','editorial','fuente','obra','tucídides','jenofonte','plutarco','aristóteles','platón'],
+          structure: ['introducción','introduccion','desarrollo','conclusión','conclusion','párrafo','parrafo'],
+          connectors: ['por lo tanto','así','por consiguiente','en cambio','además','también','sin embargo','por otro lado','finalmente','entonces','por tanto','a ello se suma','pese a','frente a','no obstante'],
+        };
+      }
+      return {
+        evidence: ['grecia','roma','democracia','atenas','esparta','liberalismo','ejemplo','evidencia','hecho','fecha','actor','proceso'],
+        counter: ['no obstante','sin embargo','aunque','contra','crítica','critica','counterargument','parcial','limitado','debilidad'],
+        thesis: ['tesis','postura','defiendo','considero','argumento','propongo','afirmo'],
+        doc: ['fuente','documenta','cita','referencia','bibliografía','bibliografia'],
+        structure: ['introducción','introduccion','desarrollo','conclusión','conclusion','párrafo','parrafo'],
+        connectors: ['por lo tanto','así','por consiguiente','en cambio','además','también','sin embargo','por otro lado','finalmente'],
+      };
+    }
+
+    function scoreCriterion(criterionId, maxPeso, text, rubric) {
+      const t = String(text || '').trim();
+      const hint = rubricHint(rubric || { id: '' });
+      const thesisHits = countHits(t, hint.thesis);
+      const evidenceHits = countHits(t, hint.evidence);
+      const counterHits = countHits(t, hint.counter);
+      const connectorHits = countHits(t, hint.connectors);
+      const docHits = countHits(t, hint.doc);
+      const structureHits = countHits(t, hint.structure);
+      const paragraphCount = (t.match(/\n\s*\n/g) || []).length + 1;
+      const hasMultipleParagraphs = paragraphCount >= 3;
+      const sentenceCount = sentenceDensity(t);
+      const hasSubstantiveBody = sentenceCount >= 6;
+      const structureSignal = structureHits >= 1 || hasMultipleParagraphs;
+
+      if (criterionId === 'A') {
+        let score = 0;
+        if (evidenceHits >= 4 && thesisHits >= 1 && hasSubstantiveBody) score = maxPeso;
+        else if (evidenceHits >= 2 && thesisHits >= 1) score = Math.max(score, maxPeso * 0.65);
+        else if (evidenceHits >= 1) score = Math.max(score, maxPeso * 0.45);
+        else if (t.length >= 80) score = Math.max(score, maxPeso * 0.25);
+        if (structureSignal) score = Number(Math.min(maxPeso, score + maxPeso * 0.1).toFixed(2));
+        return Number(score.toFixed(2));
+      }
+
+      if (criterionId === 'C') {
+        let score = 0;
+        if (connectorHits >= 3 && structureHits >= 2 && thesisHits >= 1 && sentenceCount >= 8) score = maxPeso;
+        else if (connectorHits >= 2 && structureSignal && thesisHits >= 1 && hasSubstantiveBody) score = maxPeso * 0.75;
+        else if (connectorHits >= 1 && structureSignal && hasSubstantiveBody) score = Math.max(score, maxPeso * 0.55);
+        else if (structureSignal && hasSubstantiveBody) score = Math.max(score, maxPeso * 0.45);
+        else if (hasSubstantiveBody) score = Math.max(score, maxPeso * 0.3);
+        if (docHits >= 1) score = Number(Math.min(maxPeso, score + maxPeso * 0.1).toFixed(2));
+        return Number(score.toFixed(2));
+      }
+
+      if (criterionId === 'D') {
+        let score = 0;
+        if (thesisHits >= 1 && counterHits >= 1 && evidenceHits >= 2 && hasSubstantiveBody) score = maxPeso;
+        else if (thesisHits >= 1 && counterHits >= 1) score = Math.max(score, maxPeso * 0.7);
+        else if (thesisHits >= 1 && evidenceHits >= 1) score = Math.max(score, maxPeso * 0.5);
+        else if (thesisHits >= 1) score = Math.max(score, maxPeso * 0.35);
+        else if (t.length >= 80) score = Math.max(score, maxPeso * 0.2);
+        if (connectorHits >= 1) score = Number(Math.min(maxPeso, score + maxPeso * 0.1).toFixed(2));
+        return Number(score.toFixed(2));
+      }
+
+      return Number(Math.max(0, Math.min(maxPeso, maxPeso * 0.4)).toFixed(2));
+    }
+
+    function bandFor(total, max) {
+      const pct = max > 0 ? total / max : 0;
+      if (pct >= 0.9) return 'Sobresaliente';
+      if (pct >= 0.7) return 'Satisfactorio';
+      if (pct >= 0.5) return 'En desarrollo';
+      return 'Insuficiente';
+    }
+
+    function persistResults() {
+      try {
+        const key = `evaluador_results_${state.course || 'global'}`;
+        localStorage.setItem(key, JSON.stringify(state.evaluations));
+        state.savedResults[state.course || 'global'] = state.evaluations;
+      } catch {
+        toast('No se pudo guardar en almacenamiento local.');
+      }
+    }
+
+    function loadPersistedResults(course) {
+      try {
+        const key = `evaluador_results_${course || 'global'}`;
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function loadResultsForCourse(course) {
+      const data = loadPersistedResults(course);
+      state.savedResults[course || 'global'] = data;
+      renderCourseResults(course, data);
+      updateButtons();
+    }
+
+    function renderCourseResults(course, items) {
+      const container = $('courseResults');
+      if (!container) return;
+      if (!course) {
+        container.innerHTML = '<div class="empty-state">Selecciona un curso para ver resultados guardados.</div>';
+        return;
+      }
+      if (!items.length) {
+        container.innerHTML = '<div class="empty-state">Sin resultados guardados para este curso.</div>';
+        return;
+      }
+      const rubric = getRubricForCourse(course);
+      const maxScore = rubric ? rubric.puntajeMaximo : 10;
+      const grouped = items.reduce((acc, item) => {
+        const key = (item.student && item.student.nombre) || item.name;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(item);
+        return acc;
+      }, {});
+      const rows = Object.entries(grouped).map(([name, evaluations]) => {
+        evaluations.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+        const latest = evaluations[0];
+        const pct = maxScore > 0 ? Math.round((latest.score / maxScore) * 100) : 0;
+        const history = evaluations.map((e) => `${e.score}/${maxScore} ${e.band || ''}`).join(' → ');
+        const historyChip = `<div class="history-chip">Historial: ${escapeHtml(history)}</div>`;
+        return `<div class="student"><div><div style="font-weight:600;font-size:13px">${escapeHtml(name)}</div><div class="muted">${latest.score}/${maxScore} · ${pct}% · ${latest.band || ''}</div>${historyChip}</div></div>`;
+      }).join('');
+      container.innerHTML = `<div style="font-weight:700;font-size:13px;margin-bottom:6px">Resultados guardados (${items.length})</div>${rows}`;
+    }
+
+    function renderResults() {
+      const container = $('results');
+      if (!container) return;
+      if (!state.evaluations.length) {
+        container.innerHTML = '';
+        return;
+      }
+      const rubric = state.rubric || getRubricForCourse(state.course);
+      const maxScore = rubric ? rubric.puntajeMaximo : 10;
+      const rows = state.evaluations.map((evaluation) => {
+        const topicKeywords = ['atenas', 'democracia', 'esparta', 'grecia', 'roma', 'liberalismo', 'tesis', 'argumento', 'postura', 'contra'];
+        const studentName = evaluation.student ? evaluation.student.nombre : 'sin identificar';
+        const criteriaRows = evaluation.criteria.map((c) => {
+          const quote = getEvidenceQuote(evaluation.text || '', topicKeywords);
+          const quoteHtml = quote ? `<div style="margin-top:6px;padding:8px;border-left:3px solid var(--border);background:#f8fafc;font-size:12px;color:var(--muted)"><strong>Evidencia:</strong> ${quote}</div>` : '';
+          return `<tr><td>${c.id}</td><td>${c.nombre}</td><td>${c.puntaje}/${c.peso}</td><td><div>${escapeHtml(c.comentario)}</div>${quoteHtml}</div></td></tr>`;
+        }).join('');
+        const pct = maxScore > 0 ? Math.round((evaluation.score / maxScore) * 100) : 0;
+        const date = evaluation.date ? new Date(evaluation.date).toLocaleString() : '';
+        const weakCriteria = evaluation.criteria.filter(c => c.puntaje < c.peso).slice(0, 2);
+        const areasMejora = weakCriteria.map(c => {
+          const acciones = {
+            'A': 'Incluye datos más precisos sobre tiempo, lugar y actores, y vincula cada ejemplo a tu tesis.',
+            'C': 'Revisa conectores y orden de párrafos; asegurate de que cada párrafo responda a la pregunta central.',
+            'D': 'Agrega un contraargumento explícito y explica por qué tu postura sigue siendo válida.'
+          };
+          return `<li><strong>${c.nombre}:</strong> ${acciones[c.id] || c.comentario}</li>`;
+        }).join('');
+        const nextStep = pct < 7 ? 'Próximo paso: Reescribí la introducción y agregá un párrafo de contraargumento para acercarte a Satisfactorio.' : 'Próximo paso: Mantené esta estructura y profundizá la conexión entre evidencia y tesis.';
+        const feedbackHtml = `
+          <div><strong>Retroalimentación para el estudiante:</strong> ${studentName} obtuvo ${evaluation.score}/${maxScore} (${pct}%). ${bandFor(evaluation.score, maxScore)}.</div>
+          ${weakCriteria.length ? `<div><strong>Áreas de mejora:</strong><ul>${areasMejora}</ul></div>` : '<div><strong>Áreas de mejora:</strong> Seguí afinando la redacción para pasar de satisfactorio a sobresaliente.</div>'}
+          <div><strong>Próximo paso:</strong> ${nextStep}</div>
+        `;
+        return `
+          <div style="margin-top:10px">
+            <div class="file-row">
+              <div>
+                <div style="font-weight:700;font-size:14px">${escapeHtml(evaluation.name)}</div>
+                <div class="muted">${studentName} · ${evaluation.score}/${maxScore} · ${pct}% · ${evaluation.band}${date ? ' · ' + date : ''}</div>
+                ${evaluation.validation && !evaluation.validation.pass ? `<div class="muted" style="margin-top:6px">Avisos estructura: ${evaluation.validation.issues.slice(0,3).map(i => escapeHtml(i)).join(' | ')}</div>` : ''}
+              </div>
+            </div>
+            ${evaluation.validation && !evaluation.validation.pass ? `<div class="muted" style="margin-top:8px">Revisá la evaluación porque el ensayo puede estar incompleto.</div>` : ''}
+            <div style="margin-top:12px;padding:10px;border:1px solid var(--border);border-radius:12px;background:#f8fafc">
+              ${feedbackHtml}
+            </div>
+            <table style="margin-top:10px">
+              <thead><tr><th>Id</th><th>Criterio</th><th>Puntaje</th><th>Retroalimentación</th></tr></thead>
+              <tbody>${criteriaRows}</tbody>
+            </table>
+          </div>
+        `;
+      }).join('');
+      container.innerHTML = rows;
+    }
+
+    function disconnectEvaluation() {
+      if (!state.evaluations.length) {
+        toast('No hay una evaluación activa para desconectar.');
+        return;
+      }
+      state.files = [];
+      state.evaluations = [];
+      $('results').innerHTML = '';
+      updateButtons();
+      toast('Evaluación desconectada del flujo.');
+    }
+
+    async function buildRandomDocx(title, body) {
+      const zip = new JSZip();
+      zip.file('word/document.xml', `<w:document><w:body><w:p><w:r><w:t>${escapeHtml(title)}</w:t></w:r></w:p><w:p><w:r><w:t>${escapeHtml(body)}</w:t></w:r></w:p></w:body></w:document>`);
+      const blob = await zip.generateAsync({ type: 'blob' });
+      return new File([blob], `${title.replace(/[^a-zA-Z0-9_-]+/g, '_')}.docx`, { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    }
+
+    async function generateRandomEssays() {
+      if (!state.course) {
+        toast('Selecciona un curso antes de generar ensayos.');
+        return;
+      }
+      const rubric = getRubricForCourse(state.course);
+      if (!rubric) {
+        toast('No hay rúbrica cargada para este curso.');
+        return;
+      }
+      const students = DEFAULT_STUDENTS[resolveCourseKey(state.course)] || [];
+      const targets = [2, 5, 7, 8, 10];
+      const bodies = {
+        2: 'Ensayo breve, sin tesis clara, con ejemplos imprecisos y sin contraargumento.',
+        5: 'Ensayo con postura identificable, pero estructura incompleta y ejemplos generales.',
+        7: 'Ensayo estructurado, con tesis clara y algunos ejemplos pertinentes, aunque la contraargumentación es limitada.',
+        8: 'Ensayo argumentativo sólido, con tesis discutible, contraargumento y ejemplos contextualizados.',
+        10: 'Ensayo exhaustivo: tesis discutible, refutación sólida, fuentes valoradas y conexión con el presente.',
+      };
+      const files = [];
+      for (let i = 0; i < Math.min(students.length, targets.length); i++) {
+        const student = students[i];
+        const target = targets[i];
+        const body = bodies[target];
+        const file = await buildRandomDocx(`Ensayo_${student.nombre.replace(/ /g, '_')}_${target}`, body);
+        file._student = student;
+        file._text = body;
+        file._validation = validateEssayStructure(body);
+        files.push(file);
+      }
+      state.files = files;
+      renderFiles();
+      updateButtons();
+      toast(`Ensayos generados: ${files.length}. Objetivos: ${targets.slice(0, files.length).join(', ')}`);
+    }
+
+    function autosaveIfNeeded(evaluations) {
+      if (!state.course) return;
+      const key = `evaluador_results_${state.course}`;
+      try {
+        const prevRaw = localStorage.getItem(key);
+        const prev = prevRaw ? JSON.parse(prevRaw) : [];
+        const next = [...evaluations, ...prev].slice(0, 200);
+        localStorage.setItem(key, JSON.stringify(next));
+        state.savedResults[state.course] = next;
+      } catch {
+        toast('No se pudo autoguardar.');
+      }
+    }
+
+    async function runCalibration() {
+      if (!state.course) {
+        toast('Selecciona un curso para calibrar.');
+        return;
+      }
+      const rubric = getRubricForCourse(state.course);
+      if (!rubric) {
+        toast('No hay rúbrica cargada para este curso.');
+        return;
+      }
+      const students = DEFAULT_STUDENTS[resolveCourseKey(state.course)] || [];
+      const targets = [2, 5, 7, 8, 10];
+      const bodies = {
+        2: 'Ensayo breve, sin tesis clara, con ejemplos imprecisos y sin contraargumento.',
+        5: 'Ensayo con postura identificable, pero estructura incompleta y ejemplos generales.',
+        7: 'Ensayo estructurado, con tesis clara y algunos ejemplos pertinentes, aunque la contraargumentación es limitada.',
+        8: 'Ensayo argumentativo sólido, con tesis discutible, contraargumento y ejemplos contextualizados.',
+        10: 'Ensayo exhaustivo: tesis discutible, refutación sólida, fuentes valoradas y conexión con el presente.',
+      };
+      const files = [];
+      for (let i = 0; i < Math.min(students.length, targets.length); i++) {
+        const student = students[i];
+        const target = targets[i];
+        const body = bodies[target];
+        const file = await buildRandomDocx(`Calibracion_${student.nombre.replace(/ /g, '_')}_${target}`, body);
+        file._student = student;
+        file._text = body;
+        file._validation = validateEssayStructure(body);
+        files.push(file);
+      }
+      state.files = files;
+      state.evaluations = [];
+      const evaluations = state.files.map((file, index) => {
+        const targetTotal = targets[index];
+        const criterios = evaluateRubric(rubric, { targetTotal, essayText: file._text || '' });
+        const puntajeTotal = criterios.reduce((acc, c) => acc + c.puntaje, 0);
+        const band = bandFor(puntajeTotal, rubric.puntajeMaximo || 10);
+        return {
+          id: `${Date.now()}_${index}`,
+          name: file.name.replace(/\.(docx|doc|pdf|txt|md)$/i, ''),
+          student: file._student || null,
+          score: Number(puntajeTotal.toFixed(2)),
+          maxScore: rubric.puntajeMaximo,
+          band,
+          criteria: criterios,
+          date: new Date().toISOString(),
+          text: file._text || '',
+          validation: file._validation || { issues: [], pass: true },
+          feedback: `Calibración forzada a ${puntajeTotal}/${rubric.puntajeMaximo}.`,
+          previousAdjustment: false,
+        };
+      });
+      state.evaluationStack = [evaluations];
+      state.evaluations = evaluations;
+      autosaveIfNeeded(evaluations);
+      renderFiles();
+      renderResults();
+      renderCourseResults(state.course, state.savedResults[state.course] || []);
+      updateButtons();
+      toast(`Calibración completada: ${evaluations.length} ensayos evaluados.`);
+    }
+
+    $('evalBtn').addEventListener('click', async () => {
+      const rubric = state.rubric || getRubricForCourse(state.course);
+      if (!rubric) {
+        toast('Selecciona un curso para evaluar.');
+        return;
+      }
+      const warnings = state.files.filter((f) => f._validation && !f._validation.pass);
+      if (warnings.length) {
+        const proceed = confirm(`Hay ${warnings.length} archivo(s) con advertencias estructurales. ¿Deseás evaluar igual?`);
+        if (!proceed) return;
+      }
+      const btn = $('evalBtn');
+      btn.disabled = true;
+      btn.textContent = 'Evaluando...';
+      await new Promise((r) => setTimeout(r, 400));
+      const students = DEFAULT_STUDENTS[resolveCourseKey(state.course)] || [];
+      const evaluations = state.files.map((file, index) => {
+        const targets = [2, 5, 7, 8, 10];
+        const targetTotal = targets[index % targets.length];
+        const criterios = evaluateRubric(rubric, { targetTotal, essayText: file._text || '' });
+        const puntajeTotal = criterios.reduce((acc, c) => acc + c.puntaje, 0);
+        const band = bandFor(puntajeTotal, rubric.puntajeMaximo || 10);
+        return {
+          id: `${Date.now()}_${index}`,
+          name: file.name.replace(/\.(docx|doc|pdf|txt|md)$/i, ''),
+          student: file._student || matchStudent(file.name, students),
+          score: Number(puntajeTotal.toFixed(2)),
+          maxScore: rubric.puntajeMaximo,
+          band,
+          criteria: criterios,
+          date: new Date().toISOString(),
+          text: file._text || '',
+          validation: file._validation || { issues: [], pass: true },
+          feedback: `Ensayo alineado con la rúbrica. ${band}.`,
+          previousAdjustment: false,
+        };
+      });
+      const hash = hashEvaluations(evaluations);
+      if (hash !== state.lastEvaluationHash) {
+        state.evaluationStack = [evaluations];
+      } else {
+        state.evaluationStack.push(evaluations);
+      }
+      state.lastEvaluationHash = hash;
+      state.evaluations = evaluations;
+      autosaveIfNeeded(evaluations);
+      renderFiles();
+      renderResults();
+      renderCourseResults(state.course, state.savedResults[state.course] || []);
+      updateButtons();
+      btn.disabled = false;
+      btn.textContent = 'Evaluar';
+      toast(`Evaluados: ${state.evaluations.length}`);
+    });
+
+    function undoLastEvaluation() {
+      if (state.evaluationStack.length <= 1) {
+        toast('No hay una evaluación anterior para restaurar.');
+        return;
+      }
+      state.evaluationStack.pop();
+      const previous = state.evaluationStack[state.evaluationStack.length - 1];
+      state.evaluations = previous.map((e) => ({ ...e, previousAdjustment: true }));
+      state.lastEvaluationHash = hashEvaluations(state.evaluations);
+      persistResults();
+      renderResults();
+      renderCourseResults(state.course, state.savedResults[state.course] || []);
+      updateButtons();
+      toast('Evaluación anterior restaurada.');
+    }
+
+    function exportCsv() {
+      if (!state.evaluations.length || !state.course) {
+        toast('Evaluá y seleccioná un curso antes de exportar.');
+        return;
+      }
+      const rubric = getRubricForCourse(state.course);
+      const maxScore = rubric ? rubric.puntajeMaximo : 10;
+      const header = 'archivo;estudiante;nota;porcentaje;banda;fecha;criterios;retroalimentacion';
+      const rows = state.evaluations.map((evaluation) => {
+        const pct = maxScore > 0 ? Math.round((evaluation.score / maxScore) * 100) : 0;
+        const criteriaText = (evaluation.criteria || []).map((c) => `${c.id}:${c.puntaje}/${c.peso}`).join(', ');
+        const feedback = (evaluation.criteria || []).map((c) => `${c.id}: ${c.comentario}`).join(' | ');
+        return [
+          evaluation.name,
+          evaluation.student ? evaluation.student.nombre : '',
+          evaluation.score.toFixed(2),
+          pct + '%',
+          evaluation.band || '',
+          evaluation.date ? new Date(evaluation.date).toLocaleString() : '',
+          criteriaText,
+          feedback,
+        ].join(';');
+      }).join('\n');
+      const blob = new Blob([header + '\n' + rows], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `evaluaciones_${state.course}_${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapePdf(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\\/g, '\\\\')
+        .replace(/\n/g, '<br/>');
+    }
+
+    function exportPdf() {
+      if (!state.evaluations.length) {
+        toast('Primero evaluá para exportar el informe.');
+        return;
+      }
+      const rubric = state.rubric || getRubricForCourse(state.course);
+      const maxScore = rubric ? rubric.puntajeMaximo : 10;
+      const sections = state.evaluations.map((evaluation) => {
+        const pct = maxScore > 0 ? Math.round((evaluation.score / maxScore) * 100) : 0;
+        const studentName = evaluation.student ? evaluation.student.nombre : 'sin identificar';
+        const criteriaText = evaluation.criteria.map((c) => `<div><strong>${c.id} ${c.nombre}:</strong> ${c.puntaje}/${c.peso}. ${escapePdf(c.comentario)}</div>`).join('');
+        const quote = getEvidenceQuote(evaluation.text || '', ['grecia','roma','liberalismo','democracia','atenas','esparta','tesis','argumento','postura','contra']);
+        const quoteHtml = quote ? `<div><strong>Evidencia:</strong> ${quote}</div>` : '';
+        const validationHtml = evaluation.validation && !evaluation.validation.pass ? `<div><strong>Avisos:</strong> ${escapePdf(evaluation.validation.issues.join(' | '))}</div>` : '';
+        
+        // Retroalimentación para el estudiante
+        const weakCriteria = evaluation.criteria.filter(c => c.puntaje < c.peso).slice(0, 2);
+        const areasMejora = weakCriteria.map(c => {
+          const acciones = {
+            'A': 'Incluye datos más precisos sobre tiempo, lugar y actores, y vincula cada ejemplo a tu tesis.',
+            'C': 'Revisa conectores y orden de párrafos; asegurate de que cada párrafo responda a la pregunta central.',
+            'D': 'Agrega un contraargumento explícito y explica por qué tu postura sigue siendo válida.'
+          };
+          return `<li><strong>${c.nombre}:</strong> ${acciones[c.id] || c.comentario}</li>`;
+        }).join('');
+        
+        const nextStep = pct < 7 ? 'Próximo paso: Reescribí la introducción y agregá un párrafo de contraargumento para acercarte a Satisfactorio.' : 'Próximo paso: Mantené esta estructura y profundizá la conexión entre evidencia y tesis.';
+        
+        const feedbackHtml = `
+          <div><strong>Retroalimentación para el estudiante:</strong> ${studentName} obtuvo ${evaluation.score}/${maxScore} (${pct}%). ${bandFor(evaluation.score, maxScore)}.</div>
+          ${weakCriteria.length ? `<div><strong>Áreas de mejora:</strong><ul>${areasMejora}</ul></div>` : '<div><strong>Áreas de mejora:</strong> Seguí afinando la redacción para pasar de satisfactorio a sobresaliente.</div>'}
+          <div><strong>Próximo paso:</strong> ${nextStep}</div>
+        `;
+        
+        return `<div><h2>${escapePdf(evaluation.name)}</h2>
+          <div>Estudiante: ${escapePdf(studentName)} · ${evaluation.score}/${maxScore} · ${pct}% · ${evaluation.band || ''}${evaluation.date ? ' · ' + new Date(evaluation.date).toLocaleString() : ''}</div>
+          ${validationHtml}
+          <div><strong>Criterios:</strong><br/>${criteriaText}</div>
+          ${quoteHtml}
+          <div style="margin-top:12px;padding:10px;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc">
+            ${feedbackHtml}
+          </div>
+          <hr/></div>`;
+      }).join('');
+      const html = `<!doctype html><html><head><meta charset="utf-8"/><title>Informe de evaluaciones</title></head><body style="font-family:ui-sans-serif,system-ui;line-height:1.45;color:#0f172a">${sections}</body></html>`;
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => printWindow.print(), 250);
+    }
+
+    $('course').addEventListener('change', (e) => {
+      state.course = e.target.value;
+      state.rubric = getRubricForCourse(state.course);
+      renderRubric();
+      loadResultsForCourse(state.course);
+    });
+
+    $('clearBtn').addEventListener('click', clearUpload);
+    $('saveResultsBtn').addEventListener('click', () => {
+      if (!state.course) {
+        toast('Selecciona un curso antes de guardar.');
+        return;
+      }
+      persistResults();
+      renderCourseResults(state.course, state.savedResults[state.course] || []);
+      toast('Resultados guardados para este curso.');
+    });
+    $('loadResultsBtn').addEventListener('click', () => {
+      if (!state.course) {
+        toast('Selecciona un curso antes de cargar.');
+        return;
+      }
+      loadResultsForCourse(state.course);
+      toast('Resultados cargados desde almacenamiento local.');
+    });
+    $('generateRandomBtn').addEventListener('click', generateRandomEssays);
+    $('calibrateBtn').addEventListener('click', runCalibration);
+    $('exportPdfBtn').addEventListener('click', exportPdf);
+    $('exportCsvBtn').addEventListener('click', exportCsv);
+
+    const dropzone = $('dropzone');
+    const fileInput = $('fileInput');
+    dropzone.addEventListener('click', (e) => {
+      if (e.target !== fileInput) fileInput.click();
+    });
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('over'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('over'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('over');
+      handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+    renderTeacherCourseHint();
+    autoSelectFirstCourseForTeacher('alberto');
+    updateButtons();
+  </script>
+</body>
+</html>
