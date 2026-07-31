@@ -598,7 +598,11 @@
 
     function getRubricForCourse(course) {
       const key = resolveCourseKey(course);
-      return RUBRICS[key] || Object.values(RUBRICS)[0] || null;
+      if (RUBRICS[key]) return RUBRICS[key];
+      const prefix = String(course || '').split('-')[0].toLowerCase();
+      const match = Object.entries(RUBRICS).find(([k]) => k === prefix || k.startsWith(prefix));
+      if (match) return match[1];
+      return Object.values(RUBRICS)[0] || null;
     }
 
     function renderRubric() {
