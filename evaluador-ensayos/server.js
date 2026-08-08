@@ -453,6 +453,29 @@ app.post('/api/quiz/:examId/grades', (req, res) => {
   }
 });
 
+function clearQuizGrades(examId) {
+  const key = quizKey(examId);
+  const record = quizStore.get(key);
+  if (record) {
+    record.grades = [];
+    quizStore.set(key, record);
+  }
+}
+
+// POST /api/quiz/:examId/clear — clear all grades for an exam
+app.post('/api/quiz/:examId/clear', (req, res) => {
+  const examId = resolveExamId(req.params.examId);
+  if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
+  if (req.body && req.body.action === 'clear_all') {
+    clearQuizGrades(examId);
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    return res.end(JSON.stringify({ ok: true, cleared: examId }));
+  }
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.end(JSON.stringify({ ok: true, message: 'no action taken' }));
+});
+
 app.use(express.static(PUBLIC_DIR, {
   maxAge: 0,
   setHeaders: (res) => {
