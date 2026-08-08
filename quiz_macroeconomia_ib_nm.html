@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refuerzo Pedagógico · Economía IB NM — Macroeconomía (3.5, 3.6, 3.7)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+  :root{
+    --bg:#f3ebd9; --bg-2:#e8dcc2; --paper:#fbf6ea; --ink:#1c2b27; --ink-soft:#3a4a44;
+    --muted:#7a7264; --gold:#b8842a; --gold-bright:#d9a23e; --forest:#1f4a3d;
+    --forest-deep:#0f2a23; --sage:#5d8a6b; --error:#b5453a; --error-soft:#e8c4be;
+    --ok:#3d7a4f; --ok-soft:#c5dcb8; --border:#cdbf9d; --shadow:0 18px 50px -20px rgba(28,43,39,.35);
+    /* Colores específicos para diagramas macro */
+    --demand:#1e40af; --supply:#b45309; --fiscal:#7b2cbf; --lras:#2e7d32;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--bg);
+    background-image:radial-gradient(circle at 12% 18%, rgba(184,132,42,.10), transparent 45%),radial-gradient(circle at 88% 82%, rgba(31,74,61,.12), transparent 50%);min-height:100vh;overflow-x:hidden;line-height:1.55}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.5;pointer-events:none;z-index:0;mix-blend-mode:multiply}
+  .container{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:32px 24px 80px}
+  .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+  .brand-left{display:flex;align-items:center;gap:14px}
+  .brand-mark{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--gold-bright), var(--gold) 70%, #6b4a16);display:grid;place-items:center;color:#fbf6ea;font-family:'Fraunces',serif;font-weight:900;font-size:20px;box-shadow:0 6px 18px -6px rgba(184,132,42,.55), inset 0 -3px 8px rgba(0,0,0,.2)}
+  .brand-text{font-family:'Fraunces',serif;line-height:1.1}
+  .brand-text .t1{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:500}
+  .brand-text .t2{font-size:20px;font-weight:700;color:var(--forest-deep)}
+  .brand-right{font-size:12px;color:var(--muted);text-align:right;font-family:'Outfit',sans-serif;letter-spacing:.05em}
+  .brand-right strong{color:var(--forest);font-weight:600}
+  .screen{display:none;animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both}
+  .screen.active{display:block}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .welcome-card{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:54px 48px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .welcome-card::before{content:"";position:absolute;top:-120px;right:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle, rgba(217,162,62,.25), transparent 70%);pointer-events:none}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(31,74,61,.08);border:1px solid rgba(31,74,61,.18);color:var(--forest);padding:6px 14px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px}
+  .welcome-title{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(38px,5vw,58px);line-height:1.02;color:var(--forest-deep);letter-spacing:-.02em;margin-bottom:18px}
+  .welcome-title em{font-style:italic;color:var(--gold);font-weight:700}
+  .welcome-sub{font-size:17px;color:var(--ink-soft);max-width:620px;margin-bottom:24px}
+  .skills-box{background:rgba(31,74,61,.05);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:36px;max-width:620px}
+  .skills-title{font-size:12px;font-weight:600;color:var(--forest);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .skills-list{list-style:none;font-size:14px;color:var(--ink-soft)}
+  .skills-list li{margin-bottom:6px;padding-left:18px;position:relative}
+  .skills-list li::before{content:"\f00c";font-family:"Font Awesome 6 Free";font-weight:900;color:var(--gold);font-size:10px;position:absolute;left:0;top:5px}
+  .welcome-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px}
+  .meta-item{background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+  .meta-item .num{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--gold);line-height:1}
+  .meta-item .lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:6px;font-weight:500}
+  .form-group{margin-bottom:24px;max-width:520px}
+  .form-group label{display:block;font-size:12px;font-weight:600;color:var(--forest);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+  .form-group input{width:100%;padding:16px 18px;font-family:'Outfit',sans-serif;font-size:17px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color .2s, box-shadow .2s}
+  .form-group input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,132,42,.15)}
+  .name-error{color:var(--error);font-size:13px;margin-top:8px;display:none;align-items:center;gap:6px}
+  .name-error.show{display:flex}
+  .btn{display:inline-flex;align-items:center;gap:12px;font-family:'Outfit',sans-serif;font-weight:600;font-size:16px;padding:16px 30px;border-radius:12px;cursor:pointer;border:none;transition:transform .2s, box-shadow .2s, background .2s;letter-spacing:.01em}
+  .btn-primary{background:linear-gradient(135deg, var(--forest), var(--forest-deep));color:#fbf6ea;box-shadow:0 12px 28px -10px rgba(15,42,35,.6)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px -12px rgba(15,42,35,.7)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-primary i{transition:transform .25s}
+  .btn-primary:hover i{transform:translateX(4px)}
+  .btn-ghost{background:transparent;color:var(--forest);border:1.5px solid var(--border)}
+  .btn-ghost:hover{background:rgba(31,74,61,.06);border-color:var(--forest)}
+  .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:14px}
+  .student-tag{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--border);padding:8px 16px;border-radius:999px;font-size:14px}
+  .student-tag i{color:var(--gold)}
+  .student-tag strong{color:var(--forest-deep);font-weight:600}
+  .progress-wrap{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted);font-weight:500}
+  .progress-bar{width:200px;height:8px;background:var(--bg-2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+  .progress-fill{height:100%;background:linear-gradient(90deg, var(--gold), var(--gold-bright));width:0;transition:width .5s cubic-bezier(.2,.7,.2,1);border-radius:999px}
+  .question-card{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:38px 38px 32px;box-shadow:var(--shadow);position:relative}
+  .q-topic{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .scenario{background:linear-gradient(135deg, rgba(31,74,61,.06), rgba(184,132,42,.05));border-left:3px solid var(--gold);padding:14px 22px;border-radius:0 12px 12px 0;margin-bottom:22px;font-size:15px;color:var(--ink-soft);font-style:italic}
+  .scenario-label{display:block;font-style:normal;font-weight:600;color:var(--forest);font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px}
+  .question-text{font-family:'Fraunces',serif;font-size:22px;font-weight:600;line-height:1.35;color:var(--forest-deep);margin-bottom:26px;letter-spacing:-.01em}
+  .options{display:grid;gap:12px}
+  .option{display:flex;align-items:center;gap:16px;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;transition:all .2s;font-size:15.5px;text-align:left;font-family:'Outfit',sans-serif;color:var(--ink);width:100%}
+  .option:hover:not(:disabled){border-color:var(--gold);background:#fffdf6;transform:translateX(4px)}
+  .option:disabled{cursor:not-allowed}
+  .option-letter{width:32px;height:32px;border-radius:50%;background:var(--bg-2);color:var(--forest);display:grid;place-items:center;font-weight:700;font-family:'Fraunces',serif;font-size:15px;flex-shrink:0;transition:all .2s;border:1px solid var(--border)}
+  .option.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--forest-deep)}
+  .option.correct .option-letter{background:var(--ok);color:#fff;border-color:var(--ok)}
+  .option.incorrect{background:var(--error-soft);border-color:var(--error);color:#5e2018}
+  .option.incorrect .option-letter{background:var(--error);color:#fff;border-color:var(--error)}
+  .feedback{margin-top:22px;padding:18px 22px;border-radius:14px;display:none;animation:fadeUp .4s both}
+  .feedback.show{display:block}
+  .feedback.ok{background:rgba(61,122,79,.1);border:1px solid var(--ok)}
+  .feedback.bad{background:rgba(181,69,58,.1);border:1px solid var(--error)}
+  .feedback-head{display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:8px;font-size:15px}
+  .feedback.ok .feedback-head{color:var(--ok)}
+  .feedback.bad .feedback-head{color:var(--error)}
+  .feedback-body{font-size:14.5px;color:var(--ink-soft);line-height:1.6}
+  .actions{margin-top:24px;display:flex;justify-content:space-between;align-items:center}
+  .actions .btn:disabled{opacity:.4;cursor:not-allowed}
+  .results-card{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:48px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+  .results-eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px}
+  .results-name{font-family:'Fraunces',serif;font-weight:700;font-size:24px;color:var(--forest);margin-bottom:30px}
+  .score-circle{width:220px;height:220px;margin:0 auto 24px;position:relative}
+  .score-circle svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .score-circle .track{stroke:var(--bg-2);stroke-width:14;fill:none}
+  .score-circle .fill{stroke:url(#scoreGrad);stroke-width:14;fill:none;stroke-linecap:round;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.7,.2,1)}
+  .score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .score-value{font-family:'Fraunces',serif;font-weight:900;font-size:72px;line-height:1;color:var(--forest-deep);letter-spacing:-.04em}
+  .score-value .slash{color:var(--gold);font-weight:400}
+  .score-value .max{font-size:38px;color:var(--muted)}
+  .grade-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;font-weight:600;font-size:15px;margin-bottom:24px}
+  .grade-excellent{background:rgba(61,122,79,.15);color:var(--ok);border:1px solid var(--ok)}
+  .grade-good{background:rgba(184,132,42,.15);color:var(--gold);border:1px solid var(--gold)}
+  .grade-fair{background:rgba(217,162,62,.18);color:#8a5e1a;border:1px solid var(--gold-bright)}
+  .grade-poor{background:rgba(181,69,58,.12);color:var(--error);border:1px solid var(--error)}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 32px}
+  .stat{background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:14px;padding:18px 12px}
+  .stat-num{font-family:'Fraunces',serif;font-weight:700;font-size:30px;color:var(--forest);line-height:1}
+  .stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-top:6px;font-weight:500}
+  .unit-analysis{text-align:left;background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:30px}
+  .unit-analysis h3{font-family:'Fraunces',serif;font-size:18px;color:var(--forest-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .unit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border);font-size:14px}
+  .unit-row:last-child{border-bottom:none}
+  .unit-name{color:var(--ink-soft);font-weight:500}
+  .unit-score{font-weight:700;color:var(--forest)}
+  .unit-score.weak{color:var(--error)}
+  .results-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .review-section{margin-top:36px;text-align:left}
+  .review-title{font-family:'Fraunces',serif;font-weight:700;font-size:20px;color:var(--forest-deep);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .review-item{background:rgba(255,255,255,.55);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;font-size:14px}
+  .review-item .ri-q{color:var(--ink-soft);margin-bottom:6px;line-height:1.4}
+  .review-item .ri-a{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .syllabus-tag{display:inline-block;font-size:11px;background:var(--bg-2);color:var(--forest);padding:2px 8px;border-radius:4px;font-weight:600;margin-top:4px}
+  .badge{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:600}
+  .badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .badge.bad{background:var(--error-soft);color:var(--error)}
+  @media (max-width:720px){
+    .container{padding:20px 14px 60px}
+    .welcome-card,.results-card{padding:32px 22px}
+    .welcome-meta,.stats-grid{grid-template-columns:1fr;gap:8px}
+    .question-card{padding:26px 22px}
+    .question-text{font-size:19px}
+    .quiz-header{flex-direction:column;align-items:flex-start}
+    .brand-right{display:none}
+    .actions{flex-direction:column-reverse;gap:10px}
+    .actions .btn{width:100%;justify-content:center}
+  }
+  @media print {
+    body { background: #fff; }
+    body::before { display: none; }
+    .brand, .welcome-screen, .quiz-screen, .results-actions, .review-section { display: none !important; }
+    .results-card { box-shadow: none; border: none; padding: 0; }
+    .container { max-width: 100%; padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="brand">
+    <div class="brand-left">
+      <div class="brand-mark">E</div>
+      <div class="brand-text">
+        <div class="t1">Programa del Diploma · IB · NM</div>
+        <div class="t2">Economía — Macroeconomía (3.5, 3.6, 3.7)</div>
+      </div>
+    </div>
+    <div class="brand-right"><strong>Guía de Estudio</strong><br>Políticas Macroeconómicas</div>
+  </header>
+
+  <section id="welcome-screen" class="screen active">
+    <div class="welcome-card">
+      <span class="eyebrow"><i class="fa-solid fa-chart-line"></i> Evaluación de Políticas Macroeconómicas</span>
+      <h1 class="welcome-title">Dominando la <em>AD-AS</em> y las Políticas</h1>
+      <p class="welcome-sub">Cuestionario de refuerzo sobre política monetaria, fiscal y de oferta (Nivel Medio). Analiza cada caso, aplica el modelo AD-AS correctamente y evalúa la eficacia de las políticas reconociendo limitaciones y trade-offs.</p>
+      
+      <div class="skills-box">
+        <div class="skills-title"><i class="fa-solid fa-brain"></i> Habilidades IB (AO1-AO4) que desarrollarás</div>
+        <ul class="skills-list">
+          <li><strong>Conocimiento y comprensión (AO1-AO2):</strong> Definir tasas reales/nominales, identificar desplazamientos AD/AS, distinguir políticas basadas en mercado vs. intervencionistas.</li>
+          <li><strong>Aplicación y análisis (AO2-AO3):</strong> Construir diagramas AD-AS con etiquetas precisas, calcular tasa real r = i − πᵉ, analizar cadenas causales completas.</li>
+          <li><strong>Síntesis y evaluación (AO3-AO4):</strong> Juzgar eficacia de políticas (trampa de liquidez, rezagos, desplazamiento), reconocer trade-offs entre equidad/eficiencia, argumentar con conceptos clave (intervención, sostenibilidad, cambio).</li>
+        </ul>
+      </div>
+
+      <div class="welcome-meta">
+        <div class="meta-item"><div class="num">20</div><div class="lbl">Preguntas por intento</div></div>
+        <div class="meta-item"><div class="num">60</div><div class="lbl">Banco de casos</div></div>
+        <div class="meta-item"><div class="num">/10</div><div class="lbl">Calificación final</div></div>
+      </div>
+      <div class="form-group">
+        <label for="studentName">Nombre y apellido del alumno</label>
+        <input type="text" id="studentName" placeholder="Ejemplo: María Fernández Soto" autocomplete="off">
+        <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre y apellido para comenzar.</div>
+      </div>
+      <button class="btn btn-primary" id="startBtn">Comenzar análisis de casos <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </section>
+
+  <section id="quiz-screen" class="screen">
+    <div class="quiz-header">
+      <div class="student-tag"><i class="fa-solid fa-user-graduate"></i><span>Alumno:</span><strong id="studentDisplay">—</strong></div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text"><strong id="qCurrent">1</strong> / <span id="qTotal">20</span></div>
+      </div>
+    </div>
+    <div class="question-card" id="questionCard"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" id="quitBtn"><i class="fa-solid fa-door-open"></i> Salir</button>
+      <button class="btn btn-primary" id="nextBtn" disabled>Siguiente caso <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </section>
+
+  <section id="results-screen" class="screen">
+    <div class="results-card">
+      <div class="results-eyebrow">Evaluación completada</div>
+      <div class="results-name" id="resultsName">—</div>
+      <div class="score-circle">
+        <svg viewBox="0 0 220 220">
+          <defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b8842a"/><stop offset="100%" stop-color="#1f4a3d"/></linearGradient></defs>
+          <circle class="track" cx="110" cy="110" r="100"/>
+          <circle class="fill" id="scoreRing" cx="110" cy="110" r="100"/>
+        </svg>
+        <div class="score-inner">
+          <div class="score-value"><span id="scoreNum">0</span><span class="slash">/</span><span class="max">10</span></div>
+          <div class="score-label">Calificación final</div>
+        </div>
+      </div>
+      <div class="grade-pill" id="gradePill"></div>
+      
+      <div class="unit-analysis" id="unitAnalysis">
+        <h3><i class="fa-solid fa-chart-pie"></i> Desglose por Tema</h3>
+        <div id="unitList"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-num" id="statCorrect">0</div><div class="stat-lbl">Correctas</div></div>
+        <div class="stat"><div class="stat-num" id="statWrong">0</div><div class="stat-lbl">Incorrectas</div></div>
+        <div class="stat"><div class="stat-num" id="statPct">0%</div><div class="stat-lbl">Rendimiento</div></div>
+      </div>
+      <div class="results-actions">
+        <button class="btn btn-ghost" id="reviewBtn"><i class="fa-solid fa-list-check"></i> Revisar respuestas</button>
+        <button class="btn btn-ghost" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+        <button class="btn btn-primary" id="retryBtn"><i class="fa-solid fa-rotate-right"></i> Intentar de nuevo</button>
+      </div>
+      <div class="review-section" id="reviewSection" style="display:none;">
+        <div class="review-title"><i class="fa-solid fa-clipboard-list"></i> Revisión detallada de casos</div>
+        <div id="reviewList"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ============================================================
+   BANCO DE 60 PREGUNTAS — ECONOMÍA IB NM (Macroeconomía 3.5–3.7)
+   Excluye TODO lo marcado "solo en el NS" en la Guía oficial.
+   Cada pregunta: mini-lectura (sin pistas), pregunta, 4 opciones, explicación.
+   ============================================================ */
+const QUESTION_BANK = [
+  // ========== 3.5 POLÍTICA MONETARIA ==========
+  {topic:"3.5 Política Monetaria",unit:"Objetivos e instrumentos",syllabus:"Objetivos del banco central",scenario:"El banco central de un país anuncia que su meta principal es mantener la inflación en 3 % ± 1 punto porcentual, mientras también busca reducir las fluctuaciones del ciclo económico.",question:"¿Cuál de los siguientes NO es un objetivo estándar de política monetaria en el programa NM?",options:["Inflación baja y estable mediante metas de inflación.","Desempleo bajo a través de la tasa de empleo pleno.","Control directo del tipo de cambio nominal como meta principal.","Fomento de un entorno estable para el crecimiento a largo plazo."],answer:2,explanation:"El control directo del tipo de cambio NO es un objetivo estándar de política monetaria en NM. Los objetivos son: inflación baja/estable, desempleo bajo, estabilidad del ciclo, crecimiento a largo plazo y equilibrio externo. El tipo de cambio es una variable que puede verse afectada, no una meta directa."},
+  {topic:"3.5 Política Monetaria",unit:"Tasas de interés",syllabus:"Tasas reales vs nominales (Fisher)",scenario:"La tasa de interés nominal de un préstamo bancario es del 8 % y la inflación esperada (πᵉ) para el período es del 3 %. Un analista calcula el rendimiento real esperado del prestamista.",question:"Según la ecuación de Fisher (r = i − πᵉ), la tasa de interés real esperada es:",options:["11 %","5 %","3 %","24 %"],answer:1,explanation:"r = i − πᵉ = 8 % − 3 % = 5 %. La tasa real descuenta la inflación esperada; mide el poder adquisitivo real del retorno."},
+  {topic:"3.5 Política Monetaria",unit:"Tasas de interés",syllabus:"Cálculo de tasa real",scenario:"Un bono gubernamental paga una tasa nominal del 6 %. Si la inflación real resultante fue del 2 % (mayor a la esperada), el prestamista obtuvo una tasa real ex-post de:",options:["8 %","4 %","2 %","3 %"],answer:1,explanation:"Tasa real ex-post = i − π_actual = 6 % − 2 % = 4 %. Cuando la inflación supera lo esperado, el prestamista gana menos en términos reales de lo anticipado."},
+  {topic:"3.5 Política Monetaria",unit:"Política expansiva",syllabus:"Cerrar brecha deflacionaria",scenario:"Una economía opera con producto real por debajo del potencial (brecha deflacionaria). El banco central reduce la tasa de interés de referencia.",question:"En el modelo AD-AS, una política monetaria expansiva bien sucedida se representa como:",options:["Desplazamiento de la OA a la derecha, reduciendo P e aumentando Y.","Desplazamiento de la DA a la derecha, aumentando tanto P como Y.","Desplazamiento de la DA a la izquierda, reduciendo P e Y.","Movimiento a lo largo de la DA hacia un punto con menor P."],answer:1,explanation:"Política monetaria expansiva → tasas menores → mayor I y C → DA se desplaza a la derecha. En brecha deflacionaria, esto eleva Y hacia Yf y P sube moderadamente."},
+  {topic:"3.5 Política Monetaria",unit:"Política restrictiva",syllabus:"Cerrar brecha inflacionaria",scenario:"Una economía opera con producto real por encima del potencial (brecha inflacionaria). El banco central sube la tasa de interés de referencia.",question:"El efecto en el diagrama AD-AS es:",options:["DA se desplaza a la izquierda; P baja e Y baja hacia Yf.","OA se desplaza a la izquierda; P sube e Y baja.","DA se desplaza a la derecha; P sube e Y sube más.","OA se desplaza a la derecha; P baja e Y sube."],answer:0,explanation:"Política restrictiva → tasas mayores → menor I y C → DA se desplaza a la izquierda. Cierra la brecha inflacionaria reduciendo P y Y hacia el potencial."},
+  {topic:"3.5 Política Monetaria",unit:"Eficacia - Limitaciones",syllabus:"Trampa de liquidez / límite cero",scenario:"La tasa de interés de referencia está en 0,25 % y la economía sigue en recesión profunda con baja confianza. El banco central no puede bajar más la tasa nominal.",question:"Esta situación ilustra cuál limitación de la política monetaria:",options:["Rezago de impacto (time lag).","Espacio limitado para recortar tasas cerca de cero (límite cero / trampa de liquidez).","Efecto de desplazamiento (crowding out).","Incapacidad para afectar las expectativas de inflación."],answer:1,explanation:"Cuando las tasas nominales están cerca de cero, el banco central tiene munición limitada para estimular vía tasas menores. Es la 'trampa de liquidez' o límite cero efectivo (zero lower bound)."},
+  {topic:"3.5 Política Monetaria",unit:"Eficacia - Limitaciones",syllabus:"Baja confianza",scenario:"El banco central recorta tasas, pero las empresas no invierten porque prevén demanda futura débil y los hogares no consumen por temor al desempleo.",question:"¿Qué limitación de la política monetaria describe este escenario?",options:["Trampa de liquidez.","Baja confianza empresarial y del consumidor.","Rezago largo en la transmisión.","Neutralidad de la moneda a largo plazo."],answer:1,explanation:"Incluso con tasas bajas, si la confianza es muy baja, la inversión y el consumo no responden. La política monetaria 'empuja una cuerda' (pushing on a string)."},
+  {topic:"3.5 Política Monetaria",unit:"Eficacia - Puntos fuertes",syllabus:"Flexibilidad y rapidez",scenario:"Un banco central independiente detecta presiones inflacionarias incipientes y sube la tasa de referencia en 25 pb en su próxima reunión programada.",question:"¿Qué punto fuerte de la política monetaria permite esta respuesta?",options:["Se puede dirigir a sectores específicos.","Es gradual, flexible y fácil de revertir; rezago de impacto menor que la fiscal.","No genera déficit público ni deuda.","Mejora directamente la oferta agregada a largo plazo."],answer:1,explanation:"La política monetaria se decide en reuniones regulares, los cambios son incrementales (graduales), reversibles, y el rezago de impacto (aunque existe) es típicamente menor que el de la política fiscal (que requiere proceso legislativo)."},
+  {topic:"3.5 Política Monetaria",unit:"Neutralidad monetaria",syllabus:"Largo plazo",scenario:"En el largo plazo, tras una expansión monetaria sostenida, el producto real regresa a su nivel de potencial (Yf) y solo el nivel de precios es permanentemente más alto.",question:"Este resultado refleja el concepto de:",options:["Neutralidad de la moneda a largo plazo.","Efecto de desplazamiento.","Multiplicador keynesiano.","Curva de Phillips a corto plazo."],answer:0,explanation:"Neutralidad monetaria: en LP, cambios en la oferta de dinero solo afectan variables nominales (P), no reales (Y). Y está determinado por factores de oferta (tecnología, trabajo, capital)."},
+
+  // ========== 3.6 POLÍTICA FISCAL ==========
+  {topic:"3.6 Política Fiscal",unit:"Ingresos y gastos",syllabus:"Fuentes de ingresos fiscales",scenario:"El gobierno financia su gasto mediante impuesto a la renta (directo), IVA (indirecto), dividendos de empresas estatales y venta de activos públicos.",question:"¿Cuál de los siguientes NO es una fuente de ingresos fiscales según el syllabus NM?",options:["Impuestos directos (renta, patrimonio).","Impuestos indirectos (IVA, selectivos).","Emisión de dinero por el banco central.","Venta de bienes/servicios de empresas estatales."],answer:2,explanation:"La emisión de dinero es función del banco central (política monetaria), no ingreso fiscal. Ingresos fiscales: impuestos directos/indirectos, ventas de empresas estatales, venta de activos, préstamos (financiamiento, no ingreso)."},
+  {topic:"3.6 Política Fiscal",unit:"Ingresos y gastos",syllabus:"Tipos de gasto público",scenario:"El presupuesto incluye salarios de docentes (gasto corriente), construcción de hospitales (gasto de capital) y pensiones no contributivas (transferencias).",question:"La construcción de infraestructura pública se clasifica como:",options:["Gasto corriente.","Gasto de capital.","Transferencia monetaria.","Ingreso fiscal."],answer:1,explanation:"Gasto de capital = inversión en activos productivos (infraestructura, maquinaria). Gasto corriente = consumo (sueldos, insumos). Transferencias = pagos sin contraprestación de bienes/servicios (pensiones, subsidios)."},
+  {topic:"3.6 Política Fiscal",unit:"Objetivos",syllabus:"Objetivos de política fiscal",scenario:"Un gobierno diseña su política fiscal buscando: inflación estable, desempleo bajo, crecimiento sostenido, distribución equitativa del ingreso y equilibrio externo.",question:"¿Cuál de estos NO es un objetivo explícito de política fiscal en NM?",options:["Inflación baja y estable.","Distribución equitativa del ingreso.","Maximizar el superávit primario como fin en sí mismo.","Reducir fluctuaciones del ciclo económico."],answer:2,explanation:"Maximizar superávit primario no es un objetivo per se; es una herramienta. Objetivos NM: inflación baja/estable, desempleo bajo, crecimiento LP, reducir ciclos, equidad, equilibrio externo."},
+  {topic:"3.6 Política Fiscal",unit:"Política expansiva",syllabus:"Cerrar brecha deflacionaria (Keynes vs Monetarista)",scenario:"En una brecha deflacionaria, el gobierno aumenta el gasto público (G↑) y reduce impuestos (T↓). En el modelo keynesiano, la DA se desplaza a la derecha por el efecto multiplicador.",question:"Desde la perspectiva monetarista/neoclásica, la misma política fiscal expansiva:",options:["Desplaza la DA más que en el keynesiano por mayor multiplicador.","Tiene efecto nulo o menor sobre Y porque la OA es vertical (LRAS) y/o hay desplazamiento de inversión privada.","Desplaza la OA a la derecha aumentando Yf.","Genera deflación por reducción de la oferta monetaria."],answer:1,explanation:"Monetaristas/neoclásicos: OA vertical en LP (Yf). Política fiscal expansiva → mayor G financiado con deuda → sube i → desplaza I privada (crowding out). Efecto neto sobre Y es nulo o mínimo; solo sube P."},
+  {topic:"3.6 Política Fiscal",unit:"Política restrictiva",syllabus:"Austeridad / brecha inflacionaria",scenario:"Para cerrar una brecha inflacionaria, el gobierno recorta gasto y sube impuestos (política de austeridad).",question:"En el diagrama AD-AS keynesiano, esto produce:",options:["DA → izquierda; P↓ Y↓ hacia Yf.","DA → derecha; P↑ Y↑.","OA → izquierda; P↑ Y↓.","OA → derecha; P↓ Y↑."],answer:0,explanation:"Política fiscal restrictiva (G↓, T↑) reduce DA → desplazamiento a la izquierda. Cierra brecha inflacionaria: P baja e Y vuelve hacia Yf."},
+  {topic:"3.6 Política Fiscal",unit:"Eficacia - Limitaciones",syllabus:"Presión política y rezagos",scenario:"Un gobierno pospone un ajuste fiscal necesario (recortes/impuestos) porque es año electoral, y cuando por fin lo implementa, la economía ya cambió de fase del ciclo.",question:"Las limitaciones ilustradas son:",options:["Presión política y rezago de impacto (time lag).","Efecto de desplazamiento y neutralidad fiscal.","Trampa de liquidez y baja confianza.","Costo de oportunidad y equidad."],answer:0,explanation:"Presión política = ciclos electorales distorsionan timing. Rezago = tiempo entre decisión legislativa, implementación y efecto real (recognition → decision → implementation → impact lags)."},
+  {topic:"3.6 Política Fiscal",unit:"Eficacia - Limitaciones NS excluido",syllabus:"Deuda sostenible (NM) vs Desplazamiento (NS)",scenario:"Un país eleva su relación deuda/PIB al 90 % tras años de déficits. Los inversionistas exigen mayores primas de riesgo, encareciendo el financiamiento.",question:"Esta situación ilustra cuál limitación NM de la política fiscal:",options:["Efecto de desplazamiento (crowding out) — solo NS.","Necesidad de mantener nivel de deuda sostenible.","Estabilizadores automáticos insuficientes — solo NS.","Neutralidad fiscal de Ricardo-Barro."],answer:1,explanation:"Deuda insostenible → mayor riesgo soberano → tasas arriba → frena inversión y crecimiento. Es limitación NM. El 'efecto de desplazamiento' (crowding out diagrama) es SOLO NS."},
+  {topic:"3.6 Política Fiscal",unit:"Eficacia - Puntos fuertes",syllabus:"Focalización y recesión profunda",scenario:"En una recesión profunda con brecha deflacionaria grande, el gobierno lanza un plan de infraestructura verde dirigido a regiones de alto desempleo.",question:"¿Qué punto fuerte de la política fiscal aprovecha esta medida?",options:["Es gradual, flexible y fácil de revertir.","Se puede dirigir a sectores/regiones específicas; gasto público eficaz en recesión profunda.","No afecta el presupuesto público.","Opera automáticamente sin decisión política."],answer:1,explanation:"La fiscal es 'quirúrgica': puede focalizarse (sectores, regiones, grupos). En recesión profunda (brecha grande, tasas cerca de cero), el gasto público tiene alto multiplicador y no hay crowding out (recursos ociosos)."},
+  {topic:"3.6 Política Fiscal",unit:"Estabilizadores automáticos",syllabus:"Solo NS — excluido",scenario:"Durante una recesión, la recaudación de impuesto a la renta cae automáticamente y los subsidios por desempleo suben, sin nueva ley.",question:"¿Por qué este tema NO se evalúa en NM?",options:["Porque los estabilizadores automáticos no existen en la realidad.","Porque 'impuestos progresivos y subsidios por desempleo' son SOLO NS según la Guía.","Porque solo operan en economías cerradas.","Porque contradicen la neutralidad fiscal."],answer:1,explanation:"La Guía marca explícitamente: 'Estabilizadores automáticos: impuestos progresivos, subsidios por desempleo (solo en el NS)'. En NM se entiende el concepto general, pero no se exige análisis ni diagrama."},
+
+  // ========== 3.7 POLÍTICAS DE OFERTA ==========
+  {topic:"3.7 Políticas de Oferta",unit:"Objetivos",syllabus:"Crecimiento LP, competencia, mercado laboral",scenario:"Un gobierno elimina barreras de entrada en telecomunicaciones, reduce subsidios por desempleo y recorta impuesto corporativo.",question:"¿Cuál de los siguientes NO es un objetivo explícito de las políticas de oferta en NM?",options:["Crecimiento LP al incrementar capacidad productiva.","Mejora de competencia y eficiencia.","Reducir costos laborales y desempleo via flexibilización.","Controlar la inflación mediante metas de agregados monetarios."],answer:3,explanation:"Controlar inflación via agregados monetarios es política MONETARIA. Objetivos oferta: crecimiento LP (capacidad), competencia/eficiencia, flexibilizar mercado laboral, competitividad internacional, incentivos a innovación/inversión."},
+  {topic:"3.7 Políticas de Oferta",unit:"Basadas en mercado - Competencia",syllabus:"Desregulación, privatización, liberalización, antimonopolio",scenario:"Un país elimina la obligación de licencia para abrir tiendas minoristas, vende la aerolínea de bandera, reduce aranceles y multa a un cártel de cemento.",question:"Estas medidas son ejemplos de políticas de oferta basadas en el mercado orientadas a:",options:["Fomentar la competencia.","Flexibilizar el mercado laboral.","Crear incentivos fiscales.","Intervención directa del Estado."],answer:0,explanation:"Desregulación, privatización, liberalización comercial y reglamentación antimonopolio son las 4 categorías de políticas 'para fomentar la competencia' (basadas en mercado)."},
+  {topic:"3.7 Políticas de Oferta",unit:"Basadas en mercado - Mercado laboral",syllabus:"Sindicatos, subsidios, salario mínimo",scenario:"Un gobierno reduce la capacidad de huelga de los sindicatos, recorta el subsidio por desempleo del 70 % al 50 % del salario anterior y elimina el salario mínimo nacional.",question:"El efecto buscado en el diagrama de mercado laboral es:",options:["Desplazar la oferta de trabajo a la izquierda, subiendo salario real.","Desplazar la oferta de trabajo a la derecha, reduciendo salario real de equilibrio y desempleo voluntario.","Desplazar la demanda de trabajo a la izquierda.","Crear un piso salarial efectivo por encima del equilibrio."],answer:1,explanation:"Menor poder sindical + menor subsidio + sin salario mínimo → oferta de trabajo más elástica/derecha → salario real de equilibrio baja → desempleo voluntario/estructural se reduce. Diagrama: salario mínimo (piso) eliminado."},
+  {topic:"3.7 Políticas de Oferta",unit:"Basadas en mercado - Incentivos",syllabus:"Impuestos renta, corporativos, ganancias capital",scenario:"Un país reduce el impuesto marginal máximo a la renta personal del 45 % al 35 % y el impuesto corporativo del 30 % al 22 %.",question:"El canal principal por el que esto afecta la oferta agregada a largo plazo es:",options:["Aumenta la DA por mayor consumo inmediato.","Mejora incentivos para trabajar, ahorrar, invertir e innovar → OALP (LRAS) se desplaza a la derecha.","Reduce costos laborales nominales desplazando OA a corto plazo.","Genera superávit fiscal que financia infraestructura."],answer:1,explanation:"Recortes de impuestos sobre renta/ganancias/corporativo → mayores incentivos marginales → más oferta de trabajo, más ahorro/inversión, más I+D → capacidad productiva ↑ → OALP (LRAS) se desplaza a la derecha. Es política de oferta, no de demanda."},
+  {topic:"3.7 Políticas de Oferta",unit:"Intervencionistas",syllabus:"Educación, salud, I+D, infraestructura, industriales",scenario:"El Estado financia formación profesional dual, amplía cobertura de salud universal, subvenciona I+D en energías limpias y construye corredores logísticos.",question:"Estas son políticas de oferta:",options:["Basadas en el mercado, porque reducen regulaciones.","Intervencionistas, porque implican provisión/financiamiento directo del Estado.","Monetarias, porque afectan la liquidez.","Fiscales restrictivas, porque reducen gasto."],answer:1,explanation:"Educación, salud, I+D, infraestructura, políticas industriales = intervención estatal directa para elevar capital humano, tecnología y stock de capital. Son 'intervencionistas' (supply-side interventionist)."},
+  {topic:"3.7 Políticas de Oferta",unit:"Efectos cruzados",syllabus:"DA y OA",scenario:"Una política de infraestructura pública (oferta intervencionista) también genera empleo en construcción y demanda de materiales en el corto plazo.",question:"Este efecto sobre la demanda agregada en el corto plazo es:",options:["Efecto sobre la DA (corto plazo): P y Y suben.","Efecto sobre la OALP (largo plazo): Yf sube.","Neutralidad fiscal: DA no cambia.","Desplazamiento de la OA a la izquierda."],answer:0,explanation:"Políticas de oferta (especialmente infraestructura, educación) tienen efectos en DA a CP (inyección de gasto) y en OA/LP (capacidad). Distinguir: CP = DA se mueve; LP = OALP se mueve."},
+  {topic:"3.7 Políticas de Oferta",unit:"Eficacia - Limitaciones mercado",syllabus:"Equidad, tiempo, intereses, ambiente",scenario:"La desregulación financiera y la privatización de servicios básicos aumentan la eficiencia pero amplían la brecha de ingresos y generan oposición de grupos afectados (intereses creados).",question:"Limitaciones de políticas basadas en MERCADO (NM):",options:["Costos fiscales altos y rezago de implementación.","Cuestiones de equidad; gran tiempo de transmisión; intereses creados; impacto ambiental.","Solo funcionan en economías cerradas.","Generan hiperinflación por expansión monetaria."],answer:1,explanation:"Limitaciones basadas en mercado (Guía NM): equidad (brechas), tiempo largo (reformas estructurales), intereses creados (lobbies), impacto ambiental (externalidades negativas). Las intervencionistas tienen: costos fiscales y tiempo."},
+  {topic:"3.7 Políticas de Oferta",unit:"Eficacia - Limitaciones intervencionistas",syllabus:"Costos y tiempo",scenario:"Un plan masivo de educación técnica y I+D requiere 10 años para mostrar impacto en productividad y cuesta 4 % del PIB anual.",question:"Limitaciones de políticas INTERVENCIONISTAS (NM):",options:["Equidad, intereses creados, impacto ambiental.","Costos fiscales elevados y gran tiempo de transmisión.","Efecto de desplazamiento y neutralidad monetaria.","Trampa de liquidez y baja confianza."],answer:1,explanation:"Limitaciones intervencionistas (Guía NM): costos (presupuesto público) y tiempo de transmisión largo. No hay 'equidad' ni 'intereses creados' como limitación principal aquí (son de las basadas en mercado)."},
+  {topic:"3.7 Políticas de Oferta",unit:"Eficacia - Puntos fuertes",syllabus:"Asignación, presupuesto, apoyo directo",scenario:"Un paquete de desregulación + privatización no requiere gasto público nuevo y, al eliminar distorsiones, mejora la asignación de recursos vía señales de precio.",question:"Punto fuerte de políticas basadas en MERCADO:",options:["Apoyo directo a sectores estratégicos.","Mejor asignación de recursos; no afectan al presupuesto público.","Operan automáticamente como estabilizadores.","Cierran brechas deflacionarias en meses."],answer:1,explanation:"Basadas en mercado: (1) mejor asignación vía precios, (2) no cuestan presupuesto (son reformas regulatorias/legales). Intervencionistas: apoyo directo a sectores clave para crecimiento."},
+  {topic:"3.7 Políticas de Oferta",unit:"Diagrama AD-AS + OALP",syllabus:"Desplazamiento OALP/LRAS",scenario:"Tras una década de reformas de oferta exitosas (educación, desregulación, infraestructura), la capacidad productiva de la economía aumenta sostenidamente.",question:"En el modelo AD-AS, esto se muestra como:",options:["DA desplazándose a la derecha repetidamente.","OA a corto plazo desplazándose a la izquierda.","OALP (LRAS) desplazándose a la derecha; P tiende a bajar e Y potencial sube.","OA vertical volviéndose horizontal."],answer:2,explanation:"Políticas de oferta exitosas → capacidad productiva ↑ → OALP (LRAS vertical en Yf) se desplaza a la derecha. Nuevo equilibrio LP: Yf' > Yf, P' < P (si DA constante). Diagrama clave: LRAS₁ → LRAS₂ derecha."},
+  {topic:"3.7 Políticas de Oferta",unit:"Diagrama salario mínimo",syllabus:"Mercado laboral",scenario:"En un mercado laboral competitivo, el salario de equilibrio es $10/hora. El gobierno fija un salario mínimo legal de $14/hora.",question:"El diagrama de mercado laboral muestra:",options:["Exceso de demanda de trabajo (escasez de trabajadores).","Exceso de oferta de trabajo (desempleo) = cantidad ofrecida > demandada a $14.","Desplazamiento de la demanda de trabajo a la derecha.","Eliminación del desempleo voluntario."],answer:1,explanation:"Salario mínimo por encima de equilibrio → piso efectivo → cantidad de trabajo ofrecida > demandada → desempleo (exceso de oferta). Política de oferta basada en mercado: eliminar salario mínimo para reducir este desempleo."},
+
+  // ========== INTEGRACIÓN / CONCEPTOS CLAVE / TOA ==========
+  {topic:"Integración 3.5-3.7",unit:"Conceptos clave IB",syllabus:"Intervención, equidad, eficiencia, sostenibilidad",scenario:"Un gobierno debe elegir entre: (A) política monetaria expansiva que cierra brecha deflacionaria pero arriesga burbuja de activos, o (B) política de oferta intervencionista (educación) que tarda 10 años pero mejora equidad y sostenibilidad.",question:"Este dilema ilustra el concepto clave de:",options:["Escasez: recursos limitados, fines alternativos.","Intervención: toda política implica trade-offs; elección entre objetivos en conflicto.","Cambio: las economías evolucionan con el tiempo.","Interdependencia: sectores conectados."],answer:1,explanation:"Concepto clave INTERVENCIÓN: la política económica implica elegir entre objetivos en conflicto (CP vs LP, eficiencia vs equidad, velocidad vs profundidad). No hay almuerzo gratis; toda intervención tiene costos de oportunidad."},
+  {topic:"Integración 3.5-3.7",unit:"Mezcla de políticas (policy mix)",syllabus:"Coordinación monetaria-fiscal-oferta",scenario:"En una recesión profunda con tasas cerca de cero (trampa de liquidez), el banco central no puede estimular más. El gobierno lanza gasto en infraestructura (fiscal expansiva) mientras avanza reformas de desregulación (oferta mercado).",question:"Esta combinación se denomina:",options:["Neutralidad de política.","Mezcla de políticas (policy mix) coordinada.","Efecto de desplazamiento.","Regla de Taylor."],answer:1,explanation:"Policy mix: combinación de monetaria, fiscal y oferta. En trampa de liquidez, fiscal toma el liderazgo (DA) mientras oferta prepara LP (OALP). Coordinación evita contradicciones (ej. fiscal expansiva + monetaria restrictiva)."},
+  {topic:"Integración 3.5-3.7",unit:"Indagación - Casos reales",syllabus:"Éxitos/limitaciones fiscal desempleo; impactos monetaria stakeholders",scenario:"Un país reduce el desempleo del 12 % al 6 % en 3 años usando gasto público focalizado en infraestructura y subsidios a la contratación, pero su deuda/PIB sube del 40 % al 70 %.",question:"¿Qué trade-off central ilustra este caso de indagación?",options:["Eficiencia vs equidad en política monetaria.","Éxito de política fiscal en desempleo vs sostenibilidad de deuda (limitación fiscal).","Neutralidad monetaria vs trampa de liquidez.","Flexibilidad laboral vs salario mínimo."],answer:1,explanation:"Indagación guía: 'Éxitos y limitaciones de la política fiscal para lograr desempleo bajo'. El trade-off: fiscal expansiva reduce desempleo (punto fuerte) pero eleva deuda (limitación: sostenibilidad)."},
+  {topic:"Integración 3.5-3.7",unit:"Cálculo integrado",syllabus:"Tasa real + brecha producto",scenario:"Tasa nominal = 7 %, inflación esperada = 4 %. Producto actual = $900 mm, producto potencial (Yf) = $1.000 mm. Brecha deflacionaria = $100 mm.",question:"La tasa real esperada y la brecha de producto (en %) son:",options:["r = 3 %; brecha = 10 %","r = 11 %; brecha = 10 %","r = 3 %; brecha = 11 %","r = 4 %; brecha = 9 %"],answer:0,explanation:"r = i − πᵉ = 7 % − 4 % = 3 %. Brecha % = (Yf − Y)/Yf × 100 = (1000−900)/1000 × 100 = 10 %."},
+];
+
+const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false };
+const TOTAL_QUESTIONS = 20;
+
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function startQuiz(){
+  const nameInput = document.getElementById('studentName');
+  const errorEl = document.getElementById('nameError');
+  const name = nameInput.value.trim();
+  if(name.length < 3 || !name.includes(' ')){ errorEl.classList.add('show'); nameInput.focus(); return; }
+  errorEl.classList.remove('show');
+  STATE.studentName = name;
+  STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
+  STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
+  document.getElementById('studentDisplay').textContent = name;
+  document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
+  showScreen('quiz-screen'); renderQuestion();
+}
+
+function renderQuestion(){
+  STATE.answered = false;
+  const q = STATE.selectedQuestions[STATE.currentIndex];
+  const card = document.getElementById('questionCard');
+  const num = STATE.currentIndex + 1;
+  card.innerHTML = `
+    <div class="q-topic"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block"></span> ${q.topic}</div>
+    <div class="scenario"><span class="scenario-label">Mini-lectura</span>${q.scenario}</div>
+    <h2 class="question-text">${q.question}</h2>
+    <div class="options" id="optionsList">
+      ${q.options.map((opt,i)=>`<button class="option" data-idx="${i}"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${opt}</span></button>`).join('')}
+    </div>
+    <div class="feedback" id="feedback"></div>`;
+  document.getElementById('progressFill').style.width = ((STATE.currentIndex / TOTAL_QUESTIONS) * 100) + '%';
+  document.getElementById('qCurrent').textContent = num;
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = true;
+  nextBtn.innerHTML = (num === TOTAL_QUESTIONS) ? 'Ver resultados <i class="fa-solid fa-flag-checkered"></i>' : 'Siguiente caso <i class="fa-solid fa-arrow-right"></i>';
+  document.querySelectorAll('.option').forEach(btn=>btn.addEventListener('click', handleAnswer));
+}
+
+function handleAnswer(e){
+  if(STATE.answered) return; STATE.answered = true;
+  const selected = parseInt(e.currentTarget.dataset.idx);
+  const q = STATE.selectedQuestions[STATE.currentIndex];
+  const correct = q.answer;
+  const options = document.querySelectorAll('.option');
+  options.forEach((btn,i)=>{ btn.disabled=true; if(i===correct) btn.classList.add('correct'); else if(i===selected) btn.classList.add('incorrect'); });
+  STATE.userAnswers.push({ selected, correct, isCorrect: selected === correct, question: q });
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (selected === correct ? 'ok' : 'bad');
+  fb.innerHTML = `<div class="feedback-head"><i class="fa-solid ${selected===correct ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>${selected === correct ? '¡Análisis correcto!' : 'Análisis incorrecto'}</div><div class="feedback-body">${q.explanation}</div>`;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  if(STATE.currentIndex < TOTAL_QUESTIONS - 1){ STATE.currentIndex++; renderQuestion(); } 
+  else { showResults(); }
+}
+
+function showResults(){
+  const correct = STATE.userAnswers.filter(a=>a.isCorrect).length;
+  const wrong = TOTAL_QUESTIONS - correct;
+  const score10 = (correct / TOTAL_QUESTIONS) * 10;
+  const pct = Math.round((correct/TOTAL_QUESTIONS)*100);
+
+  document.getElementById('resultsName').textContent = STATE.studentName;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('statPct').textContent = pct + '%';
+
+  const scoreNum = document.getElementById('scoreNum');
+  let current = 0; const target = Math.round(score10 * 10) / 10; const step = target / 40;
+  const interval = setInterval(()=>{ current += step; if(current >= target){ current = target; clearInterval(interval); } scoreNum.textContent = current.toFixed(1).replace('.0',''); }, 30);
+
+  const circumference = 2 * Math.PI * 100;
+  const offset = circumference * (1 - score10/10);
+  setTimeout(()=>{ document.getElementById('scoreRing').style.strokeDashoffset = offset; }, 100);
+
+  const pill = document.getElementById('gradePill');
+  let grade, icon, cls;
+  if(score10 >= 9){ grade='Excelente dominio'; icon='fa-trophy'; cls='grade-excellent'; }
+  else if(score10 >= 7){ grade='Buen desempeño'; icon='fa-thumbs-up'; cls='grade-good'; }
+  else if(score10 >= 5){ grade='Desempeño aceptable'; icon='fa-circle-check'; cls='grade-fair'; }
+  else { grade='Requiere refuerzo'; icon='fa-book'; cls='grade-poor'; }
+  pill.className = 'grade-pill ' + cls;
+  pill.innerHTML = `<i class="fa-solid ${icon}"></i> ${grade}`;
+
+  const unitCounts = {};
+  STATE.userAnswers.forEach(a => {
+    const unit = a.question.unit;
+    if(!unitCounts[unit]) unitCounts[unit] = { correct: 0, total: 0 };
+    unitCounts[unit].total++;
+    if(a.isCorrect) unitCounts[unit].correct++;
+  });
+
+  const unitList = document.getElementById('unitList');
+  unitList.innerHTML = '';
+  Object.keys(unitCounts).forEach(unit => {
+    const data = unitCounts[unit];
+    const weak = (data.correct / data.total) < 0.6 ? 'weak' : '';
+    unitList.innerHTML += `
+      <div class="unit-row">
+        <span class="unit-name">${unit}</span>
+        <span class="unit-score ${weak}">${data.correct} / ${data.total} correctas</span>
+      </div>
+    `;
+  });
+
+  document.getElementById('reviewSection').style.display = 'none';
+  document.getElementById('reviewList').innerHTML = '';
+  showScreen('results-screen');
+}
+
+function toggleReview(){
+  const section = document.getElementById('reviewSection');
+  const list = document.getElementById('reviewList');
+  const visible = section.style.display === 'block';
+  if(!visible){
+    if(list.children.length === 0){
+      STATE.userAnswers.forEach((a, i)=>{
+        const item = document.createElement('div');
+        item.className = 'review-item';
+        const letter = String.fromCharCode(65 + a.selected);
+        const correctLetter = String.fromCharCode(65 + a.correct);
+        item.innerHTML = `
+          <div class="ri-q"><strong>${i+1}.</strong> ${a.question.question}</div>
+          <div class="ri-a">
+            <span class="badge ${a.isCorrect?'ok':'bad'}">${a.isCorrect ? 'Correcta' : 'Incorrecta'}</span> 
+            Tu respuesta: ${letter}. ${a.question.options[a.selected]} 
+            ${!a.isCorrect ? ` &nbsp;·&nbsp; <span style="color:var(--ok);font-weight:600">Correcta: ${correctLetter}. ${a.question.options[a.correct]}</span>` : ''}
+          </div>
+          <span class="syllabus-tag"><i class="fa-solid fa-book"></i> ${a.question.syllabus}</span>
+        `;
+        list.appendChild(item);
+      });
+    }
+    section.style.display = 'block';
+  } else { section.style.display = 'none'; }
+}
+
+document.getElementById('startBtn').addEventListener('click', startQuiz);
+document.getElementById('studentName').addEventListener('keydown', e=>{ if(e.key === 'Enter') startQuiz(); });
+document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+document.getElementById('quitBtn').addEventListener('click', ()=>{ if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ showScreen('welcome-screen'); document.getElementById('studentName').value = ''; } });
+document.getElementById('retryBtn').addEventListener('click', ()=>{ showScreen('welcome-screen'); document.getElementById('studentName').value = STATE.studentName; });
+document.getElementById('reviewBtn').addEventListener('click', toggleReview);
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('quiz-screen').classList.contains('active')) return;
+  
+  if (STATE.answered && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    nextQuestion();
+    return;
+  }
+  
+  if (!STATE.answered) {
+    let idx = -1;
+    if (['1', '2', '3', '4'].includes(e.key)) idx = parseInt(e.key) - 1;
+    if (['a', 'b', 'c', 'd'].includes(e.key.toLowerCase())) idx = e.key.toLowerCase().charCodeAt(0) - 97;
+    
+    if (idx !== -1 && idx < 4) {
+      const btn = document.querySelector(`.option[data-idx="${idx}"]`);
+      if (btn) btn.click();
+    }
+  }
+});
+</script>
+</body>
+</html>

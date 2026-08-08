@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación: Elasticidad de la Demanda — Economía IB NM</title>
+    <style>
+        :root {
+            --ib-blue: #002147;
+            --ib-gold: #C69214;
+            --light-bg: #f4f7f6;
+            --text-dark: #333;
+            --white: #ffffff;
+            --ib-green: #155724;
+            --ib-green-bg: #d4edda;
+            --ib-green-border: #c3e6cb;
+            --ib-red: #721c24;
+            --ib-red-bg: #f8d7da;
+            --ib-red-border: #f5c6cb;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            display: flex; flex-direction: column; align-items: center;
+            line-height: 1.7; font-size: 1.05em;
+        }
+        header {
+            background-color: var(--ib-blue); color: var(--white);
+            width: 100%; padding: 25px 0; text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;
+        }
+        h1 { margin: 0; font-size: 2.2em; letter-spacing: 1px; }
+        h2 { color: var(--ib-blue); border-bottom: 3px solid var(--ib-gold); padding-bottom: 8px; margin-top: 0; font-size: 1.8em; }
+        .container {
+            width: 90%; max-width: 1000px; margin: 20px auto;
+            background: var(--white); padding: 40px;
+            border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        button {
+            background-color: var(--ib-blue); color: var(--white);
+            border: none; padding: 12px 25px; border-radius: 5px;
+            cursor: pointer; font-size: 1em; transition: background 0.3s; font-weight: bold;
+        }
+        button:hover { background-color: var(--ib-gold); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .scenario-box {
+            background: #eef6fc; border-left: 5px solid var(--ib-blue);
+            padding: 20px; margin: 20px 0; border-radius: 0 5px 5px 0; font-style: italic;
+        }
+        .question-text { font-size: 1.2em; font-weight: bold; color: var(--ib-blue); margin: 20px 0 10px; }
+        .options { display: flex; flex-direction: column; gap: 12px; margin: 15px 0; }
+        .option {
+            background: #f8f9fa; border: 2px solid #e0e0e0; border-left: 4px solid var(--ib-gold);
+            padding: 16px 18px; border-radius: 5px; cursor: pointer; transition: all 0.2s;
+            font-size: 1.02em;
+        }
+        .option:hover { background: #eef6fc; border-color: var(--ib-blue); }
+        .option.selected { background: #eef6fc; border-color: var(--ib-blue); box-shadow: 0 0 0 2px var(--ib-blue); }
+        .option.correct { background: var(--ib-green-bg); border-color: var(--ib-green); border-left-color: var(--ib-green); }
+        .option.incorrect { background: var(--ib-red-bg); border-color: var(--ib-red); border-left-color: var(--ib-red); }
+        .feedback {
+            margin-top: 18px; padding: 18px 20px; border-radius: 5px; display: none;
+            font-size: 1.02em;
+        }
+        .feedback.show { display: block; }
+        .feedback.ok { background: var(--ib-green-bg); border: 1px solid var(--ib-green-border); border-left: 5px solid var(--ib-green); }
+        .feedback.no { background: var(--ib-red-bg); border: 1px solid var(--ib-red-border); border-left: 5px solid var(--ib-red); }
+        .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; }
+        .ib-concept { background: #fff3cd; padding: 3px 6px; border-radius: 3px; font-weight: bold; color: #856404; border: 1px solid #ffeeba; }
+        .progress { text-align: center; color: var(--ib-blue); font-weight: bold; margin-bottom: 10px; }
+        .results-score { font-size: 3em; font-weight: bold; color: var(--ib-blue); text-align: center; margin: 20px 0; }
+        .hidden { display: none; }
+        .review-item { background: #f8f9fa; border-left: 4px solid var(--ib-gold); padding: 14px 18px; margin: 12px 0; border-radius: 4px; }
+        .review-item .q { font-weight: bold; color: var(--ib-blue); }
+        .review-item .a-ok { color: var(--ib-green); font-weight: bold; }
+        .review-item .a-no { color: var(--ib-red); font-weight: bold; }
+        .tag { display: inline-block; background: var(--ib-blue); color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Elasticidad de la Demanda</h1>
+        <p>Economía IB | Nivel Medio (NM) | Evaluación de conceptos</p>
+    </header>
+
+    <div class="container">
+        <!-- INTRO -->
+        <div id="intro">
+            <h2>Evaluación: Elasticidad de la Demanda (EPD y EID)</h2>
+            <div class="scenario-box">
+                <p>Esta evaluación cubre <strong>elasticidad de la demanda</strong>: Elasticidad Precio (EPD), su relación con el Ingreso Total, determinantes, y Elasticidad Ingreso (EID) con su clasificación de bienes. No incluye mecanismo de precio ni otros temas.</p>
+                <p>10 preguntas de contexto real (estilo IB). En cada una, elige la opción correcta y pulsa <b>Verificar</b>. Las distractoras son plausibles: solo se descartan dominando los conceptos.</p>
+            </div>
+            <div class="nav-buttons" style="border:none; justify-content:center;">
+                <button onclick="startQuiz()">▶ Comenzar evaluación</button>
+            </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div id="quizArea" class="hidden">
+            <div class="progress" id="progress">Pregunta 1 de 10</div>
+            <div class="scenario-box" id="context"></div>
+            <div class="question-text" id="question"></div>
+            <div class="options" id="options"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="nav-buttons">
+                <button id="prevBtn" onclick="prevQuestion()">◄ Anterior</button>
+                <button id="verifyBtn" onclick="verify()" disabled>Verificar respuesta</button>
+                <button id="nextBtn" onclick="nextQuestion()" disabled>Siguiente ►</button>
+            </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div id="results" class="hidden">
+            <h2>Resultado de la Evaluación</h2>
+            <div class="results-score" id="scoreText">0 / 10</div>
+            <p id="scoreMsg" style="text-align:center;"></p>
+            <div id="review"></div>
+            <div class="nav-buttons" style="border:none; justify-content:center;">
+                <button onclick="location.reload()">↻ Volver a intentar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            {
+                context: "El precio de la gasolina en Ecuador sube un 25% y, como respuesta, la cantidad demandada por las familias cae solo un 10%.",
+                question: "¿Cuál es la Elasticidad Precio de la Demanda (EPD) resultante y qué tipo de demanda representa?",
+                options: [
+                    "EPD = 0.4; demanda inelástica (la caída en cantidad es menor al alza de precio).",
+                    "EPD = 2.5; demanda elástica (el alza de precio supera con creces a la caída de cantidad).",
+                    "EPD = 1; demanda unitaria (el cambio porcentual en cantidad iguala exactamente al del precio).",
+                    "EPD = 0; demanda perfectamente inelástica (la cantidad no reacciona al cambio de precio)."
+                ],
+                correct: 0,
+                explanation: "EPD = |−10%| / 25% = 0.4. Como es menor a 1, la demanda es inelástica: la cantidad cae menos que el precio."
+            },
+            {
+                context: "En un supermercado de Quito, dos marcas de café instantáneo son sustitutos casi perfectos y compiten por el mismo estante.",
+                question: "¿Qué implica esa cercanía de sustitutos para la elasticidad precio de la demanda de una de las marcas?",
+                options: [
+                    "La demanda es muy elástica, pues un leve alza de precio desvía a los clientes a la otra marca.",
+                    "La demanda es inelástica, porque los consumidores son leales a la marca pese a las diferencias de precio.",
+                    "La demanda es perfectamente inelástica, ya que no existen sustitutos cercanos en el mercado local.",
+                    "La demanda es unitaria, pues la proporción de sustitutos mantiene estable la cantidad total."
+                ],
+                correct: 0,
+                explanation: "Muchos sustitutos cercanos hacen que la demanda sea elástica: cualquier alza desvía a la marca rival de inmediato."
+            },
+            {
+                context: "Una empresa de telefonía vende un plan de lujo cuya demanda es elástica, con EPD = 2.",
+                question: "Si la gerencia desea maximizar su Ingreso Total (IT = Precio × Cantidad), ¿qué debe hacer con el precio?",
+                options: [
+                    "Reducir el precio, porque al ser elástica la demanda, el mayor volumen compensa el menor precio.",
+                    "Subir el precio, porque al ser elástica la demanda, el ingreso total aumenta con el precio.",
+                    "Mantener el precio fijo, pues con demanda elástica cualquier cambio reduce el ingreso total.",
+                    "Subir el precio hasta el punto donde la elasticidad se vuelva unitaria y el ingreso caiga a cero."
+                ],
+                correct: 0,
+                explanation: "Con demanda elástica, subir el precio reduce el ingreso total. Para maximizarlo hay que bajar el precio y ganar volumen."
+            },
+            {
+                context: "El gobierno grava el tabaco, un bien cuya demanda es muy inelástica, con el fin de recaudar fondos públicos.",
+                question: "¿Quién soporta principalmente la carga del impuesto y por qué?",
+                options: [
+                    "Los consumidores, porque al ser inelástica la demanda no reducen mucho su consumo y absorben el precio.",
+                    "Los productores, porque al ser inelástica la demanda deben bajar el precio para no perder ventas.",
+                    "El gobierno, porque los ingresos recaudados se pierden por la caída total de la demanda.",
+                    "Ambos por igual, pues la elasticidad inelástica reparte el impuesto de forma simétrica entre ellos."
+                ],
+                correct: 0,
+                explanation: "La carga recae en los consumidores: al ser inelástica la demanda, estos siguen comprando y terminan pagando el impuesto."
+            },
+            {
+                context: "Al subir el ingreso promedio de la población, la demanda de transporte en buseta interparroquial disminuye.",
+                question: "¿Qué tipo de bien es la buseta según su Elasticidad Ingreso de la Demanda (EID)?",
+                options: [
+                    "Un bien inferior, porque su EID es negativa: la cantidad demandada cae cuando sube el ingreso.",
+                    "Un bien de lujo, porque su EID es positiva y mayor a 1 al crecer con el ingreso.",
+                    "Un bien de necesidad básica, porque su EID es positiva pero menor a 1 con el ingreso.",
+                    "Un bien normal, porque su EID es negativa y la demanda aumenta con el ingreso."
+                ],
+                correct: 0,
+                explanation: "EID negativa significa bien inferior: al subir el ingreso, la gente abandona la buseta por opciones mejores (Uber, auto)."
+            },
+            {
+                context: "El ingreso de una familia sube un 10% y, como respuesta, su demanda de joyas aumenta un 30%.",
+                question: "Con EID = 3, ¿cómo clasificas las joyas?",
+                options: [
+                    "Bien normal de lujo, pues EID > 1 indica que la demanda crece más que proporcional al ingreso.",
+                    "Bien normal de necesidad, pues EID > 1 indica crecimiento proporcional al del ingreso.",
+                    "Bien inferior, pues EID > 1 implica sustitución por bienes de menor calidad al subir el ingreso.",
+                    "Bien de demanda unitaria, pues EID = 3 refleja una relación lineal con el ingreso del consumidor."
+                ],
+                correct: 0,
+                explanation: "EID = 30% / 10% = 3 (>1) indica bien normal de lujo: la demanda crece más que proporcionalmente al ingreso."
+            },
+            {
+                context: "Ante un fuerte alza del precio de la electricidad, a corto plazo las familias apenas reducen su consumo.",
+                question: "¿Cómo esperas que evolucione la elasticidad de esa demanda a largo plazo?",
+                options: [
+                    "Se vuelve más elástica, pues con tiempo las familias instalan paneles solares o cambian electrodomésticos.",
+                    "Se vuelve más inelástica, porque a largo plazo dependen aún más de la electricidad para todo.",
+                    "Permanece constante, ya que la elasticidad es una propiedad fija del bien y no del tiempo.",
+                    "Se vuelve perfectamente inelástica, pues la costumbre anula cualquier respuesta al precio."
+                ],
+                correct: 0,
+                explanation: "El tiempo permite ajustar hábitos y encontrar sustitutos; por eso la demanda pasa de inelástica a elástica en el largo plazo."
+            },
+            {
+                context: "Un pequeño agricultor de trigo vende en un mercado de competencia perfecta. Si cobra un céntimo más que el precio mundial, nadie le compra.",
+                question: "¿Qué forma tiene su curva de demanda y qué significa eso?",
+                options: [
+                    "Horizontal (EPD = ∞): ningún comprador lo elige si su precio supera al del resto del mercado.",
+                    "Vertical (EPD = 0): los compradores lo eligen sin importar el precio que él cobre por el trigo.",
+                    "Una hipérbola (EPD = 1): vende lo mismo sin importar si sube o baja su precio.",
+                    "Empinada (0<EPD<1): pierde pocos clientes aunque cobre más que sus competidores directos."
+                ],
+                correct: 0,
+                explanation: "En competencia perfecta la curva es horizontal (EPD infinita): un céntimo más caro y pierde todos los compradores."
+            },
+            {
+                context: "En una curva de demanda lineal, el punto medio de la curva tiene EPD = 1 (elasticidad unitaria).",
+                question: "¿Qué ocurre con el Ingreso Total en ese punto medio de la curva?",
+                options: [
+                    "Alcanza su máximo, porque en EPD = 1 cualquier cambio de precio deja el ingreso total intacto.",
+                    "Cae a cero, porque en EPD = 1 la cantidad y el precio se anulan mutuamente en el cálculo.",
+                    "Sigue subiendo, pues en EPD = 1 aún estamos en la zona elástica de la curva de demanda.",
+                    "Se iguala al precio, porque en EPD = 1 el ingreso total equivale exactamente al valor del precio."
+                ],
+                correct: 0,
+                explanation: "En la curva lineal, el punto medio con EPD = 1 es donde el ingreso total alcanza su valor máximo (pico de la campana)."
+            },
+            {
+                context: "En Ecuador el aceite de palma africana sube 40% y la cantidad demandada cae 25% (EPD = 0.625, inelástica).",
+                question: "Si el gobierno impone un impuesto al aceite para recaudar, ¿qué efecto tendrá y por qué?",
+                options: [
+                    "Recaudará mucho, pues la demanda inelástica apenas reduce consumo; pero afecta la equidad de bajos ingresos.",
+                    "Recaudará poco, pues la demanda elástica hará que la gente deje de comprar el aceite tributado.",
+                    "No recaudará nada, porque al ser inelástica la demanda el impuesto expulsa a todos los consumidores.",
+                    "Recaudará solo a ricos, ya que la demanda inelástica protege a los hogares de bajos recursos."
+                ],
+                correct: 0,
+                explanation: "Demanda inelástica (0.625) asegura recaudación alta pese al impuesto, pero al ser bien básico perjudica la equidad de bajos ingresos."
+            }
+        ];
+
+        let current = 0;
+        let selected = -1;
+        let answered = [];
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            answered = new Array(QUESTIONS.length).fill(false);
+            score = 0;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = QUESTIONS[current];
+            selected = -1;
+            document.getElementById('progress').textContent = 'Pregunta ' + (current + 1) + ' de ' + QUESTIONS.length;
+            document.getElementById('context').textContent = q.context;
+            document.getElementById('question').textContent = q.question;
+            // barajar opciones preservando la correcta
+            const idxs = q.options.map((_, i) => i);
+            for (let i = idxs.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+            }
+            const shuffled = idxs.map(i => q.options[i]);
+            const newCorrect = idxs.indexOf(q.correct);
+            const optDiv = document.getElementById('options');
+            optDiv.innerHTML = '';
+            shuffled.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = String.fromCharCode(65 + i) + ') ' + opt;
+                div.onclick = () => selectOption(i, div, newCorrect);
+                optDiv.appendChild(div);
+            });
+            renderQuestion._correct = newCorrect;
+            const fb = document.getElementById('feedback');
+            fb.className = 'feedback'; fb.innerHTML = '';
+            document.getElementById('verifyBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('prevBtn').disabled = (current === 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectOption(i, div, newCorrect) {
+            if (answered[current]) return;
+            selected = i;
+            document.querySelectorAll('#options .option').forEach(o => o.classList.remove('selected'));
+            div.classList.add('selected');
+            document.getElementById('verifyBtn').disabled = false;
+        }
+
+        function verify() {
+            if (answered[current] || selected === -1) return;
+            const q = QUESTIONS[current];
+            const correctIdx = renderQuestion._correct;
+            answered[current] = true;
+            const opts = document.querySelectorAll('#options .option');
+            opts.forEach((o, i) => {
+                o.onclick = null;
+                if (i === correctIdx) o.classList.add('correct');
+                else if (i === selected) o.classList.add('incorrect');
+            });
+            const fb = document.getElementById('feedback');
+            const isRight = (selected === correctIdx);
+            if (isRight) { score++; fb.className = 'feedback show ok'; }
+            else { fb.className = 'feedback show no'; }
+            const letter = String.fromCharCode(65 + correctIdx);
+            fb.innerHTML = '<strong>' + (isRight ? '✔ Correcto. ' : '✘ Incorrecto. ') + 'Respuesta correcta: ' + letter + '.</strong><br>' + q.explanation;
+            document.getElementById('verifyBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (current < QUESTIONS.length - 1) { current++; renderQuestion(); }
+            else { showResults(); }
+        }
+
+        function prevQuestion() {
+            if (current > 0) { current--; renderQuestion(); }
+        }
+
+        function showResults() {
+            document.getElementById('quizArea').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('scoreText').textContent = score + ' / ' + QUESTIONS.length;
+            let msg = '';
+            if (score >= 9) msg = 'Excelente dominio de los conceptos de elasticidad.';
+            else if (score >= 7) msg = 'Buen manejo; repasa los casos donde te equivocaste.';
+            else if (score >= 5) msg = 'Conceptos base presentes, pero faltan matices de cálculo e interpretación.';
+            else msg = 'Revisa la presentación de elasticidad antes de volver a intentarlo.';
+            document.getElementById('scoreMsg').textContent = msg;
+            buildReview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function buildReview() {
+            const rev = document.getElementById('review');
+            QUESTIONS.forEach((q, i) => {
+                const item = document.createElement('div');
+                item.className = 'review-item';
+                // determinar acierto usando answered y el indice correcto guardado en selected no persiste; usamos marca en answered + comparacion no disponible
+                item.innerHTML = '<div class="q">' + (i + 1) + '. ' + q.question + '</div>' +
+                    '<div>Correcta: <b>' + String.fromCharCode(65 + q.correct) + '</b> — ' + q.options[q.correct] + '</div>' +
+                    '<div style="margin-top:6px; color:#555;">' + q.explanation + '</div>';
+                rev.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>

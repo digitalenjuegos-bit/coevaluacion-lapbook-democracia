@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es-EC>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Políticas Macroeconómicas — Presentación IB | ADA 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ============================================================
+   PRESENTACIÓN IB — Políticas Macroeconómicas (3.5 / 3.6 / 3.7)
+   Autónomo, sin dependencias externas de JS (Chart.js descartado
+   por bloqueo en iframes de Moodle). SVG inline para diagramas.
+   ============================================================ */
+:root{
+  --crema:#f3ebd9; --papel:#fbf6ea; --bosque:#1f4a3d; --bosque-2:#2d6b56;
+  --dorado:#b8842a; --dorado-2:#d9a544; --tinta:#2b2620; --gris:#6b6357;
+  --rojo:#a83232; --verde-ok:#2f7d52; --borde:#e0d4b8;
+  --demand:#1e40af;     /* azul demanda */
+  --ofer:#b45309;      /* naranja oferta */
+  --fiscal:#7b2cbf;    /* púrpura fiscal (distintivo) */
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--crema);color:var(--tinta);line-height:1.65;min-height:100vh}
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;color:var(--bosque);margin-bottom:.5em}
+h2{font-size:clamp(1.5rem,3.2vw,1.9rem)}
+h3{font-size:clamp(1.15rem,2.4vw,1.35rem)}
+i,.ic{font-family:inherit}
+.app{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+
+/* ===== HEADER ===== */
+.encabezado{text-align:center;padding:28px 20px 22px;background:var(--papel);border:1px solid var(--borde);border-radius:18px;margin-bottom:22px;box-shadow:0 4px 22px rgba(31,74,61,.06)}
+.encabezado .sello{display:inline-flex;align-items:center;gap:8px;background:var(--bosque);color:var(--dorado-2);padding:6px 14px;border-radius:30px;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.encabezada h1{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.1}
+.encabezado .sub{color:var(--gris);font-size:.96rem;font-weight:400;margin-top:6px}
+
+/* ===== NAVEGACIÓN ===== */
+.nav{display:flex;gap:6px;flex-wrap:wrap;background:var(--papel);border:1px solid var(--borde);border-radius:14px;padding:6px;margin-bottom:22px;box-shadow:0 2px 10px rgba(31,74,61,.04);position:sticky;top:10px;z-index:10}
+.nav button{flex:1;min-width:140px;padding:12px 14px;border:none;border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;transition:all .2s;color:var(--tinta);display:flex;align-items:center;justify-content:center;gap:6px}
+.nav button:hover{background:rgba(31,74,61,.05)}
+.nav button.active{background:var(--bosque);color:var(--papel);box-shadow:0 3px 12px rgba(31,74,61,.2)}
+.nav button.clave{background:rgba(216,163,64,.15);border:1px solid var(--dorado);color:var(--bosque)}
+
+/* ===== PANTALLA ===== */
+.pantalla{display:none;animation:fade .45s ease}
+.pantalla.activa{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY:0}}
+
+/* ===== TARJETA ===== */
+.tarjeta{background:var(--papel);border:1px solid var(--borde);border-radius:16px;padding:26px 24px;box-shadow:0 4px 20px rgba(31,74,61,.05);margin-bottom:18px}
+.tarjeta h2{font-size:1.35rem;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.tarjeta h2 i{color:var(--dorado)}
+.tarjeta h3{color:var(--bosque);border-bottom:1px solid var(--borde);padding-bottom:6px;margin:16px 0 10px;font-size:1.05rem}
+.desc{color:var(--gris);margin-bottom:16px;font-size:.98rem}
+
+/* ===== OBJETIVOS ===== */
+.objetivos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.objeto{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:14px;border-left:3px solid var(--bosque)}
+.objeto .n{font-weight:600;color:var(--bosque);font-size:.9rem;margin-bottom:4px}
+.objeto .d{font-size:.85rem;color:var(--tinta);opacity:.85}
+
+/* ===== DIAGRAMAS SVG ===== */
+.diagrama-wrap{background:#fff;border:1px solid var(--borde);border-radius:14px;padding:14px;margin:16px 0;overflow-x:auto}
+.diagrama-wrap .etiquetas{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:10px;font-size:.82rem}
+.diagrama-wrap .etq{display:flex;align-items:center;gap:6px;font-weight:500}
+.diagrama-wrap .sw{width:16px;height:12px;border-radius:2px}
+.svg-wrap{position:relative;width:100%;height:340px}
+.axis{stroke:var(--gris);stroke-width:1.5}
+.axis-line{stroke:var(--tinta);stroke-width:2}
+.curva{fill-opacity:0.08;stroke-width:3}
+.curva-demand{stroke:var(--demand);fill:var(--demand)}
+.curva-ofer{stroke:var(--ofer);fill:var(--ofer)]
+.curva-fiscal{stroke:var(--fiscal);fill:var(--fiscal);}
+.equilibrio{fill:var(--bosque);stroke:var(--bosque);stroke-width:1}
+.linea-punto{stroke-dasharray:6 4;stroke-width:1.5;stroke:var(--tinta);stroke-opacity:.45}
+.flecha{fill:none;marker-end:url(#arrow)}
+.diag-label{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;fill:var(--bosque)}
+.diag-sub{font-family:'Outfit',sans-serif;font-size:12px;fill:var(--gris)}
+.diag-point{font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;fill:var(--verde-ok)}
+.legend-swi{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:500;color:var(--gris);margin-top:8px}
+
+/* ===== TABLAS COMPARATIVAS ===== */
+.cmp-table{width:100%;border-collapse:collapse;font-size:.9rem;margin:12px 0;overflow:hidden;border-radius:10px;border:1px solid var(--borde)}
+.cmp-table th,.cmp-table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--borde);vertical-align:top}
+.cmp-table thead th{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--bosque);background:var(--bosque);color:var(--papel)}
+.cmp-table thead tr th:first-child{border-radius:0}
+.cmp-table tbody tr:hover{background:rgba(31,74,61,.03)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.76rem;font-weight:600}
+.tag.demanda{background:rgba(30,64,165,.12);color:var(--demand)}
+.tag.oferta{background:rgba(180,83,9,.12);color:var(--ofer)}
+.tag.fiscal{background:rgba(123,43,203,.12);color:var(--fiscal)}
+.tag.restr{background:rgba(168,50,50,.12);color:var(--rojo)}
+.tag.expand{background:rgba(47,125,82,.12);color:var(--verde-ok)}
+
+/* ===== EVALUACIÓN CRUZADA ===== */
+.cards-eficacia{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+.eficacia-card{border:1.5px solid var(--borde);border-radius:12px;padding:16px;background:#fff}
+.eficacia-card .cab{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:1.05rem;font-weight:600}
+.eficacia-card .cab i{width:22px;text-align:center}
+.eficacia-card .fuerte,.eficacia-card .limite{border-radius:8px;padding:10px 12px;font-size:.86rem}
+.fuerte{background:rgba(47,125,82,.08);border-left:3px solid var(--verde-ok);color:#1d5236}
+.limite{background:rgba(168,50,50,.07);border-left:3px solid var(--rojo);color:#7a2222}
+
+/* ===== BOTONES / ACCORDEÓN ===== */
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--bosque);color:var(--papel);border:none;padding:11px 24px;border-radius:10px;font-family:inherit;font-size:.92rem;font-weight:500;cursor:pointer;transition:all .2s}
+.btn:hover{background:var(--bosque-2);transform:translateY(-1px)}
+.btn-sec{background:transparent;color:var(--bosque);border:1.5px solid var(--bosque)}
+.btn-sec:hover{background:rgba(31,74,61,.05)}
+.btn-ghost{background:transparent;color:var(--gris);border:1px solid var(--borde)}
+.btn-ghost:hover{color:var(--bosque);background:rgba(31,74,61,.04)}
+.acordeon{border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:12px 0;background:#fff}
+.acordeon summary{cursor:pointer;padding:14px 18px;font-family:'Fraunces',serif;font-weight:600;color:var(--bosque);list-style:none;display:flex;align-items:center;gap:10px;font-size:1.05rem}
+.acordeon summary::-webkit-details-marker{display:none}
+.acordeon summary i{color:var(--dorado);transition:transform .2s}
+.acordeon[open] summary i{transform:rotate(90deg)}
+.acordeon .contenido{padding:16px 18px;border-top:1px solid var(--borde);font-size:.92rem}
+.acordeon .contenido p{margin-bottom:10px}
+
+/* ===== CRITERIOS / RÚBRICA ===== */
+.rubrica{background:var(--papel);border:1px solid var(--borde);border-radius:14px;padding:20px;margin:14px 0}
+.rubrica h3{color:var(--bosque);margin-bottom:12px}
+.criterio{border:1px solid var(--borde);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.criterio .cab{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;font-size:.86rem}
+.criterio .prog-h{min-height:14px;border-radius:7px;background:var(--crema);overflow:hidden;margin-top:6px}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--dorado),var(--bosque));border-radius:7px;transition:width .6s}
+
+/* ===== GLOSSARY ===== */
+.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.glo-item{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:12px;font-size:.86rem}
+.glo-item .term{font-weight:600;color:var(--bosque);margin-bottom:4px;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;color:var(--gris);font-size:.82rem;margin-top:30px;padding:16px;border-top:1px solid var(--borde)}
+
+@media(max-width:600px){
+  .cards-eficacia{grid-template-columns:1fr}
+  .nav{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== HEADER ===== -->
+  <header class="encabezada">
+    <span class="sello"><i class="fa-solid fa-chart-line"></i> Economía IB · Nivel Medio · Unidad 3</span>
+    <h1 class="encabezado-titulo">Políticas Macroeconómicas</h1>
+    <p class="sub">Distinción entre políticas que desplazan la <b>demanda agregada</b> y aquellas que amplían la <b>capacidad productiva</b>. Diagramas AD/AS, terminología precisa y análisis de eficacia.</p>
+  </header>
+
+  <nav class="nav" role="tablist">
+    <button class="nav-btn active" data-tab="intro" onclick="show('intro')" role="tab">Introducción</button>
+    <button class="nav-btn" data-tab="demanda" onclick="show('demanda')" role="tab">3.5 Demanda (Monetaria)</button>
+    <button class="nav-btn" data-tab="fiscal" onclick="show('fiscal')" role="tab">3.6 Demanda (Fiscal)</button>
+    <button class="nav-btn" data-tab="oferta" onclick="show('oferta')" role="tab">3.7 Oferta (Crecimiento)</button>
+    <button class="nav-btn" data-tab="eval" onclick="show('eval')" role="tab">Análisis de Eficacia</button>
+    <button class="nav-btn clave" data-tab="crit" onclick="show('crit')" role="tab">Criterios de evaluación</button>
+    <button class="nav-btn" data-tab="gloss" onclick="show('gloss')" role="tab">Glosario</button>
+  </nav>
+
+  <!-- ===== PANTALLA 1: INTRODUCCIÓN ===== -->
+  <section id="intro" class="pantalla activa">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-compass"></i> Enfoque de la ADA</h2>
+      <p class="desc">A lo largo de esta actividad asumirás desafíos propios del análisis macroeconómico. Cada política se enmarca en un <b>segmento de la economía</b>: algunas actúan sobre la <b>demanda agregada (DA)</b> y otras sobre la <b>oferta agregada (OA)</b>. La distinción es clave, pues determina el efecto en el <b>producto real</b> y el <b>nivel de precios</b>, y condiciona su <b>eficacia a corto y largo plazo</b>.</p>
+      <h3>Objetivos de aprendizaje</h3>
+      <div class="objetivos-grid">
+        <div class="objeto"><div class="n">Diferenciar políticas</div><div class="d">Identificar si una política desplaza la DA (corto plazo / precio y producto) o expande la OA (largo plazo / capacidad productiva).</div></div>
+        <div class="objeto"><div class="n">Construir diagramas</div><div class="d">Dibujar y rotular AD/AS con equilibrios inicial y nuevo, eje de precios (P) y producto real (Y).</div></div>
+        <div class="objeto"><div class="n">Argumentar con fundamento</div><div class="d">Sustentar la eficacia de cada política con teoría, no con opinión: fortalezas, limitaciones y contrapartidas.</div></div>
+      </div>
+      <h3 style="margin-top:22px">Marco de referencia: la curva AD/AS</h3>
+      <p class="desc">Usaremos el modelo <b>oferta y demanda agregadas (AD/AS)</b> — el marco IB para analizar el impacto de las políticas macroeconómicas sobre el producto real (Y) y el nivel de precios (P). La <b>curva AD</b> muestra la relación inversa entre P y Y; la <b>OACP</b> (oferta agregada de corto plazo) indica la producción alcanzada a cada nivel de precios; y la <b>OALP</b> (oferta agregada a largo plazo, línea vertical) fija el <b>producto potencial (Y<sub>f</sub>)</b>, alrededor del cual converge la economía.</p>
+    </div>
+
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-layer-group"></i> Esquema de la unidad</h2>
+      <div class="diagrama-wrap">
+        <div class="etiquetas">
+          <div class="etq"><span class="sw" style="background:var(--demand)"></span> Demanda agregada</div>
+          <div class="etq"><span class="sw" style="background:var(--ofer)"></span> Oferta agregada (capacidad productiva)</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32"></span> Equilibrio</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32;border-top:2px dashed #2e7d32"></span> OALP (Y potencial, LRAS)</div>
+        </div>
+        <div class="svg-wrap" id="adAsBase">
+          <svg viewBox="0 0 600 300" role="img" aria-label="Modelo AD/AS: curva AD inclinada hacia abajo y a la derecha, curva AS inclinada hacia arriba y a la derecha, intersección en equilibrio">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--tinta)"/>
+              </marker>
+            </defs>
+            <!-- ejes -->
+            <line x1="60" y1="260" x2="560" y2="260" class="axis"/>
+            <line x1="60" y1="40" x2="60" y2="260" class="axis"/>
+            <text x="310" y="288" class="diag-sub" text-anchor="middle">Producto real (Y)</text>
+            <text x="28" y="150" class="diag-sub" text-anchor="middle" transform="rotate(-90 28 150)">Nivel de precios (P)</text>
+            <!-- curvas -->
+            <path d="M100,245 C180,200 260,150 520,70" class="curva curva-demand"/>
+            <path d="M100,220 C180,160 280,100 460,255" class="curva curva-ofer"/>
+            <!-- OALP (LRAS) — vertical en Y potencial -->
+            <line x1="300" y1="40" x2="300" y2="260" class="oalp" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="8 6"/>
+            <text x="295" y="38" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600">OALP</text>
+            <!-- equilibrio -->
+            <circle cx="300" cy="165" r="5" class="equilibrio"/>
+            <text x="315" y="160" class="diag-label">Y₀, P₀</text>
+            <text x="300" y="190" class="diag-sub" text-anchor="middle">Equilibrio inicial</text>
+            <text x="510" y="78" class="diag-sub" text-anchor="end">AD</text>
+            <text x="440" y="270" class="diag-sub" text-anchor="middle">AS</text>
+          </svg>
+        </div>
+      </div>
+      <div class="legend-swi">Pulsa las pestañas de abajo para explorar cada política y ver su efecto en el diagrama.</div>
+  </section>
+
+  <!-- ===== PANTALLA 2: POLÍTICA MONETARIA ===== -->
+  <section id="demanda" class="pantalla">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-piggy-bank"></i> 3.5 Política Monetaria (demanda)</h2>
+      <p class="desc">Control de la oferta de dinero y de las tasas de interés por el <b>banco central</b> (normalmente independiente del gobierno para evitar presiones políticas). No imprime dinero ni gasta directamente; <b>influye</b> sobre inversiones y consumo mediante la tasa de interés.</p>
+
+      <h3>Objetivos del banco central</h3>
+      <ul style="margin:8px 0 4px" class="check">
+        <li>Inflación baja y estable → <b>meta de inflación</b> (p. ej. 3 % ± 1).</li>
+        <li>Desempleo bajo (a través de la <b>taza de empleo pleno</b>).</li>
+        <li>Estabilidad del crecimiento económico cíclico.</li>
+        <li>Equilibrio externo (tipo de cambio estable).</li>
+      </ul>
+
+      <h3>Tasas de interés real y nominal</h3>
+      <div class="cmp-table">
+        <thead><tr><th>Fórmula</th><th>Concepto</th><th>Aplicación</th></tr></thead>
+        <tbody>
+          <tr><td>tasa nominal (i)</td><td>Tipo de interés sin ajustar por inflación.</td><td>Cobro que grava el banco por préstamos.</td></tr>
+          <tr><td>tasa real (r) = i − <i>π</i><sub>e</sub></td><td>Fisher descontado: <b>rendimiento real</b> esperado.</td><td>Compara rentabilidad real de inversiones y ahorros.</td></tr>
+        </tbody>
+      </div>
+
+      <h3>Política expansiva vs restrictiva</h3>
+      <div class="cards-eficacia">
+        <div class="eficacia-card" style="border-color:var(--demand)">
+          <div class="cab"><i class="fa-solid fa-arrow-down-wide-wide" style="color:var(--demand)"></i> Expansiva (para cerrar <span style="color:var(--rojo)">brecha deflacionaria / recesiva</span>)</div>
+          <div class="fuerte"><b>Mecanismo:</b> El banco <i>reduce</i> la tasa de interés real → costo del crédito ↓ → inversión y consumo ↑ → DA se desplaza a la <b>derecha</b>. Producto real sube, precios suben levemente.</div>
+          <div class="limite"><b>Aplicación típica:</b> recuperación post-crisis, reactivación tras contracción fiscal.</div>
+        </div>
+        <div class="eficacia-card" style="border-color:var(--rojo)">
+          <div class="cab"><i class="fa-solid fa-arrow-up-wide-wide" style="color:var(--rojo)"></i> Restrictiva (para cerrar <span style="color:var(--dorado)">brecha inflacionaria</span>)</div>
+          <div class="fuerte"><b>Mecanismo:</b> El banco <i>sube</i> la tasa real → costo del crédito ↑ → inversión y consumo ↓ → DA se desplaza a la <b>izquierda</b>. Inflación baja, pero se contrae el producto.</div>
+          <div class="limite"><b>Aplicación típica:</b> enfriar economía sobrecalentada con inflación alta.</div>
+        </div>
+      </div>
+
+      <h3>Diagrama interactivo: expansión monetaria</h3>
+      <p class="desc">Simula una reducción de la tasa de interés. Observa cómo la DA se desplaza y el nuevo equilibrio.</p>
+      <div class="diagrama-wrap">
+        <div class="etiquetas">
+          <div class="etq"><span class="sw" style="background:var(--demand)"></span> AD₀ → AD₁</div>
+          <div class="etq"><span class="sw" style="background:var(--ofer)"></span> AS</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32;border-top:2px dashed #2e7d32"></span> OALP (Y_f) — LRAS</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32"></span> Equilibrio E₀ → E₁</div>
+        <div class="svg-wrap" id="diagramaMonetaria">
+          <svg viewBox="0 0 600 320" role="img" aria-label="Desplazamiento AD a la derecha tras expansión monetaria">
+            <defs>
+              <marker id="arrowM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--tinta)"/></marker>
+            </defs>
+            <line x1="60" y1="270" x2="560" y2="270" class="axis"/>
+            <line x1="60" y1="40" x2="60" y2="270" class="axis"/>
+            <text x="310" y="298" class="diag-sub" text-anchor="middle">Producto real (Y)</text>
+            <text x="28" y="155" class="diag-sub" text-anchor="middle" transform="rotate(-90 28 155)">Nivel de precios (P)</text>
+            <!-- AS -->
+            <path d="M100,235 C190,170 280,105 470,15" class="curva curva-ofer"/>
+            <text x="455" y="22" class="diag-sub">AS</text>
+            <!-- OALP (LRAS) — vertical en Y potencial -->
+            <line x1="350" y1="40" x2="350" y2="270" class="oalp" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="8 6"/>
+            <text x="345" y="38" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600">OALP</text>
+            <!-- AD0 -->
+            <path id="ad0" d="M100,230 C170,185 240,140 530,85" class="curva curva-demand"/>
+            <text x="525" y="92" class="diag-sub">AD₀</text>
+            <!-- AD1 (expansiva) -->
+            <path id="ad1" d="M120,230 C195,175 275,125 540,60" class="curva curva-demand" style="display:none"/>
+            <text x="530" y="62" class="diag-sub" style="display:none" id="lblAd1">AD₁</text>
+            <!-- equilibrio E0 -->
+            <line x1="300" y1="170" x2="300" y2="270" class="linea-punto" id="e0v"/>
+            <line x1="60" y1="170" x2="300" y2="170" class="linea-punto"/>
+            <circle cx="300" cy="170" r="5" class="equilibrio"/>
+            <text x="310" y="175" class="diag-point" id="e0lbl">E₀: Y₀, P₀</text>
+            <!-- equilibrio E1 -->
+            <line x1="380" y1="130" x2="380" y2="270" class="linea-punto" id="e1v" style="display:none"/>
+            <line x1="60" y1="130" x2="380" y2="130" class="linea-punto" id="e1h" style="display:none"/>
+            <circle cx="380" cy="130" r="5" class="equilibrio" id="e1pt" style="display:none"/>
+            <text x="390" y="135" class="diag-point" id="e1lbl" style="display:none">E₁: Y₁ > Y₀, P₁ > P₀</text>
+            <!-- flechas -->
+            <path d="M300 170 L380 130" class="flecha" style="stroke:var(--demand);stroke-width:2;marker-end:url(#arrowM)"/>
+          </svg>
+        </div>
+        <div style="margin-top:12px">
+          <button onclick="toggleMonetaria()" class="btn" id="btnMon"><i class="fa-solid fa-magnifying-glass-chart"></i> Mostrar efecto expansivo</button>
+        </div>
+        <div class="limite" style="margin-top:10px;font-size:.88rem" id="efcMon"><b id="efcMonTxt"></b></div>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-bolt"></i> Puntos fuertes y limitaciones</h2>
+      <div class="cards-eficacia">
+        <div class="eficacia-card" style="border-color:var(--verde-ok)">
+          <div class="cab"><i class="fa-solid fa-thumbs-up" style="color:var(--verde-ok)"></i> Puntos fuertes</div>
+          <div class="fuerte">Es <b>gradual, flexible y fácil de revertir</b>: la tasa de interés se ajusta rápidamente.</div>
+          <div class="fuerte">Menor <b>tiempo de transmisión</b>: el efecto llega antes que el gasto público fiscal.</div>
+          <div class="fuerte">No aumenta la <b>deuda pública</b>: es ortogonal al presupuesto.</div>
+        </div>
+        <div class="eficacia-card" style="border-color:var(--rojo)">
+          <div class="cab"><i class="fa-solid fa-triangle-exclamation" style="color:var(--rojo)"></i> Limitaciones</div>
+          <div class="limite"><b>Neutralidad de la moneda a largo plazo</b>: en el Largo Plazo la tasa de interés real vuelve al equilibrio de oferta (política no neutral a corto, neutral a LP — <i>solo persiste el efecto sobre P, no sobre Y de forma sostenida</i>).</div>
+          <div class="limite"><b>Techo de sostenibilidad</b>: espacio limitado al recortar tasas cerca de <b>cero</b> (límite de tasa de interés / trampa de liquidez).</div>
+          <div class="limite"><b>Confianza</b>: si consumidores y empresas no confían, no consumen/invierte (esperan inflación o recesión).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PANTALLA 3: POLÍTICA FISCAL ===== -->
+  <section id="fiscal" class="pantalla">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-landmark"></i> 3.6 Política Fiscal (demanda)</h2>
+      <p class="desc">El <b>gobierno</b> mueve la demanda agregada mediante <b>ingresos fiscales</b> y <b>gastos públicos</b>. A diferencia de la monetaria, el Estado puede focalizar sectores y gastar directamente en contracción cíclica.</p>
+
+      <h3>Fuentes de ingresos fiscales</h3>
+      <ul class="check" style="margin:6px 0">
+        <li><b>Impuestos directos</b>: renta/Impuesto a la Renta (IR) — progresivo.</li>
+        <li><b>Impuestos indirectos</b>: IVA, IESS, aduanas — regresivos.</li>
+        <li>Venta de bienes/servicios de empresas estatales.</li>
+        <li>Venta de activos del Estado.</li>
+      </ul>
+
+      <h3>Gastos públicos</h3>
+      <div class="cmp-table">
+        <thead><tr><th>Tipo</th><th>Qué incluye</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td><b>Corriente</b></td><td>Salarios de funcionarios, subsidios.</td><td>Pago de salarios públicos.</td></tr>
+          <tr><td><b>De capital</b></td><td>Inversión en infraestructura, maquinaria.</td><td>Construcción de carreteras.</td></tr>
+          <tr><td><b>Transferencias monetarias</b></td><td>Subsidios condicionados a hogares.</td><td>Transferencias a familias vulnerables.</td></tr>
+        </tbody>
+      </div>
+
+      <h3>Política expansiva vs restrictiva</h3>
+      <div class="cards-eficacia">
+        <div class="eficacia-card" style="border-color:var(--fiscal)">
+          <div class="cab"><i class="fa-solid fa-gauge-high" style="color:var(--fiscal)"></i> Expansiva (brecha <span style="color:var(--rojo)">deflacionaria / recesiva</span>)</div>
+          <div class="fuerte"><b>Mecanismo:</b> <b>Subida del gasto público</b> o <b>bajada de impuestos</b> → consumo e inversión privados ↑ → <b>DA se desplaza a la derecha</b> → Y↑, P↑.</div>
+          <div class="limite">Alivia ciclos recesivos; el gasto público es especialmente eficaz en recesiones profundas.</div>
+        </div>
+        <div class="eficacia-card" style="border-color:var(--rojo)">
+          <div class="cab"><i class="fa-solid fa-weight-scale" style="color:var(--rojo)"></i> Restrictiva (brecha <span style="color:var(--dorado)">inflacionaria</span>)</div>
+          <div class="fuerte"><b>Mecanismo:</b> <b>Baja del gasto público</b> o <b>subida de impuestos</b> → consumo e inversión ↓ → <b>DA se desplaza a la izquierda</b> → Y↓, P↓.</div>
+          <div class="limite">Reduce déficit y deuda, pero contrae la economía en el proceso.</div>
+        </div>
+      </div>
+
+      <h3>Diagrama interactivo: ajuste fiscal</h3>
+      <div class="diagrama-wrap">
+        <div class="etiquetas">
+          <div class="etq"><span class="sw" style="background:var(--fiscal)"></span> AD₀ → AD₁ (fiscal)</div>
+          <div class="etq"><span class="sw" style="background:var(--ofer)"></span> AS</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32;border-top:2px dashed #2e7d32"></span> OALP (Y_f) — LRAS</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32"></span> E₀ → E₁</div>
+        </div>
+        <div class="svg-wrap" id="diagramaFiscal">
+          <svg viewBox="0 0 600 320" role="img" aria-label="Desplazamiento AD tras política fiscal">
+            <defs>
+              <marker id="arrowF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--tinta)"/></marker>
+            </defs>
+            <line x1="60" y1="270" x2="560" y2="270" class="axis"/>
+            <line x1="60" y1="40" x2="60" y2="270" class="axis"/>
+            <text x="310" y="298" class="diag-sub" text-anchor="middle">Producto real (Y)</text>
+            <text x="28" y="155" class="diag-sub" text-anchor="middle" transform="rotate(-90 28 155)">Nivel de precios (P)</text>
+            <path d="M100,235 C190,170 280,105 470,15" class="curva curva-ofer"/>
+            <text x="455" y="22" class="diag-sub">AS</text>
+            <!-- OALP (LRAS) — vertical en Y potencial -->
+            <line x1="360" y1="40" x2="360" y2="270" class="oalp" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="8 6"/>
+            <text x="355" y="38" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600">OALP</text>
+            <path id="fad0" d="M100,230 C170,190 250,145 530,100" class="curva curva-fiscal"/>
+            <text x="525" y="106" class="diag-sub">AD₀</text>
+            <path id="fad1" d="M120,230 C200,165 290,120 545,55" class="curva curva-fiscal" style="display:none"/>
+            <text x="540" y="60" class="diag-sub" style="display:none" id="flblAd1">AD₁</text>
+            <line x1="310" y1="165" x2="310" y2="270" class="linea-punto" id="fe0v"/>
+            <line x1="60" y1="165" x2="310" y2="165" class="linea-punto"/>
+            <circle cx="310" cy="165" r="5" class="equilibrio"/>
+            <text x="320" y="170" class="diag-point" id="fe0lbl">E₀: Y₀, P₀</text>
+            <line x1="400" y1="120" x2="400" y2="270" class="linea-punto" id="fe1v" style="display:none"/>
+            <line x1="60" y1="120" x2="400" y2="120" class="linea-punto" id="fe1h" style="display:none"/>
+            <circle cx="400" cy="120" r="5" class="equilibrio" id="fe1pt" style="display:none"/>
+            <text x="410" y="125" class="diag-point" id="fe1lbl" style="display:none">E₁: Y₁ > Y₀, P₁ > P₀</text>
+            <path d="M310 165 L400 120" class="flecha" style="stroke:var(--fiscal);stroke-width:2;marker-end:url(#arrowF)"/>
+          </svg>
+        </div>
+        <div style="margin-top:12px">
+          <button onclick="toggleFiscal()" class="btn" id="btnFis">Mostrar expansión fiscal</button>
+        </div>
+        <div class="limite" style="margin-top:10px;font-size:.88rem" id="efcFis"><b id="efcFisTxt"></b></div>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-bolt"></i> Puntos fuertes y limitaciones</h2>
+      <div class="cards-eficacia">
+        <div class="eficacia-card" style="border-color:var(--verde-ok)">
+          <div class="cab"><i class="fa-solid fa-thumbs-up" style="color:var(--verde-ok)"></i> Puntos fuertes</div>
+          <div class="fuerte">Puede <b>dirigirse a sectores específicos</b> de la economía (focalización).</div>
+          <div class="fuerte"><b>Eficaz en recesión profunda</b>: el gasto público multiplicador abre la brecha rápidamente.</div>
+          <div class="fuerte">Permite <b>ajuste activo del déficit</b> en ciclos contracíclicos.</div>
+        </div>
+        <div class="eficacia-card" style="border-color:var(--rojo)">
+          <div class="cab"><i class="fa-solid fa-triangle-exclamation" style="color:var(--rojo)"></i> Limitaciones</div>
+          <div class="limite"><b>Únicamente en el Largo Plazo</b>, el ajuste fiscal no altera Y de forma sostenida (neutralidad fiscal).</div>
+          <div class="limite"><b>Relevancia política</b>: la presión partidista retrasa o distorsiona la implementación.</div>
+          <div class="limite"><b>Deuda sostenible</b>: expansión prolongada exige mantener un nivel de deuda sostenible (riesgo de ajuste forzado).</div>
+          <div class="limite"><b>Mayor tiempo de transmisión</b> entre el anuncio y el impacto total: leyes, licitaciones y ejecución.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PANTALLA 4: POLÍTICAS DE OFERTA ===== -->
+  <section id="oferta" class="pantalla">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-seedling"></i> 3.7 Políticas del lado de la oferta</h2>
+      <p class="desc">A diferencia de la monetaria y fiscal, estas políticas buscan <b>expandir la capacidad productiva (OA)</b> y el <b>crecimiento potencial</b> a largo plazo. <b>No desplazan la DA a corto plazo</b>; mejoran la <b>productividad del factor</b> y reducen costos estructurales. En el modelo AD/AS, desplazan la <b>OACP</b> (oferta agregada corto plazo) y/o la <b>OALP</b> (largo plazo) hacia la derecha, reduciendo el nivel de precios sin sacrificar producto — el efecto "colesterol bueno".</p>
+
+      <h3>Objetivos del lado de la oferta</h3>
+      <ul class="check" style="margin:6px 0">
+        <li>Crecimiento a largo plazo vía <b>mayor capacidad productiva</b>.</li>
+        <li>Mejorar <b>competencia y eficiencia</b> del mercado.</li>
+        <li>Reducir <b>costos de mano de obra</b> y <b>flexibilizar el mercado laboral</b> (menor desempleo estructural).</li>
+        <li>Reduccir <b>inflación estructural</b> para ganar competitividad internacional.</li>
+        <li>Emitir <b>incentivos a la inversión en innovación</b> al reducir costos marginales.</li>
+      </ul>
+
+      <h3>Políticas basadas en el mercado</h3>
+      <div class="cmp-table">
+        <thead><tr><th>Tipo</th><th>Instrumentos</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td><b>Competencia</b></td><td>Desregulación, privatización, liberalización comercial, antimonopolio.</td><td>Apertura del comercio exterior.</td></tr>
+          <tr><td><b>Mercado laboral</b></td><td>Flexibilización salarial, reducción de poder sindical, menor subsidio al desempleo.</td><td>Reformas laborales de flexibilidad.</td></tr>
+          <tr><td><b>Incentivos</b></td><td>Recortes de IR persona, IR empresa e impuestos a la renta del capital.</td><td>Plan de estímulo a la inversión productiva.</td></tr>
+        </tbody>
+      </div>
+
+      <h3>Políticas intervencionistas</h3>
+      <ul class="check" style="margin:6px 0">
+        <li><b>Educación y capacitación</b> → + calidad de la fuerza laboral.</li>
+        <li><b>Salud pública</b> → mejor productividad (menor absentismo).</li>
+        <li><b>Investigación y desarrollo (I+D)</b> → innovación estructural.</li>
+        <li><b>Infraestructura</b> → reduce costos de transacción y transporte.</li>
+        <li><b>Políticas industriales</b> → apoyo a cadenas productivas estratégicas.</li>
+      </ul>
+
+      <h3>Diagrama interactivo: mejora de oferta productiva</h3>
+      <p class="desc">Una política que elimina trabas estructurales desplaza la OALP (LRAS) y la AS a la derecha: mayor producto sin presión inflacionaria.</p>
+      <div class="diagrama-wrap">
+        <div class="etiquetas">
+          <div class="etq"><span class="sw" style="background:var(--ofer)"></span> AS₀ → AS₁</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32;border-top:3px dashed #2e7d32"></span> LRAS₀ → LRAS₁ (OALP alza Y_f)</div>
+          <div class="etq"><span class="sw" style="background:var(--demand)"></span> AD</div>
+          <div class="etq"><span class="sw" style="background:#2e7d32"></span> E₀ → E₁</div>
+        </div>
+        <div class="svg-wrap" id="diagramaOferta">
+          <svg viewBox="0 0 600 320" role="img" aria-label="Política de oferta: OALP (LRAS) y SRAS se desplazan a la derecha, reduciendo P sin dejar de subir Y">
+            <defs>
+              <marker id="arrowO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--tinta)"/></marker>
+            </defs>
+            <line x1="60" y1="270" x2="560" y2="270" class="axis"/>
+            <line x1="60" y1="40" x2="60" y2="270" class="axis"/>
+            <text x="310" y="298" class="diag-sub" text-anchor="middle">Producto real (Y)</text>
+            <text x="28" y="155" class="diag-sub" text-anchor="middle" transform="rotate(-90 28 155)">Nivel de precios (P)</text>
+            <!-- AD (constante) -->
+            <path d="M100,230 C170,180 250,130 530,80" class="curva curva-demand"/>
+            <text x="525" y="86" class="diag-sub">AD</text>
+            <!-- SRAS0 (corto plazo, inicial) -->
+            <path id="oas0" d="M110,235 C190,175 285,120 470,65" class="curva curva-ofer"/>
+            <text x="460" y="72" class="diag-sub">AS₀</text>
+            <!-- SRAS1 (después de política de oferta — costos ↓, AS ↑) -->
+            <path id="oas1" d="M130,235 C210,160 305,110 485,55" class="curva curva-ofer" style="display:none"/>
+            <text x="475" y="60" class="diag-sub" style="display:none" id="olblAs1">AS₁</text>
+            <!-- LRAS0 (OALP inicial — vertical en Yf) -->
+            <line x1="310" y1="40" x2="310" y2="270" class="oalp" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="8 6"/>
+            <text x="305" y="38" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600">LRAS₀</text>
+            <text x="305" y="300" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600" font-size="10">Y_f</text>
+            <!-- LRAS1 (OALP después de política — capacidad productiva ↑) -->
+            <line x1="370" y1="40" x2="370" y2="270" class="oalp" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="8 6" style="display:none"/>
+            <text x="365" y="38" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600" style="display:none" id="lblLras1">LRAS₁</text>
+            <text x="365" y="300" class="diag-sub" text-anchor="end" fill="#2e7d32" font-weight="600" font-size="10" style="display:none">Y_f¹</text>
+            <!-- E0 -->
+            <line x1="310" y1="160" x2="310" y2="270" class="linea-punto" id="oe0v"/>
+            <line x1="60" y1="160" x2="310" y2="160" class="linea-punto"/>
+            <circle cx="310" cy="160" r="5" class="equilibrio"/>
+            <text x="320" y="165" class="diag-point" id="oe0lbl">E₀: Y₀, P₀</text>
+            <!-- E1 -->
+            <line x1="370" y1="115" x2="370" y2="270" class="linea-punto" id="oe1v" style="display:none"/>
+            <line x1="60" y1="115" x2="370" y2="115" class="linea-punto" id="oe1h" style="display:none"/>
+            <circle cx="370" cy="115" r="5" class="equilibrio" id="oe1pt" style="display:none"/>
+            <text x="380" y="120" class="diag-point" id="oe1lbl" style="display:none">E₁: Y₁ > Y₀, P₁ < P₀</text>
+            <!-- flechas -->
+            <path d="M310 160 L370 115" class="flecha" style="stroke:var(--ofer);stroke-width:2;marker-end:url(#arrowO)"/>
+          </svg>
+        </div>
+        <div style="margin-top:12px">
+          <button onclick="toggleOferta()" class="btn" id="btnOfe">Mostrar desplazamiento de la oferta</button>
+        </div>
+        <div class="limite" style="margin-top:10px;font-size:.88rem" id="efcOfe"><b id="efcOfeTxt"></b></div>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-bolt"></i> Puntos fuertes y limitaciones</h2>
+      <div class="cards-eficacia">
+        <div class="eficacia-card" style="border-color:var(--verde-ok)">
+          <div class="cab"><i class="fa-solid fa-thumbs-up" style="color:var(--verde-ok)"></i> Puntos fuertes</div>
+          <div class="fuerte"><b>Mejor asignación de recursos</b>: deja decidir precios y producción a los mercados.</div>
+          <div class="fuerte"><b>No afecta el presupuesto público</b>: no genera déficit ni deuda.</div>
+          <div class="fuerte">Apunta al <b>crecimiento potencial a largo plazo</b>, no a ciclos de demanda.</div>
+        </div>
+        <div class="eficacia-card" style="border-color:var(--rojo)">
+          <div class="cab"><i class="fa-solid fa-triangle-exclamation" style="color:var(--rojo)"></i> Limitaciones</div>
+          <div class="limite"><b>Equidad</b>: políticas de mercado tienden a aumentar brechas de distribución del ingreso.</div>
+          <div class="limite"><b>Gran tiempo de transmisión</b> entre adopción e impacto total (reforma estructural es lenta).</div>
+          <div class="limite"><b>Intereses creados</b> y <b>impacto ambiental</b> de la desregulación.</div>
+          <div class="limite"><b>Costos</b>: inversión pública en I+D, educación e infraestructura es onerosa.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-swatchbook"></i> Efectos cruzados: ¿quién mueve qué curva?</h2>
+      <p class="desc">Las políticas del oferta pueden ejercer presión <b>inflacionaria a corto plazo</b> si la AD también se expande, o <b>deflacionaria si la OA supera a la DA</b>. Importante distinguir <b>efecto sobre DA</b> (corto plazo, P y Y) de <b>efecto sobre OA</b> (largo plazo, crecimiento potencial).</p>
+      <div class="cmp-table">
+        <thead><tr><th>Política</th><th>Desplaza</th><th>Efecto corto plazo</th><th>Efecto largo plazo</th></tr></thead>
+        <tbody>
+          <tr><td>Monetaria restrictiva</td><td class="tag demanda">DA ←</td><td>P↓ Y↓</td><td>P↓ (neutral)</td></tr>
+          <tr><td>Fiscal restrictiva</td><td class="tag fiscal">DA ←</td><td>P↓ Y↓</td><td>P↓ (deuda sostenible)</td></tr>
+          <tr><td>Flexibilización laboral</td><td class="tag oferta">AS₁ > AS₀</td><td>P↓ Y↑ (ligero)</td><td>P↓ Y↑ sostenido</td></tr>
+          <tr><td>Infraestructura pública</td><td class="tag oferta">AS₁ > AS₀</td><td>P↓ Y↑</td><td>Crecimiento potencial ↑</td></tr>
+        </tbody>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PANTALLA 5: ANÁLISIS DE EFICACIA ===== -->
+  <section id="eval" class="pantalla">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-balance-scale"></i> Análisis de eficacia</h2>
+      <p class="desc">La eficacia de una política depende del <b>tipo de brecha</b> que intenta cerrar, del <b>plazo temporal</b> y del <b>entorno de confianza</b>. No hay política única; el ancho de gama está en combinar instrumentos.</p>
+
+      <details class="acordeon">
+        <summary><i class="fa-solid fa-right-long" style="color:var(--demand)"></i> Política monetaria expansiva <span style="color:var(--rojo)">(brecha deflacionaria)</span></summary>
+        <div class="contenido">
+          <p><b>Diagnóstico:</b> la economía opera <i>por debajo</i> de su producto potencial (Y &lt; Y<sub>f</sub>) y la inflación es <b>insuficiente</b> (<i>brecha deflacionaria o recesiva</i>).</p>
+          <p><b>Intervención:</b> el banco central reduce la <b>tasa de interés de intervención</b>, lo que abarata el crédito y eleva la inversión y el consumo. La <b>DA se desplaza a la derecha</b> hasta cerrar la brecha.</p>
+          <p><b>Juicio cruzado:</b></p>
+          <ul class="check">
+            <li><b>Fortaleza:</b> rápido (días), reversible y no afecta la deuda.</li>
+            <li><b>Limitación:</b> en el <b>largo plazo</b> domina la neutralidad de la moneda — la OA vuelve a su posición original y solo persiste la inflación (teoría cuantitativa).</li>
+            <li><b>Combinación:</b> más eficaz si se acompaña de política <b>fiscal expansiva</b> (multiplicador) y evita la <b>trampa de liquidez</b>.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acordeon">
+        <summary><i class="fa-solid fa-right-long" style="color:var(--fiscal)"></i> Política fiscal expansiva <span style="color:var(--rojo)">(brecha deflacionaria)</span></summary>
+        <div class="contenido">
+          <p><b>Diagnóstico:</b> brecha deflacionaria con bajo consumo e inversión privada; el sector público actúa como <b>estímulo de demanda</b>.</p>
+          <p><b>Intervención:</b> <b>subida del gasto público en inversión</b> o <b>bajada de impuestos</b>. El multiplicador fiscal (ΔY = k·ΔG) amplifica el impacto inicial.</p>
+          <p><b>Juicio cruzado:</b></p>
+          <ul class="check">
+            <li><b>Fortaleza:</b> el <b>gasto público es eficaz en recesiones profundas</b> y la política puede <b>focalizar sectores</b>.</li>
+            <li><b>Limitación:</b> <b>presión política</b> desvía recursos a proyectos no eficientes; el <b>retraso de ejecución</b> retrasa el impacto.</li>
+            <li><b>Contrapartida:</b> eleva la <b>deuda pública</b>; si no se pausa con tiempo, implica <b>aceleración inflacionaria</b> y riesgo de ajuste.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acordeon">
+        <summary><i class="fa-solid fa-right-long" style="color:var(--ofer)"></i> Políticas del oferta: liberalización estructural <span style="color:#2e7d32">(brecha inflacionaria)</span></summary>
+        <div class="contenido">
+          <p><b>Diagnóstico:</b> inflación estructural por <b>costos de oferta</b> elevados (burocracia, monopolios, fricción laboral) con <b>producto cerca del potencial</b>.</p>
+          <p><b>Intervención:</b> <b>desregulación y promoción de la competencia</b>. En el modelo AD/AS, la <b>AS se desplaza a la derecha</b>, reduciendo precios sin perder producto (o ganándolo).</p>
+          <p><b>Juicio cruzado:</b></p>
+          <ul class="check">
+            <li><b>Fortaleza:</b> <b>mejor asignación de recursos</b> y crecimiento potencial sostenido; no afecta el presupuesto.</li>
+            <li><b>Limitación:</b> <b>equidad distribucional</b> (regresividad de la reforma) y <b>largo plazo de transmisión</b>.</li>
+            <li><b>Combinación:</b> se refuerza con <b>política fiscal en educación/I+D</b> y monetaria restrictiva en fase de cierre de brecha.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acordeon">
+        <summary><i class="fa-solid fa-right-long" style="color:var(--verde-ok)"></i> Combinación de políticas: el arco de políticas</summary>
+        <div class="contenido">
+          <p><b>Regla clave del IB:</b> <b>las políticas del lado de la demanda</b> (monetaria y fiscal) son <b>cíclicas y reversibles</b>; <b>las del oferta</b> son <b>estructurales y duraderas</b>.</p>
+          <ul class="check">
+            <li>En <b>recuperación</b>: monetaria expandir + fiscal expandir (+ infraestructura que a la larga ayuda a la oferta).</li>
+            <li>En <b>sobrecalentamiento</b>: monetaria restrictiva + oferta expandida <i>simultáneamente</i> (la primera controla P, la segunda evita que baje Y).</li>
+            <li>Para <b>crecimiento sostenido</b>: prioridad a políticas de oferta con marco de confianza (reglas fiscales, independencia del banco central).</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===== PANTALLA 6: CRITERIOS ===== -->
+  <section id="crit" class="pantalla">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-clipboard-check"></i> Criterios de evaluación</h2>
+      <p class="desc">A continuación los logros que se valorarán al construir diagramas y argumentar la eficacia de las políticas:</p>
+
+      <div class="criterio">
+        <div class="cab"><span class="tag demanda">A</span> <b>Diagramas precisos y rotulados</b> <span class="tag oferta">Y</span></div>
+        <div>Construyes diagramas AD/AS correctos: ejes rotulados (Y, P), curvas identificadas (AD, AS), equilibrios inicial (E₀) y nuevo (E₁) señalados, y <b>flechas de desplazamiento</b> claras. Explicas el cambio en Y y P en cada caso.</div>
+        <div class="prog-h"><div class="prog-bar" style="width:100%"></div></div>
+      </div>
+
+      <div class="criterio">
+        <div class="cab"><span class="tag fiscal">B</span> <b>Terminología macroeconómica pertinente</b></div>
+        <div>Empleas vocabulario correcto: <b>oferta agregada, demanda agregada, producto real, nivel de precios, brecha deflacionaria/inflacionaria, multiplicador fiscal, tasa real vs nominal, producto potencial</b>, <b>neutralidad de la moneda</b>, <b>trampa de liquidez</b>. La distribuyes a lo largo de toda la exposición.</div>
+        <div class="prog-h"><div class="prog-bar" style="width:88%"></div></div>
+      </div>
+
+      <div class="criterio">
+        <div class="cab"><span class="tag oferta">C</span> <b>Aplicación al segmento asignado</b></div>
+        <div>Aplica teoría de políticas macro a tu caso concreto: identifica la brecha (deflacionaria o inflacionaria), el instrumento, el desplazamiento de curvas y la dirección del efecto sobre Y y P.</div>
+        <div class="prog-h"><div class="prog-bar" style="width:90%"></div></div>
+      </div>
+
+      <div class="criterio">
+        <div class="cab"><span class="tag rojo">D</span> <b>Sustentar juicios de eficacia</b></div>
+        <div>Sustentas la eficacia con <b>fortalezas, limitaciones y contrapartidas</b>, considerando plazo (corto vs largo), costos (deuda, presión política) y efectos secundarios (inflación no deseada, equidad). No recurras a opiniones.</div>
+        <div class="prog-h"><div class="prog-bar" style="width:82%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PANTALLA 7: GLOSARIO ===== -->
+  <section id="gloss" class="pantalla">
+    <div class="tarjeta">
+      <h2><i class="fa-solid fa-book-atlas"></i> Glosario de términos clave</h2>
+      <div class="glossary">
+        <div class="glo-item"><div class="term">OALP / LRAS</div><div>Relevancia: Oferta Agregada a Largo Plazo, línea vertical en Y potencial (Y_f). Define el máximo sostenible de producto real; la economía converge a ella.</div></div>
+        <div class="glo-item"><div class="term">Oferta agregada (OA/AS)</div><div>Relevancia: producción total a cada nivel de precios. OAS-CP (corto plazo) inclinada hacia arriba; OALP (largo plazo) vertical en Y<sub>f</sub> — converge a potencial.</div></div>
+        <div class="glo-item"><div class="term">Producto potencial</div><div>Relevancia: PIB a pleno empleo (Y<sub>f</sub>); guía la brecha cíclica.</div></div>
+        <div class="glo-item"><div class="term">Brecha deflacionaria (recesiva)</div><div>Relevancia: Y &lt; Y<sub>f</sub>; par creciente con desempleo alto.</div></div>
+        <div class="glo-item"><div class="term">Brecha inflacionaria</div><div>Relevancia: Y &gt; Y<sub>f</sub>; presión al alza sobre precios.</div></div>
+        <div class="glo-item"><div class="term">Tasa real vs nominal</div><div>Relevancia: r = i − π<sub>e</sub>; determina costo real del crédito.</div></div>
+        <div class="glo-item"><div class="term">Multiplicador fiscal</div><div>Relevancia: k = 1/(1−MPC); amplitud del efecto de ΔG sobre Y.</div></div>
+        <div class="glo-item"><div class="term">Neutralidad de la moneda</div><div>Relevancia: a largo plazo, cambios de oferta monetaria solo afectan P, no Y.</div></div>
+        <div class="glo-item"><div class="term">Trampa de liquidez</div><div>Relevancia: límite de tasas ~0%; monetaria agota su espacio expansivo.</div></div>
+        <div class="glo-item"><div class="term">Producto interior bruto (PIB)</div><div>Relevancia: valor de bienes/services producidos; señal macro de ciclo.</div></div>
+        <div class="glo-item"><div class="term">Política anti-monopolio</div><div>Relevancia: regla de oferta; reduce costos estructurales.</div></div>
+        <div class="glo-item"><div class="term">Inversión de producto neto</div><div>Relevancia: ahorro menos inversión; determina crecimiento a largo plazo.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- cierre de .app -->
+</div>
+
+<footer>
+  <p>Presentación interactiva IB Economía NM · Docente: Alberto Ottati R. · Modelo AD/AS · Auto-contenida, sin cookies ni datos externos.</p>
+</footer>
+
+<script>
+/* ===================== NAVEGACIÓN ENTRE PESTAÑAS ===================== */
+const VISTAS = ['intro','demanda','fiscal','oferta','eval','crit','gloss'];
+function show(id){
+  VISTAS.forEach(v=>{
+    const s=document.getElementById(v);
+    s.classList.toggle('activa', v===id);
+  });
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab===id);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ===================== DIAGRAMAS INTERACTIVOS ===================== */
+function toggleMonetaria(){
+  const ad1=document.getElementById('ad1'), la1=document.getElementById('lblAd1');
+  const e1v=document.getElementById('e1v'), e1h=document.getElementById('e1h'), e1pt=document.getElementById('e1pt'), e1lbl=document.getElementById('e1lbl');
+  const vis=ad1.style.display==='none';
+  ad1.style.display=vis?'':'none'; la1.style.display=vis?'':'none';
+  e1v.style.display=vis?'':'none'; e1h.style.display=vis?'':'none'; e1pt.style.display=vis?'':'none'; e1lbl.style.display=vis?'':'none';
+  const b=document.getElementById('btnMon');
+  const box=document.getElementById('efcMonTxt');
+  if(vis){
+    b.innerHTML='<i class="fa-solid fa-eye-slash"></i> Ocultar efecto expansivo';
+    box.textContent='Política monetaria expansiva → DA derecha (mas cerca de OALP/Yf), E₁: Y↑, P↑. Eficaz para brecha deflacionaria; neutralidad a LP limita efecto en Y de forma sostenida. Trampa de liquidez si tasas ~0.';
+  } else {
+    b.innerHTML='<i class="fa-solid fa-magnifying-glass-chart"></i> Mostrar efecto expansivo';
+    box.textContent='';
+  }
+}
+
+function toggleFiscal(){
+  const ad1=document.getElementById('fad1'), la1=document.getElementById('flblAd1');
+  const e1v=document.getElementById('fe1v'), e1h=document.getElementById('fe1h'), e1pt=document.getElementById('fe1pt'), e1lbl=document.getElementById('fe1lbl');
+  const vis=ad1.style.display==='none';
+  ad1.style.display=vis?'':'none'; la1.style.display=vis?'':'none';
+  e1v.style.display=vis?'':'none'; e1h.style.display=vis?'':'none'; e1pt.style.display=vis?'':'none'; e1lbl.style.display=vis?'':'none';
+  const b=document.getElementById('btnFis');
+  const box=document.getElementById('efcFisTxt');
+  if(vis){
+    b.innerHTML='<i class="fa-solid fa-eye-slash"></i> Ocultar expansión fiscal';
+    box.textContent='Política fiscal expansiva → DA derecha (gasto↑/impuestos↓). E₁: Y↑, P↑. Multiplicador k=1/(1-MPC) amplifica el efecto; eleva deuda pública y sufre retraso de ejecución + presión política. Neutralidad fiscal a LP: efecto sobre Y es temporal.';
+  } else {
+    b.innerHTML='<i class="fa-solid fa-gauge-high"></i> Mostrar expansión fiscal';
+    box.textContent='';
+  }
+}
+
+function toggleOferta(){
+  const as1=document.getElementById('oas1'), la1=document.getElementById('olblAs1');
+  const lras1=document.getElementById('lblLras1');
+  const e1v=document.getElementById('oe1v'), e1h=document.getElementById('oe1h'), e1pt=document.getElementById('oe1pt'), e1lbl=document.getElementById('oe1lbl');
+  const vis=as1.style.display==='none';
+  as1.style.display=vis?'':'none'; la1.style.display=vis?'':'none';
+  if(lras1){lras1.style.display=vis?'':'none';}
+  e1v.style.display=vis?'':'none'; e1h.style.display=vis?'':'none'; e1pt.style.display=vis?'':'none'; e1lbl.style.display=vis?'':'none';
+  const b=document.getElementById('btnOfe');
+  const box=document.getElementById('efcOfeTxt');
+  if(vis){
+    b.innerHTML='<i class="fa-solid fa-eye-slash"></i> Ocultar desplazamiento de oferta';
+    box.textContent='Política de oferta (ej. infraestructura, educación, liberalización) → OALP/OAS-CP derecha. Equilibrio: Y↑, P↓ (efecto “colesterol bueno”: más output a menor inflación). Crecimiento potencial sostenido, pero lento y con costos.';
+  } else {
+    b.innerHTML='<i class="fa-solid fa-seedling"></i> Mostrar desplazamiento de oferta';
+    box.textContent='';
+  }
+}
+</script>
+</body>
+</html>
