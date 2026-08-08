@@ -260,6 +260,26 @@
   .tp-result-item .tp-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--gold); }
   .tp-empty { text-align: center; color: var(--muted); padding: 30px; font-style: italic; }
 
+
+  .student-select {
+    width: 100%;
+    padding: 16px 18px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    cursor: pointer;
+    max-width: 520px;
+  }
+  .student-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(184,132,42,.15);
+  }
+
 </style>
 </head>
 <body>
@@ -297,9 +317,41 @@
         <div class="meta-item"><div class="num">/10</div><div class="lbl">Calificación final</div></div>
       </div>
       <div class="form-group">
-        <label for="studentName">Nombre y apellido del alumno</label>
-        <input type="text" id="studentName" placeholder="Ejemplo: María Fernández Soto" autocomplete="off">
-        <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre y apellido para comenzar.</div>
+        <label for="studentName">Selecciona tu nombre — 3BGU Economía</label>
+        <select id="studentName" class="student-select">
+          <option value="" disabled selected>— Tu nombre —</option>
+          <option value="ANDRADE GAROFALO, EDUARDO">ANDRADE GAROFALO, EDUARDO</option>
+          <option value="ARAUJO LOPEZ, MARTINA">ARAUJO LOPEZ, MARTINA</option>
+          <option value="BENALCAZAR RUEDA, SEBASTIAN">BENALCAZAR RUEDA, SEBASTIAN</option>
+          <option value="CADENA MORA, DANIELA">CADENA MORA, DANIELA</option>
+          <option value="CALDERON MOYA, MATEO">CALDERON MOYA, MATEO</option>
+          <option value="CARRASCO VEGA, VALENTINA">CARRASCO VEGA, VALENTINA</option>
+          <option value="CARRION PEREZ, JUAN">CARRION PEREZ, JUAN</option>
+          <option value="CASTRO SALAZAR, EMILIA">CASTRO SALAZAR, EMILIA</option>
+          <option value="CEDENO RAMIREZ, DIEGO">CEDENO RAMIREZ, DIEGO</option>
+          <option value="CEVALLOS ORTEGA, ANTONIA">CEVALLOS ORTEGA, ANTONIA</option>
+          <option value="CORTEZ LARA, NICOLAS">CORTEZ LARA, NICOLAS</option>
+          <option value="COSTA GOMEZ, ISABELA">COSTA GOMEZ, ISABELA</option>
+          <option value="DELGADO FERNANDEZ, TOMAS">DELGADO FERNANDEZ, TOMAS</option>
+          <option value="ESPINOZA LOOR, SARA">ESPINOZA LOOR, SARA</option>
+          <option value="FERNANDEZ PAZ, ALEJANDRO">FERNANDEZ PAZ, ALEJANDRO</option>
+          <option value="GUILERA TERRANOVA, ALEJANDRO">GUILERA TERRANOVA, ALEJANDRO</option>
+          <option value="HIDALGO BUSTOS, RODRIGO">HIDALGO BUSTOS, RODRIGO</option>
+          <option value="JARAMILLO SOTO, CATALINA">JARAMILLO SOTO, CATALINA</option>
+          <option value="LOPEZ TINAJERO, JOAQUIN">LOPEZ TINAJERO, JOAQUIN</option>
+          <option value="MENDOZA QUIROZ, FERNANDA">MENDOZA QUIROZ, FERNANDA</option>
+          <option value="MORALES ALMEIDA, SAMUEL">MORALES ALMEIDA, SAMUEL</option>
+          <option value="NAVARRETE ZAMBRANO, MARIANA">NAVARRETE ZAMBRANO, MARIANA</option>
+          <option value="ORTIZ MONTES, FRANCISCO">ORTIZ MONTES, FRANCISCO</option>
+          <option value="PILALOA CHICAIZA, GABRIELA">PILALOA CHICAIZA, GABRIELA</option>
+          <option value="QUILERA TERRANOVA, ALEJANDRO">QUILERA TERRANOVA, ALEJANDRO</option>
+          <option value="SALAZAR PINTO, RAFAEL">SALAZAR PINTO, RAFAEL</option>
+          <option value="TELLO MACIAS, SOFIA">TELLO MACIAS, SOFIA</option>
+          <option value="UTRERAS VERA, MARTIN">UTRERAS VERA, MARTIN</option>
+          <option value="VALDIVIEZO ROBLES, CAMILA">VALDIVIEZO ROBLES, CAMILA</option>
+          <option value="ZAMBRANO LEON, JUAN PABLO">ZAMBRANO LEON, JUAN PABLO</option>
+        </select>
+        <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.</div>
       </div>
       <button class="btn btn-primary" id="startBtn">Comenzar análisis de casos <i class="fa-solid fa-arrow-right"></i></button>
     </div>
@@ -416,10 +468,10 @@ function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=
 function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
 
 function startQuiz(){
-  const nameInput = document.getElementById('studentName');
+  const nameSelect = document.getElementById('studentName');
   const errorEl = document.getElementById('nameError');
-  const name = nameInput.value.trim();
-  if(name.length < 3 || !name.includes(' ')){ errorEl.classList.add('show'); nameInput.focus(); return; }
+  const name = nameSelect.value.trim();
+  if(!name){ errorEl.classList.add('show'); nameSelect.focus(); return; }
   errorEl.classList.remove('show');
   STATE.studentName = name;
   STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
@@ -551,10 +603,11 @@ function toggleReview(){
 }
 
 document.getElementById('startBtn').addEventListener('click', startQuiz);
-document.getElementById('studentName').addEventListener('keydown', e=>{ if(e.key === 'Enter') startQuiz(); });
+      document.getElementById('studentName').addEventListener('change', startQuiz);
+
 document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-document.getElementById('quitBtn').addEventListener('click', ()=>{ if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ showScreen('welcome-screen'); document.getElementById('studentName').value = ''; } });
-document.getElementById('retryBtn').addEventListener('click', ()=>{ showScreen('welcome-screen'); document.getElementById('studentName').value = STATE.studentName; });
+document.getElementById('quitBtn').addEventListener('click', ()=>{ if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ showScreen('welcome-screen'); } });
+document.getElementById('retryBtn').addEventListener('click', ()=>{ showScreen('welcome-screen'); });
 document.getElementById('reviewBtn').addEventListener('click', toggleReview);
 
 document.addEventListener('keydown', e => {
