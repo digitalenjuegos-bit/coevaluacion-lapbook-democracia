@@ -745,64 +745,74 @@ document.addEventListener('keydown', e => {
     });
   };
   
-  // Panel docente toggle with ALT+SHIFT+D
-  document.addEventListener('keydown', e => {
-    if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd') {
-      e.preventDefault();
-      document.getElementById('tpOpener').classList.toggle('active');
-      document.getElementById('tpOverlay').classList.toggle('active');
-    }
-  });
-  
-  document.getElementById('tpOpener').addEventListener('click', () => {
-    document.getElementById('tpOpener').classList.add('active');
-    document.getElementById('tpOverlay').classList.add('active');
-  });
-  
-  document.getElementById('tpClose').addEventListener('click', () => {
-    document.getElementById('tpOverlay').classList.remove('active');
-    document.getElementById('tpOpener').classList.remove('active');
-  });
-  
-  document.getElementById('tpLoginBtn').addEventListener('click', async () => {
-    const code = document.getElementById('tpCode').value.trim();
-    if (code === TEACHER_CODE) {
-      document.getElementById('tpActions').style.display = 'flex';
-      document.getElementById('tpResults').innerHTML = '';
-      try {
-        const results = await loadResultsFromLocalStorage();
-        if (results.length === 0) {
-          document.getElementById('tpResults').innerHTML = '<div class="tp-empty">No hay notas guardadas aún.</div>';
-          document.getElementById('tpCount').textContent = '';
-        } else {
-          document.getElementById('tpCount').textContent = results.length + ' registro(s)';
-          document.getElementById('tpResults').innerHTML = results.map(r => `
-            <div class="tp-result-item">
-              <div>
-                <div class="tp-student">${r.studentName || r.name || 'Sin nombre'}</div>
-                <div class="tp-info">${r.timestamp || r.date || new Date().toLocaleString()}</div>
-              </div>
-              <div class="tp-score">${r.score}/10${r.pct ? ' (' + r.pct + '%)' : ''}</div>
-            </div>
-          `).join('');
-        }
-      } catch(e) {
-        console.error('Error loading results:', e);
-        document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Error al cargar notas.</div>';
+  // Panel docente: wrap in DOMContentLoaded since HTML panel renders after this script
+  document.addEventListener('DOMContentLoaded', function() {
+    const tpOpener = document.getElementById('tpOpener');
+    const tpOverlay = document.getElementById('tpOverlay');
+    if (!tpOpener || !tpOverlay) return;
+
+    // ALT+SHIFT+D keyboard toggle
+    document.addEventListener('keydown', e => {
+      if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd') {
+        e.preventDefault();
+        tpOpener.classList.toggle('active');
+        tpOverlay.classList.toggle('active');
       }
-    } else {
-      alert('Código incorrecto. Usa ALT+SHIFT+D y el código DOCENTE2026');
-    }
-  });
-  
-  document.getElementById('tpExportCsv').addEventListener('click', () => exportResultsCSV());
-  
-  document.getElementById('tpClear').addEventListener('click', () => {
-    if (confirm('¿Borrar TODAS las notas guardadas? Esta acción no se puede deshacer.')) {
-      clearResultsFromLocalStorage();
-      document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Notas borradas.</div>';
-      document.getElementById('tpCount').textContent = '';
-    }
+    });
+
+    // Click on floating button
+    tpOpener.addEventListener('click', () => {
+      tpOpener.classList.add('active');
+      tpOverlay.classList.add('active');
+    });
+
+    // Close button
+    document.getElementById('tpClose').addEventListener('click', () => {
+      tpOverlay.classList.remove('active');
+      tpOpener.classList.remove('active');
+    });
+
+    // Teacher login
+    document.getElementById('tpLoginBtn').addEventListener('click', async () => {
+      const code = document.getElementById('tpCode').value.trim();
+      if (code === TEACHER_CODE) {
+        document.getElementById('tpActions').style.display = 'flex';
+        document.getElementById('tpResults').innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-soft);">Cargando notas...</div>';
+        try {
+          const results = await loadResultsFromLocalStorage();
+          if (results.length === 0) {
+            document.getElementById('tpResults').innerHTML = '<div class="tp-empty">No hay notas guardadas aún.</div>';
+            document.getElementById('tpCount').textContent = '';
+          } else {
+            document.getElementById('tpCount').textContent = results.length + ' registro(s)';
+            document.getElementById('tpResults').innerHTML = results.map(r => {
+              const name = r.studentName || r.name || 'Sin nombre';
+              const date = r.timestamp || r.date || (r.savedAt ? new Date(r.savedAt).toLocaleString() : 'N/A');
+              const score = r.score || '0';
+              const pct = r.pct ? ' (' + r.pct + '%)' : '';
+              return '<div class="tp-result-item"><div><div class="tp-student">' + name + '</div><div class="tp-info">' + date + '</div></div><div class="tp-score">' + score + '/10' + pct + '</div></div>';
+            }).join('');
+          }
+        } catch(e) {
+          console.error('Error loading results:', e);
+          document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Error al cargar notas.</div>';
+        }
+      } else {
+        alert('Código incorrecto. Usa ALT+SHIFT+D y el código DOCENTE2026');
+      }
+    });
+
+    // Export CSV
+    document.getElementById('tpExportCsv').addEventListener('click', () => exportResultsCSV());
+
+    // Clear grades
+    document.getElementById('tpClear').addEventListener('click', () => {
+      if (confirm('¿Borrar TODAS las notas? Esta acción no se puede deshacer.')) {
+        clearResultsFromLocalStorage();
+        document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Notas borradas.</div>';
+        document.getElementById('tpCount').textContent = '';
+      }
+    });
   });
 
 </script>
