@@ -458,6 +458,10 @@ const QUESTION_BANK = [
 const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false };
 const TOTAL_QUESTIONS = 20;
 
+// === API CONFIG (Railway backend) ===
+const EXAM_ID = 'macroeconomia-35-37';
+const API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/' + EXAM_ID;
+
 function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
 
@@ -628,31 +632,73 @@ document.addEventListener('keydown', e => {
   // === PANEL DOCENTE ===
   const TEACHER_CODE = 'DOCENTE2026';
   
-  function saveResultToLocalStorage(result) {
+  function saveResultToAPI(result) {
+    const payload = {
+      name: result.studentName,
+      cls: '3BGU Economía',
+      score: Math.round(parseFloat(result.score)),
+      pct: result.pct,
+      correct: result.correct,
+      wrong: result.wrong,
+      date: result.timestamp,
+      weakestUnit: result.weakestUnit
+    };
+    fetch(API_BASE + '/grades', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    }).catch(e => console.warn('API save failed, fallback localStorage:', e));
+    // Also save to localStorage as fallback
     try {
       const saved = JSON.parse(localStorage.getItem('macro_quiz_results') || '[]');
       saved.push(result);
       localStorage.setItem('macro_quiz_results', JSON.stringify(saved));
-    } catch(e) { console.warn('saveResult failed:', e); }
+    } catch(e) { console.warn('localStorage save failed:', e); }
   }
   
-  function loadResultsFromLocalStorage() {
+  async function loadResultsFromAPI() {
+    // Try localStorage first (immediate fallback)
+    let localResults = [];
     try {
-      return JSON.parse(localStorage.getItem('macro_quiz_results') || '[]');
-    } catch(e) { return []; }
+      localResults = JSON.parse(localStorage.getItem('macro_quiz_results') || '[]');
+    } catch(e) {}
+    
+    // Try API (may merge or replace)
+    try {
+      const res = await fetch(API_BASE + '/grades');
+      if (res.ok) {
+        const apiResults = await res.json();
+        // Merge: prefer API results, add any local-only ones missing from API
+        const apiNames = new Set(apiResults.map(r => r.name || r.studentName));
+        const localOnly = localResults.filter(r => !apiNames.has(r.studentName));
+        return [...apiResults, ...localOnly];
+      }
+    } catch(e) {
+      console.warn('API load failed, using localStorage:', e);
+    }
+    return localResults;
+  }
+  
+  async function loadResultsFromLocalStorage() {
+    return await loadResultsFromAPI();
   }
   
   function clearResultsFromLocalStorage() {
+    // Clear localStorage; note: API data persists on server
     localStorage.removeItem('macro_quiz_results');
   }
   
-  function exportResultsCSV() {
-    const results = loadResultsFromLocalStorage();
+  async function exportResultsCSV() {
+    const results = await loadResultsFromLocalStorage();
     if (results.length === 0) { alert('No hay notas para exportar.'); return; }
     const header = 'Nombre,Nota,/10,Porcentaje,Correctas,Incorrectas,Fecha,Unidad más débil';
     const rows = results.map(r => {
+      const name = r.studentName || r.name || 'Sin nombre';
+      const date = r.timestamp || r.date || 'N/A';
       const weak = r.weakestUnit || 'N/A';
-      return `"${r.studentName}",${r.score},${r.pct},${r.correct},${r.correct},${r.wrong},${r.timestamp},${weak}`;
+      const score = r.score || 0;
+      const pct = r.pct || 'N/A';
+      return `"${name}",${score},/10,${pct},${r.correct || 'N/A'},${r.wrong || 'N/A'},"${date}","${weak}"`;
     });
     const csv = [header, ...rows].join('\n');
     const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
@@ -688,7 +734,7 @@ document.addEventListener('keydown', e => {
       return !w || ratio < w.ratio ? {name, ratio} : w;
     }, null);
     
-    saveResultToLocalStorage({
+    saveResultToAPI({
       studentName: STATE.studentName,
       score: score10.toFixed(1),
       pct: pct,
@@ -718,33 +764,38 @@ document.addEventListener('keydown', e => {
     document.getElementById('tpOpener').classList.remove('active');
   });
   
-  document.getElementById('tpLoginBtn').addEventListener('click', () => {
+  document.getElementById('tpLoginBtn').addEventListener('click', async () => {
     const code = document.getElementById('tpCode').value.trim();
     if (code === TEACHER_CODE) {
       document.getElementById('tpActions').style.display = 'flex';
       document.getElementById('tpResults').innerHTML = '';
-      const results = loadResultsFromLocalStorage();
-      if (results.length === 0) {
-        document.getElementById('tpResults').innerHTML = '<div class="tp-empty">No hay notas guardadas aún.</div>';
-        document.getElementById('tpCount').textContent = '';
-      } else {
-        document.getElementById('tpCount').textContent = `${results.length} registro(s)`;
-        document.getElementById('tpResults').innerHTML = results.map(r => `
-          <div class="tp-result-item">
-            <div>
-              <div class="tp-student">${r.studentName}</div>
-              <div class="tp-info">${r.timestamp}</div>
+      try {
+        const results = await loadResultsFromLocalStorage();
+        if (results.length === 0) {
+          document.getElementById('tpResults').innerHTML = '<div class="tp-empty">No hay notas guardadas aún.</div>';
+          document.getElementById('tpCount').textContent = '';
+        } else {
+          document.getElementById('tpCount').textContent = results.length + ' registro(s)';
+          document.getElementById('tpResults').innerHTML = results.map(r => `
+            <div class="tp-result-item">
+              <div>
+                <div class="tp-student">${r.studentName || r.name || 'Sin nombre'}</div>
+                <div class="tp-info">${r.timestamp || r.date || new Date().toLocaleString()}</div>
+              </div>
+              <div class="tp-score">${r.score}/10${r.pct ? ' (' + r.pct + '%)' : ''}</div>
             </div>
-            <div class="tp-score">${r.score}/10 (${r.pct}%)</div>
-          </div>
-        `).join('');
+          `).join('');
+        }
+      } catch(e) {
+        console.error('Error loading results:', e);
+        document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Error al cargar notas.</div>';
       }
     } else {
       alert('Código incorrecto. Usa ALT+SHIFT+D y el código DOCENTE2026');
     }
   });
   
-  document.getElementById('tpExportCsv').addEventListener('click', exportResultsCSV);
+  document.getElementById('tpExportCsv').addEventListener('click', () => exportResultsCSV());
   
   document.getElementById('tpClear').addEventListener('click', () => {
     if (confirm('¿Borrar TODAS las notas guardadas? Esta acción no se puede deshacer.')) {
