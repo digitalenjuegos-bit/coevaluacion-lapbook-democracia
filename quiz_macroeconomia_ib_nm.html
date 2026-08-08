@@ -149,6 +149,117 @@
     .results-card { box-shadow: none; border: none; padding: 0; }
     .container { max-width: 100%; padding: 0; }
   }
+
+  /* === PANEL DOCENTE === */
+  .teacher-panel-opener {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--forest);
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 20px -6px rgba(15,42,35,.5);
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity .2s, transform .2s;
+  }
+  .teacher-panel-opener:hover { opacity: 1; transform: scale(1.08); }
+  .teacher-panel-opener.active { background: var(--error); }
+  
+  .teacher-panel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 2000;
+    display: none;
+    align-items: flex-start;
+    padding: 30px 20px;
+    overflow-y: auto;
+  }
+  .teacher-panel-overlay.active { display: flex; }
+  .teacher-panel {
+    background: var(--paper);
+    border-radius: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .teacher-panel h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--forest-deep);
+    margin-bottom: 18px;
+  }
+  .teacher-panel .tp-meta {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .teacher-panel .tp-code {
+    font-family: 'Outfit', sans-serif;
+    padding: 10px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    background: #fff;
+  }
+  .teacher-panel .tp-btn {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tp-btn-primary { background: var(--forest); color: #fbf6ea; }
+  .tp-btn-primary:hover { background: var(--forest-deep); }
+  .tp-btn-danger { background: var(--error); color: #fff; }
+  .tp-btn-danger:hover { background: #8a3a2d; }
+  .tp-btn-ghost { background: transparent; color: var(--forest); border: 1.5px solid var(--border); }
+  .tp-btn-ghost:hover { background: rgba(31,74,61,.06); }
+  
+  .teacher-panel .tp-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .tp-results { margin-top: 20px; }
+  .tp-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .tp-result-item:last-child { border-bottom: none; }
+  .tp-result-item .tp-student { font-weight: 600; color: var(--forest-deep); }
+  .tp-result-item .tp-info { color: var(--ink-soft); font-size: 13px; }
+  .tp-result-item .tp-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--gold); }
+  .tp-empty { text-align: center; color: var(--muted); padding: 30px; font-style: italic; }
+
 </style>
 </head>
 <body>
@@ -260,12 +371,12 @@ const QUESTION_BANK = [
   {topic:"3.5 Política Monetaria",unit:"Objetivos e instrumentos",syllabus:"Objetivos del banco central",scenario:"El banco central de un país anuncia que su meta principal es mantener la inflación en 3 % ± 1 punto porcentual, mientras también busca reducir las fluctuaciones del ciclo económico.",question:"¿Cuál de los siguientes NO es un objetivo estándar de política monetaria en el programa NM?",options:["Inflación baja y estable mediante metas de inflación.","Desempleo bajo a través de la tasa de empleo pleno.","Control directo del tipo de cambio nominal como meta principal.","Fomento de un entorno estable para el crecimiento a largo plazo."],answer:2,explanation:"El control directo del tipo de cambio NO es un objetivo estándar de política monetaria en NM. Los objetivos son: inflación baja/estable, desempleo bajo, estabilidad del ciclo, crecimiento a largo plazo y equilibrio externo. El tipo de cambio es una variable que puede verse afectada, no una meta directa."},
   {topic:"3.5 Política Monetaria",unit:"Tasas de interés",syllabus:"Tasas reales vs nominales (Fisher)",scenario:"La tasa de interés nominal de un préstamo bancario es del 8 % y la inflación esperada (πᵉ) para el período es del 3 %. Un analista calcula el rendimiento real esperado del prestamista.",question:"Según la ecuación de Fisher (r = i − πᵉ), la tasa de interés real esperada es:",options:["11 %","5 %","3 %","24 %"],answer:1,explanation:"r = i − πᵉ = 8 % − 3 % = 5 %. La tasa real descuenta la inflación esperada; mide el poder adquisitivo real del retorno."},
   {topic:"3.5 Política Monetaria",unit:"Tasas de interés",syllabus:"Cálculo de tasa real",scenario:"Un bono gubernamental paga una tasa nominal del 6 %. Si la inflación real resultante fue del 2 % (mayor a la esperada), el prestamista obtuvo una tasa real ex-post de:",options:["8 %","4 %","2 %","3 %"],answer:1,explanation:"Tasa real ex-post = i − π_actual = 6 % − 2 % = 4 %. Cuando la inflación supera lo esperado, el prestamista gana menos en términos reales de lo anticipado."},
-  {topic:"3.5 Política Monetaria",unit:"Política expansiva",syllabus:"Cerrar brecha deflacionaria",scenario:"Una economía opera con producto real por debajo del potencial (brecha deflacionaria). El banco central reduce la tasa de interés de referencia.",question:"En el modelo AD-AS, una política monetaria expansiva bien sucedida se representa como:",options:["Desplazamiento de la OA a la derecha, reduciendo P e aumentando Y.","Desplazamiento de la DA a la derecha, aumentando tanto P como Y.","Desplazamiento de la DA a la izquierda, reduciendo P e Y.","Movimiento a lo largo de la DA hacia un punto con menor P."],answer:1,explanation:"Política monetaria expansiva → tasas menores → mayor I y C → DA se desplaza a la derecha. En brecha deflacionaria, esto eleva Y hacia Yf y P sube moderadamente."},
-  {topic:"3.5 Política Monetaria",unit:"Política restrictiva",syllabus:"Cerrar brecha inflacionaria",scenario:"Una economía opera con producto real por encima del potencial (brecha inflacionaria). El banco central sube la tasa de interés de referencia.",question:"El efecto en el diagrama AD-AS es:",options:["DA se desplaza a la izquierda; P baja e Y baja hacia Yf.","OA se desplaza a la izquierda; P sube e Y baja.","DA se desplaza a la derecha; P sube e Y sube más.","OA se desplaza a la derecha; P baja e Y sube."],answer:0,explanation:"Política restrictiva → tasas mayores → menor I y C → DA se desplaza a la izquierda. Cierra la brecha inflacionaria reduciendo P y Y hacia el potencial."},
+  {topic:"3.5 Política Monetaria",unit:"Política expansiva",syllabus:"Cerrar brecha deflacionaria",scenario:"Una economía opera con PIB real por debajo del potencial (brecha deflacionaria). El banco central reduce la tasa de interés de referencia.",question:"En el modelo AD-AS, una política monetaria expansiva bien sucedida se representa como:",options:["Desplazamiento de la OA a la derecha, reduciendo P e aumentando Y.","Desplazamiento de la DA a la derecha, aumentando tanto P como Y.","Desplazamiento de la DA a la izquierda, reduciendo P e Y.","Movimiento a lo largo de la DA hacia un punto con menor P."],answer:1,explanation:"Política monetaria expansiva → tasas menores → mayor I y C → DA se desplaza a la derecha. En brecha deflacionaria, esto eleva Y hacia Yf y P sube moderadamente."},
+  {topic:"3.5 Política Monetaria",unit:"Política restrictiva",syllabus:"Cerrar brecha inflacionaria",scenario:"Una economía opera con PIB real por encima del potencial (brecha inflacionaria). El banco central sube la tasa de interés de referencia.",question:"El efecto en el diagrama AD-AS es:",options:["DA se desplaza a la izquierda; P baja e Y baja hacia Yf.","OA se desplaza a la izquierda; P sube e Y baja.","DA se desplaza a la derecha; P sube e Y sube más.","OA se desplaza a la derecha; P baja e Y sube."],answer:0,explanation:"Política restrictiva → tasas mayores → menor I y C → DA se desplaza a la izquierda. Cierra la brecha inflacionaria reduciendo P y Y hacia el potencial."},
   {topic:"3.5 Política Monetaria",unit:"Eficacia - Limitaciones",syllabus:"Trampa de liquidez / límite cero",scenario:"La tasa de interés de referencia está en 0,25 % y la economía sigue en recesión profunda con baja confianza. El banco central no puede bajar más la tasa nominal.",question:"Esta situación ilustra cuál limitación de la política monetaria:",options:["Rezago de impacto (time lag).","Espacio limitado para recortar tasas cerca de cero (límite cero / trampa de liquidez).","Efecto de desplazamiento (crowding out).","Incapacidad para afectar las expectativas de inflación."],answer:1,explanation:"Cuando las tasas nominales están cerca de cero, el banco central tiene munición limitada para estimular vía tasas menores. Es la 'trampa de liquidez' o límite cero efectivo (zero lower bound)."},
   {topic:"3.5 Política Monetaria",unit:"Eficacia - Limitaciones",syllabus:"Baja confianza",scenario:"El banco central recorta tasas, pero las empresas no invierten porque prevén demanda futura débil y los hogares no consumen por temor al desempleo.",question:"¿Qué limitación de la política monetaria describe este escenario?",options:["Trampa de liquidez.","Baja confianza empresarial y del consumidor.","Rezago largo en la transmisión.","Neutralidad de la moneda a largo plazo."],answer:1,explanation:"Incluso con tasas bajas, si la confianza es muy baja, la inversión y el consumo no responden. La política monetaria 'empuja una cuerda' (pushing on a string)."},
   {topic:"3.5 Política Monetaria",unit:"Eficacia - Puntos fuertes",syllabus:"Flexibilidad y rapidez",scenario:"Un banco central independiente detecta presiones inflacionarias incipientes y sube la tasa de referencia en 25 pb en su próxima reunión programada.",question:"¿Qué punto fuerte de la política monetaria permite esta respuesta?",options:["Se puede dirigir a sectores específicos.","Es gradual, flexible y fácil de revertir; rezago de impacto menor que la fiscal.","No genera déficit público ni deuda.","Mejora directamente la oferta agregada a largo plazo."],answer:1,explanation:"La política monetaria se decide en reuniones regulares, los cambios son incrementales (graduales), reversibles, y el rezago de impacto (aunque existe) es típicamente menor que el de la política fiscal (que requiere proceso legislativo)."},
-  {topic:"3.5 Política Monetaria",unit:"Neutralidad monetaria",syllabus:"Largo plazo",scenario:"En el largo plazo, tras una expansión monetaria sostenida, el producto real regresa a su nivel de potencial (Yf) y solo el nivel de precios es permanentemente más alto.",question:"Este resultado refleja el concepto de:",options:["Neutralidad de la moneda a largo plazo.","Efecto de desplazamiento.","Multiplicador keynesiano.","Curva de Phillips a corto plazo."],answer:0,explanation:"Neutralidad monetaria: en LP, cambios en la oferta de dinero solo afectan variables nominales (P), no reales (Y). Y está determinado por factores de oferta (tecnología, trabajo, capital)."},
+  {topic:"3.5 Política Monetaria",unit:"Neutralidad monetaria",syllabus:"Largo plazo",scenario:"En el largo plazo, tras una expansión monetaria sostenida, el PIB real regresa a su nivel de potencial (Yf) y solo el nivel de precios es permanentemente más alto.",question:"Este resultado refleja el concepto de:",options:["Neutralidad de la moneda a largo plazo.","Efecto de desplazamiento.","Multiplicador keynesiano.","Curva de Phillips a corto plazo."],answer:0,explanation:"Neutralidad monetaria: en LP, cambios en la oferta de dinero solo afectan variables nominales (P), no reales (Y). Y está determinado por factores de oferta (tecnología, trabajo, capital)."},
 
   // ========== 3.6 POLÍTICA FISCAL ==========
   {topic:"3.6 Política Fiscal",unit:"Ingresos y gastos",syllabus:"Fuentes de ingresos fiscales",scenario:"El gobierno financia su gasto mediante impuesto a la renta (directo), IVA (indirecto), dividendos de empresas estatales y venta de activos públicos.",question:"¿Cuál de los siguientes NO es una fuente de ingresos fiscales según el syllabus NM?",options:["Impuestos directos (renta, patrimonio).","Impuestos indirectos (IVA, selectivos).","Emisión de dinero por el banco central.","Venta de bienes/servicios de empresas estatales."],answer:2,explanation:"La emisión de dinero es función del banco central (política monetaria), no ingreso fiscal. Ingresos fiscales: impuestos directos/indirectos, ventas de empresas estatales, venta de activos, préstamos (financiamiento, no ingreso)."},
@@ -276,7 +387,7 @@ const QUESTION_BANK = [
   {topic:"3.6 Política Fiscal",unit:"Eficacia - Limitaciones",syllabus:"Presión política y rezagos",scenario:"Un gobierno pospone un ajuste fiscal necesario (recortes/impuestos) porque es año electoral, y cuando por fin lo implementa, la economía ya cambió de fase del ciclo.",question:"Las limitaciones ilustradas son:",options:["Presión política y rezago de impacto (time lag).","Efecto de desplazamiento y neutralidad fiscal.","Trampa de liquidez y baja confianza.","Costo de oportunidad y equidad."],answer:0,explanation:"Presión política = ciclos electorales distorsionan timing. Rezago = tiempo entre decisión legislativa, implementación y efecto real (recognition → decision → implementation → impact lags)."},
   {topic:"3.6 Política Fiscal",unit:"Eficacia - Limitaciones NS excluido",syllabus:"Deuda sostenible (NM) vs Desplazamiento (NS)",scenario:"Un país eleva su relación deuda/PIB al 90 % tras años de déficits. Los inversionistas exigen mayores primas de riesgo, encareciendo el financiamiento.",question:"Esta situación ilustra cuál limitación NM de la política fiscal:",options:["Efecto de desplazamiento (crowding out) — solo NS.","Necesidad de mantener nivel de deuda sostenible.","Estabilizadores automáticos insuficientes — solo NS.","Neutralidad fiscal de Ricardo-Barro."],answer:1,explanation:"Deuda insostenible → mayor riesgo soberano → tasas arriba → frena inversión y crecimiento. Es limitación NM. El 'efecto de desplazamiento' (crowding out diagrama) es SOLO NS."},
   {topic:"3.6 Política Fiscal",unit:"Eficacia - Puntos fuertes",syllabus:"Focalización y recesión profunda",scenario:"En una recesión profunda con brecha deflacionaria grande, el gobierno lanza un plan de infraestructura verde dirigido a regiones de alto desempleo.",question:"¿Qué punto fuerte de la política fiscal aprovecha esta medida?",options:["Es gradual, flexible y fácil de revertir.","Se puede dirigir a sectores/regiones específicas; gasto público eficaz en recesión profunda.","No afecta el presupuesto público.","Opera automáticamente sin decisión política."],answer:1,explanation:"La fiscal es 'quirúrgica': puede focalizarse (sectores, regiones, grupos). En recesión profunda (brecha grande, tasas cerca de cero), el gasto público tiene alto multiplicador y no hay crowding out (recursos ociosos)."},
-  {topic:"3.6 Política Fiscal",unit:"Estabilizadores automáticos",syllabus:"Solo NS — excluido",scenario:"Durante una recesión, la recaudación de impuesto a la renta cae automáticamente y los subsidios por desempleo suben, sin nueva ley.",question:"¿Por qué este tema NO se evalúa en NM?",options:["Porque los estabilizadores automáticos no existen en la realidad.","Porque 'impuestos progresivos y subsidios por desempleo' son SOLO NS según la Guía.","Porque solo operan en economías cerradas.","Porque contradicen la neutralidad fiscal."],answer:1,explanation:"La Guía marca explícitamente: 'Estabilizadores automáticos: impuestos progresivos, subsidios por desempleo (solo en el NS)'. En NM se entiende el concepto general, pero no se exige análisis ni diagrama."},
+  {topic:"3.6 Política Fiscal",unit:"Déficit y deuda pública",syllabus:"Sostenibilidad fiscal (NM)",scenario:"Un gobierno implementa un plan de estímulo de 3 % del PIB en un año. Si la economía está cerca del pleno empleo y su deuda pública ya es elevada, el riesgo es que:",question:"Respecto a la sostenibilidad fiscal en NM, el principal riesgo de un gran déficit cerca del pleno empleo es:",options:["Que la inflación suba por demanda excesiva.","Que la deuda pública se vaya acumulando insosteniblemente y encarezca el financiamiento.","Que el tipo de cambio se deprecie.","Que las tasas de interés se pongan negativas."],answer:1,explanation:"Déficit + pleno empleo → deuda crece insostenible → primas de riesgo ↑ → encarece financiamiento público y futuras necesidades de ajuste. NM: sostenibilidad de deuda es límite real. La inflación es un efecto colateral posible, pero el riesgo central es insostenibilidad."},
 
   // ========== 3.7 POLÍTICAS DE OFERTA ==========
   {topic:"3.7 Políticas de Oferta",unit:"Objetivos",syllabus:"Crecimiento LP, competencia, mercado laboral",scenario:"Un gobierno elimina barreras de entrada en telecomunicaciones, reduce subsidios por desempleo y recorta impuesto corporativo.",question:"¿Cuál de los siguientes NO es un objetivo explícito de las políticas de oferta en NM?",options:["Crecimiento LP al incrementar capacidad productiva.","Mejora de competencia y eficiencia.","Reducir costos laborales y desempleo via flexibilización.","Controlar la inflación mediante metas de agregados monetarios."],answer:3,explanation:"Controlar inflación via agregados monetarios es política MONETARIA. Objetivos oferta: crecimiento LP (capacidad), competencia/eficiencia, flexibilizar mercado laboral, competitividad internacional, incentivos a innovación/inversión."},
@@ -466,6 +577,162 @@ document.addEventListener('keydown', e => {
     }
   }
 });
+
+  // === PANEL DOCENTE ===
+  const TEACHER_CODE = 'DOCENTE2026';
+  
+  function saveResultToLocalStorage(result) {
+    try {
+      const saved = JSON.parse(localStorage.getItem('macro_quiz_results') || '[]');
+      saved.push(result);
+      localStorage.setItem('macro_quiz_results', JSON.stringify(saved));
+    } catch(e) { console.warn('saveResult failed:', e); }
+  }
+  
+  function loadResultsFromLocalStorage() {
+    try {
+      return JSON.parse(localStorage.getItem('macro_quiz_results') || '[]');
+    } catch(e) { return []; }
+  }
+  
+  function clearResultsFromLocalStorage() {
+    localStorage.removeItem('macro_quiz_results');
+  }
+  
+  function exportResultsCSV() {
+    const results = loadResultsFromLocalStorage();
+    if (results.length === 0) { alert('No hay notas para exportar.'); return; }
+    const header = 'Nombre,Nota,/10,Porcentaje,Correctas,Incorrectas,Fecha,Unidad más débil';
+    const rows = results.map(r => {
+      const weak = r.weakestUnit || 'N/A';
+      return `"${r.studentName}",${r.score},${r.pct},${r.correct},${r.correct},${r.wrong},${r.timestamp},${weak}`;
+    });
+    const csv = [header, ...rows].join('\n');
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'notas_macroeconomia_ib_nm.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  
+  // Save result on completion
+  const originalShowResults = showResults;
+  showResults = function() {
+    originalShowResults.call(this);
+    
+    // Auto-save
+    const correct = STATE.userAnswers.filter(a => a.isCorrect).length;
+    const score10 = (correct / TOTAL_QUESTIONS) * 10;
+    const pct = Math.round((correct / TOTAL_QUESTIONS) * 100);
+    const wrong = TOTAL_QUESTIONS - correct;
+    
+    // Find weakest unit
+    const unitCounts = {};
+    STATE.userAnswers.forEach(a => {
+      const unit = a.question.unit;
+      if (!unitCounts[unit]) unitCounts[unit] = {correct: 0, total: 0};
+      unitCounts[unit].total++;
+      if (a.isCorrect) unitCounts[unit].correct++;
+    });
+    const weakestUnit = Object.entries(unitCounts).reduce((w, [name, data]) => {
+      const ratio = data.correct / data.total;
+      return !w || ratio < w.ratio ? {name, ratio} : w;
+    }, null);
+    
+    saveResultToLocalStorage({
+      studentName: STATE.studentName,
+      score: score10.toFixed(1),
+      pct: pct,
+      correct: correct,
+      wrong: wrong,
+      timestamp: new Date().toLocaleString(),
+      weakestUnit: weakestUnit ? weakestUnit.name : 'N/A'
+    });
+  };
+  
+  // Panel docente toggle with ALT+SHIFT+D
+  document.addEventListener('keydown', e => {
+    if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd') {
+      e.preventDefault();
+      document.getElementById('tpOpener').classList.toggle('active');
+      document.getElementById('tpOverlay').classList.toggle('active');
+    }
+  });
+  
+  document.getElementById('tpOpener').addEventListener('click', () => {
+    document.getElementById('tpOpener').classList.add('active');
+    document.getElementById('tpOverlay').classList.add('active');
+  });
+  
+  document.getElementById('tpClose').addEventListener('click', () => {
+    document.getElementById('tpOverlay').classList.remove('active');
+    document.getElementById('tpOpener').classList.remove('active');
+  });
+  
+  document.getElementById('tpLoginBtn').addEventListener('click', () => {
+    const code = document.getElementById('tpCode').value.trim();
+    if (code === TEACHER_CODE) {
+      document.getElementById('tpActions').style.display = 'flex';
+      document.getElementById('tpResults').innerHTML = '';
+      const results = loadResultsFromLocalStorage();
+      if (results.length === 0) {
+        document.getElementById('tpResults').innerHTML = '<div class="tp-empty">No hay notas guardadas aún.</div>';
+        document.getElementById('tpCount').textContent = '';
+      } else {
+        document.getElementById('tpCount').textContent = `${results.length} registro(s)`;
+        document.getElementById('tpResults').innerHTML = results.map(r => `
+          <div class="tp-result-item">
+            <div>
+              <div class="tp-student">${r.studentName}</div>
+              <div class="tp-info">${r.timestamp}</div>
+            </div>
+            <div class="tp-score">${r.score}/10 (${r.pct}%)</div>
+          </div>
+        `).join('');
+      }
+    } else {
+      alert('Código incorrecto. Usa ALT+SHIFT+D y el código DOCENTE2026');
+    }
+  });
+  
+  document.getElementById('tpExportCsv').addEventListener('click', exportResultsCSV);
+  
+  document.getElementById('tpClear').addEventListener('click', () => {
+    if (confirm('¿Borrar TODAS las notas guardadas? Esta acción no se puede deshacer.')) {
+      clearResultsFromLocalStorage();
+      document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Notas borradas.</div>';
+      document.getElementById('tpCount').textContent = '';
+    }
+  });
+
 </script>
+
+  <!-- PANEL DOCENTE -->
+  <button class="teacher-panel-opener" id="tpOpener" title="Panel docente (ALT+SHIFT+D)">
+    <i class="fa-solid fa-chalkboard-user"></i>
+  </button>
+  <div class="teacher-panel-overlay" id="tpOverlay">
+    <div class="teacher-panel">
+      <button class="tp-close" id="tpClose">&times;</button>
+      <h2><i class="fa-solid fa-clipboard-list"></i> Panel Docente</h2>
+      <p style="font-size:14px;color:var(--ink-soft);margin-bottom:18px;">
+        Accede con el código para consultar todas las notas guardadas.
+      </p>
+      <div class="tp-meta" style="margin-bottom:20px;">
+        <input type="password" id="tpCode" class="tp-code" placeholder="Código docente (ALT+SHIFT+D)" style="flex:1;min-width:200px;">
+        <button class="tp-btn tp-btn-primary" id="tpLoginBtn"><i class="fa-solid fa-unlock"></i> Acceder</button>
+      </div>
+      <div class="tp-meta" id="tpActions" style="display:none;">
+        <button class="tp-btn tp-btn-ghost" id="tpExportCsv"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+        <button class="tp-btn tp-btn-danger" id="tpClear"><i class="fa-solid fa-trash"></i> Limpiar notas</button>
+        <span class="tp-count" id="tpCount" style="font-size:13px;color:var(--muted);"></span>
+      </div>
+      <div class="tp-results" id="tpResults">
+        <div class="tp-empty">Ingresa el código para ver las notas de los estudiantes.</div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
