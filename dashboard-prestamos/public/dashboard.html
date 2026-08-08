@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Financiero - Préstamos</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Dashboard Financiero</h2>
+        <p class="user-email" id="userEmail"></p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#resumen" class="nav-item active" data-section="resumen">
+          <span class="icon">📊</span>
+          <span>Resumen</span>
+        </a>
+        <a href="#prestamos" class="nav-item" data-section="prestamos">
+          <span class="icon">💰</span>
+          <span>Préstamos</span>
+        </a>
+        <a href="#tabla" class="nav-item" data-section="tabla">
+          <span class="icon">📋</span>
+          <span>Tabla Amortización</span>
+        </a>
+        <a href="#flujo" class="nav-item" data-section="flujo">
+          <span class="icon">📈</span>
+          <span>Proyección Flujo</span>
+        </a>
+        <a href="#configuracion" class="nav-item" data-section="configuracion">
+          <span class="icon">⚙️</span>
+          <span>Configuración</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="btn-secondary">Cerrar Sesión</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Resumen Section -->
+      <section id="resumen" class="section active">
+        <div class="section-header">
+          <h1>Resumen Financiero</h1>
+          <p class="subtitle">Vista general de tus préstamos</p>
+        </div>
+        
+        <div class="summary-cards">
+          <div class="card">
+            <div class="card-icon">💳</div>
+            <div class="card-content">
+              <h3>Total Préstamos</h3>
+              <p class="card-value" id="totalLoans">0</p>
+              <p class="card-label">Activos</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">💵</div>
+            <div class="card-content">
+              <h3>Saldo Total</h3>
+              <p class="card-value" id="totalBalance">$0</p>
+              <p class="card-label">Por pagar</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📅</div>
+            <div class="card-content">
+              <h3>Cuota Mensual</h3>
+              <p class="card-value" id="monthlyPayment">$0</p>
+              <p class="card-label">Promedio</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚠️</div>
+            <div class="card-content">
+              <h3>Alertas</h3>
+              <p class="card-value" id="alertsCount">0</p>
+              <p class="card-label">Este mes</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alerts-section">
+          <h3>Alertas y Recordatorios</h3>
+          <div id="alertsList" class="alerts-list">
+            <p class="no-data">No hay alertas pendientes</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Loans Section -->
+      <section id="prestamos" class="section">
+        <div class="section-header">
+          <h1>Préstamos</h1>
+          <button id="addLoanBtn" class="btn-primary">+ Nuevo Préstamo</button>
+        </div>
+        
+        <div id="loansList" class="loans-grid">
+          <!-- Loans will be rendered here -->
+        </div>
+      </section>
+
+      <!-- Amortization Table Section -->
+      <section id="tabla" class="section">
+        <div class="section-header">
+          <h1>Tabla de Amortización</h1>
+          <select id="loanSelect" class="form-select">
+            <option value="">Seleccionar préstamo</option>
+          </select>
+        </div>
+        
+        <div class="table-container">
+          <table id="amortizationTable" class="data-table">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th>Fecha</th>
+                <th>Cuota Programada</th>
+                <th>Pago Real</th>
+                <th>Interés</th>
+                <th>Capital</th>
+                <th>Saldo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Table rows will be rendered here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Cash Flow Projection Section -->
+      <section id="flujo" class="section">
+        <div class="section-header">
+          <h1>Proyección de Flujo</h1>
+          <div class="section-actions">
+            <select id="projectionMonths" class="form-select">
+              <option value="12">12 meses</option>
+              <option value="24" selected>24 meses</option>
+              <option value="36">36 meses</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="chart-container">
+          <canvas id="cashFlowChart"></canvas>
+        </div>
+        
+        <div class="projection-summary">
+          <div class="projection-card">
+            <h3>Flujo Promedio Mensual</h3>
+            <p class="projection-value" id="avgFlow">$0</p>
+          </div>
+          <div class="projection-card">
+            <h3>Punto Crítico</h3>
+            <p class="projection-value" id="criticalPoint">-</p>
+          </div>
+          <div class="projection-card">
+            <h3>Saldo Final Proyectado</h3>
+            <p class="projection-value" id="finalBalance">$0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Configuration Section -->
+      <section id="configuracion" class="section">
+        <div class="section-header">
+          <h1>Configuración</h1>
+        </div>
+        
+        <div class="config-sections">
+          <div class="config-block">
+            <h3>Ingresos Fijos</h3>
+            <div id="incomesList" class="list-container">
+              <!-- Incomes will be rendered here -->
+            </div>
+            <button id="addIncomeBtn" class="btn-secondary">+ Agregar Ingreso</button>
+          </div>
+          
+          <div class="config-block">
+            <h3>Configuración General</h3>
+            <div class="form-group">
+              <label for="defaultProjection">Meses de proyección por defecto</label>
+              <select id="defaultProjection" class="form-select">
+                <option value="12">12 meses</option>
+                <option value="24" selected>24 meses</option>
+                <option value="36">36 meses</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Loan Modal -->
+  <div id="loanModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="loanModalTitle">Nuevo Préstamo</h2>
+        <button class="modal-close" id="closeLoanModal">&times;</button>
+      </div>
+      <form id="loanForm">
+        <input type="hidden" id="loanId">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="loanName">Nombre *</label>
+            <input type="text" id="loanName" required>
+          </div>
+          <div class="form-group">
+            <label for="loanBank">Banco *</label>
+            <input type="text" id="loanBank" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="loanProduct">Tipo de Producto *</label>
+            <select id="loanProduct" required>
+              <option value="">Seleccionar</option>
+              <option value="consumo">Crédito de Consumo</option>
+              <option value="tarjeta">Tarjeta de Crédito</option>
+              <option value="hipotecario">Hipotecario</option>
+              <option value="vehicular">Vehicular</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="loanSystem">Sistema de Amortización</label>
+            <select id="loanSystem">
+              <option value="frances" selected>Francés (cuota fija)</option>
+              <option value="aleman">Alemán (capital fijo)</option>
+              <option value="americano">Americano (solo interés)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="loanPrincipal">Monto Inicial *</label>
+            <input type="number" id="loanPrincipal" step="0.01" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="loanRate">Tasa Anual (%) *</label>
+            <input type="number" id="loanRate" step="0.01" min="0" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="loanTerm">Plazo (meses) *</label>
+            <input type="number" id="loanTerm" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="loanStartDate">Fecha de Inicio *</label>
+            <input type="date" id="loanStartDate" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="loanFrequency">Frecuencia de Pago</label>
+            <select id="loanFrequency">
+              <option value="monthly" selected>Mensual</option>
+              <option value="bimonthly">Quincenal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="loanInsurance">Seguro/Cuota Adicional</label>
+            <input type="number" id="loanInsurance" step="0.01" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="loanGrace">
+            Período de gracia
+          </label>
+          <div id="graceFields" class="grace-fields" style="display:none;">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="graceType">Tipo de Gracia</label>
+                <select id="graceType">
+                  <option value="total">Total</option>
+                  <option value="parcial">Parcial</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="graceMonths">Meses de Gracia</label>
+                <input type="number" id="graceMonths" min="1" value="3">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelLoanBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Registrar Pago</h2>
+        <button class="modal-close" id="closePaymentModal">&times;</button>
+      </div>
+      <form id="paymentForm">
+        <input type="hidden" id="paymentLoanId">
+        <div class="form-group">
+          <label for="paymentDate">Fecha de Pago *</label>
+          <input type="date" id="paymentDate" required>
+        </div>
+        <div class="form-group">
+          <label for="paymentAmount">Monto Pagado *</label>
+          <input type="number" id="paymentAmount" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="paymentNote">Nota (opcional)</label>
+          <input type="text" id="paymentNote" placeholder="Ej: Pago adelantado, cuota extra">
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelPaymentBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Income Modal -->
+  <div id="incomeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Agregar Ingreso</h2>
+        <button class="modal-close" id="closeIncomeModal">&times;</button>
+      </div>
+      <form id="incomeForm">
+        <input type="hidden" id="incomeId">
+        <div class="form-group">
+          <label for="incomeName">Nombre del Ingreso *</label>
+          <input type="text" id="incomeName" placeholder="Ej: Salario, Freelance" required>
+        </div>
+        <div class="form-group">
+          <label for="incomeAmount">Monto Mensual *</label>
+          <input type="number" id="incomeAmount" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="incomeStartDate">Fecha de Inicio *</label>
+          <input type="date" id="incomeStartDate" required>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="incomeActive" checked>
+            Activo
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="cancelIncomeBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

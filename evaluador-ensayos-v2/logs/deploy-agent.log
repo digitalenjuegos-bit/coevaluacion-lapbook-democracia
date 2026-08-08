@@ -1,0 +1,113 @@
+[2026-08-02T23:18:49.053Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-02T23:18:49.059Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-02T23:18:50.986Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-02T23:21:14.609Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-02T23:21:14.614Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-02T23:21:16.060Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-02T23:21:46.675Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-02T23:21:46.679Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-02T23:21:48.104Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-02T23:22:18.681Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-02T23:22:18.684Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-02T23:22:20.081Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-02T23:22:50.689Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-02T23:22:50.695Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-02T23:22:52.141Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-02T23:23:22.759Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-02T23:23:22.764Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-02T23:23:24.209Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-03T12:31:42.135Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-03T12:31:42.145Z] DEPLOY_START command=railway redeploy -s undefined -y
+[2026-08-03T12:31:43.509Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y
+Service 'undefined' not found
+
+[2026-08-03T12:32:08.945Z] RECOVERY_NEEDED status=0 error=timeout
+[2026-08-03T12:32:08.949Z] DEPLOY_START command=railway redeploy -s 40d37975-d583-405e-bec0-d081517481e8 -y
+[2026-08-03T12:32:21.839Z] DEPLOY_OK output=
+[2026-08-03T12:34:44.087Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:34:59.530Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:35:00.398Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:35:12.404Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:35:13.162Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:35:18.826Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:35:19.572Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:35:25.192Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:35:25.949Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:35:31.569Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:35:32.292Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:35:37.975Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:35:38.733Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:36:50.151Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:36:50.983Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:36:56.654Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:36:57.425Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:37:03.049Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:37:03.754Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:37:09.426Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:37:10.148Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:37:15.789Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:37:16.577Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:37:45.566Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:37:46.272Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:37:51.898Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:37:52.639Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:37:58.265Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:37:59.030Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:38:04.708Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:38:05.407Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:38:11.018Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:38:11.929Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:39:38.028Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:39:38.881Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:39:59.456Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:40:00.274Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:40:20.879Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:40:21.594Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:40:42.215Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:40:42.915Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:41:03.503Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:41:04.345Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:42:30.118Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:42:30.918Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:42:46.582Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:42:47.292Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:43:02.977Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:43:03.682Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:43:19.411Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:43:20.131Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:43:35.817Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:43:36.522Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:44:02.840Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:44:03.637Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:44:19.363Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:44:20.060Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:44:35.718Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:44:36.443Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:44:52.165Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:44:52.869Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:45:08.503Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:45:09.218Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:45:44.190Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:45:44.989Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:46:00.686Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:46:01.390Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:46:17.059Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:46:17.761Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:46:33.402Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:46:34.102Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:46:49.764Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:46:50.458Z] Local health=OK Production health=OK Production evaluate=OK
+[2026-08-03T12:49:18.321Z] === DEPLOY AGENT RECOVERY START ===
+[2026-08-03T12:49:19.147Z] Local health=OK Production health=OK Production evaluate=OK

@@ -1,0 +1,90 @@
+[2026-08-02T16:29:11.784Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=1
+node:events:497
+Error: listen EADDRINUSE: address already in use :::3002
+    at Server.setupListenHandle [as _listen2] (node:net:1941:16)
+    at listenInCluster (node:net:1998:12)
+    at Server.listen (node:net:2103:7)
+[2026-08-02T16:38:59.434Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=1
+[2026-08-02T16:38:59.434Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:38:59.435Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:38:59.491Z] PORT_IN_USE_KILLED
+[2026-08-02T16:41:00.752Z] FAIL /api/evaluar=404 consecutive=1
+[2026-08-02T16:41:00.753Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:41:00.753Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:42:08.010Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:42:08.011Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:42:08.050Z] PORT_IN_USE_KILL_FAILED Command failed: lsof -ti:3002
+[2026-08-02T16:43:21.866Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:43:21.869Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:43:21.923Z] PORT_IN_USE_KILL_FAILED Command failed: lsof -ti:3002
+[2026-08-02T16:43:59.831Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:43:59.834Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:43:59.881Z] PORT_IN_USE_KILL_FAILED Command failed: lsof -ti:3002
+[2026-08-02T16:45:04.236Z] FAIL /api/evaluar=404 consecutive=1
+[2026-08-02T16:45:04.237Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:45:04.237Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:45:04.293Z] PORT_IN_USE_SKIP_SERVER pid=62782 cmd=node server.js
+[2026-08-02T17:02:16.160Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=1
+[2026-08-02T17:02:24.166Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=2
+[2026-08-02T17:02:32.173Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=3
+[2026-08-02T17:02:40.177Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=4
+[2026-08-02T17:02:48.182Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=5
+[2026-08-02T17:02:48.183Z] ESCALATION Orchestrator escalation after 5 failures: {"/api/health":{"endpoint":"/api/health","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/rubricas":{"endpoint":"/api/rubricas","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/evaluar":{"endpoint":"/api/evaluar","ok":false,"status":0,"durationMs":2,"error":"connect ECONNREFUSED 127.0.0.1:3002"}}
+[2026-08-02T17:02:56.187Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=6
+[2026-08-02T17:02:56.188Z] ESCALATION Orchestrator escalation after 6 failures: {"/api/health":{"endpoint":"/api/health","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/rubricas":{"endpoint":"/api/rubricas","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/evaluar":{"endpoint":"/api/evaluar","ok":false,"status":0,"durationMs":0,"error":"connect ECONNREFUSED 127.0.0.1:3002"}}
+[2026-08-02T17:03:04.193Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=7
+[2026-08-02T17:03:04.193Z] ESCALATION Orchestrator escalation after 7 failures: {"/api/health":{"endpoint":"/api/health","ok":false,"status":0,"durationMs":2,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/rubricas":{"endpoint":"/api/rubricas","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/evaluar":{"endpoint":"/api/evaluar","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"}}
+[2026-08-02T17:03:12.197Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=8
+[2026-08-02T17:03:12.198Z] ESCALATION Orchestrator escalation after 8 failures: {"/api/health":{"endpoint":"/api/health","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/rubricas":{"endpoint":"/api/rubricas","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"},"/api/evaluar":{"endpoint":"/api/evaluar","ok":false,"status":0,"durationMs":1,"error":"connect ECONNREFUSED 127.0.0.1:3002"}}
+[2026-08-02T23:17:06.669Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T23:17:06.719Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-02T23:20:59.486Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T23:20:59.510Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-02T23:21:31.578Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T23:21:31.596Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-02T23:22:03.595Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T23:22:03.613Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-02T23:22:35.584Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T23:22:35.599Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-02T23:23:07.663Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T23:23:07.679Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:35:07.311Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:35:07.337Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:35:13.722Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:35:13.735Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:35:20.087Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:35:20.102Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:35:26.476Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:35:26.489Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:35:32.769Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:35:32.782Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:36:45.041Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:36:45.059Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:36:51.561Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:36:51.575Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:36:57.949Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:36:57.961Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:37:04.331Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:37:04.344Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:37:10.662Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:37:10.674Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:37:40.465Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:37:40.482Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:37:46.796Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:37:46.808Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:37:53.161Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:37:53.175Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:37:59.614Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:37:59.627Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:38:05.897Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:38:05.910Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:39:32.907Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:39:32.927Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:39:54.387Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:39:54.403Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:40:15.770Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:40:15.786Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:40:37.137Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:40:37.153Z] INIT status={"healthy":true,"consecutiveFailures":0}
+[2026-08-03T12:40:58.424Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-03T12:40:58.440Z] INIT status={"healthy":true,"consecutiveFailures":0}

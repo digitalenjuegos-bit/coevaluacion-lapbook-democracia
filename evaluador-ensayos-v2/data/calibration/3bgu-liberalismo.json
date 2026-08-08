@@ -1,0 +1,16 @@
+{
+  "rubricId": "3bgu-liberalismo",
+  "expectedStatus": "ok",
+  "expectedTotal": 10,
+  "expectedCriteria": [
+    { "id": "A", "expectedNivel": 3 },
+    { "id": "C", "expectedNivel": 3 },
+    { "id": "D", "expectedNivel": 4 }
+  ],
+  "samples": [
+    {
+      "name": "Ensayo B10 - Forma juridica y origen de las libertades civiles",
+      "texto": "El liberalismo explica en gran medida la forma jurídica con que el Ecuador reconoce hoy mis libertades, pero explica mucho menos quién logró que ese reconocimiento llegara y qué contenidos del marco vigente lo desbordan.\nLa Declaración de los Derechos del Hombre y del Ciudadano (1789) sostiene en su artículo 11 que la libre comunicación de pensamientos y opiniones es uno de los derechos más preciosos del hombre, y en el artículo 4 define la libertad como poder hacer todo lo que no perjudique a otro. Es libertad como no interferencia: el Estado se abstiene. Leída en su siglo, esa proclamación era estrecha, pues la Constitución francesa de 1791 dividió a los ciudadanos en activos y pasivos según su renta y excluyó del sufragio a las mujeres; señalarlo no la descalifica, delimita su alcance.\nEsa gramática reaparece en el artículo 66 de la Constitución de 2008, y el caso que mejor la pone a prueba es la sentencia 11-18-CN/19 de la Corte Constitucional, del 12 de junio de 2019, que reconoció el matrimonio entre personas del mismo sexo. El razonamiento no se agotó en la igualdad ante la ley: se apoyó en la Opinión Consultiva OC-24/17 de la Corte Interamericana. Y a diferencia de 1789, el marco vigente no solo prohíbe interferir, sino que obliga al Estado a garantizar mediante la acción de protección del artículo 88, una prestación exigible ante un juez.\nEl impulso, además, no vino de la tradición liberal sino de la movilización feminista y del constitucionalismo garantista que la tradujo en norma (Grijalva, 2012). Esa vía explica mejor por qué el reconocimiento llegó en 2019 y no antes; el liberalismo explica mejor la forma que adoptó. Y hay contenidos que no explica: los derechos de la naturaleza del artículo 71 no derivan de ningún titular individual.\nDecisivo, entonces, en la forma; insuficiente en el origen y en el contenido.\nReferencias\nAsamblea Nacional Constituyente de Francia. (1789). Declaración de los Derechos del Hombre y del Ciudadano.\nCorte Constitucional del Ecuador. (2019). Sentencia No. 11-18-CN/19, de 12 de junio de 2019.\nGrijalva Jiménez, A. (2012). Constitucionalismo en Ecuador.\nhttps://www.youtube.com/watch?v=dexbs7I2tNE\nhttps://www.youtube.com/watch?v=Cb1akqlMdfQ"
+    }
+  ]
+}

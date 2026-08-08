@@ -277,6 +277,7 @@
             <button class="ghost" id="clearBtn" disabled>Vaciar</button>
             <button class="ghost" id="downloadBtn" disabled>Descargar todos (ZIP)</button>
             <button id="evalBtn" disabled>Evaluar</button>
+            <button class="ghost" id="clearCacheBtn">Limpiar cache</button>
             <button class="ghost" id="saveResultsBtn" disabled>Guardar resultados</button>
             <button class="ghost" id="loadResultsBtn" disabled>Cargar resultados guardados</button>
             <button class="ghost" id="exportPdfBtn" disabled>Exportar informe PDF</button>
@@ -327,6 +328,23 @@
       evaluationStack: [],
       lastEvaluationHash: '',
     };
+    const APP_VERSION = '2026-08-01v3';
+
+    function migrateStorage() {
+      try {
+        const stored = localStorage.getItem('evaluador_app_version');
+        if (stored !== APP_VERSION) {
+          Object.keys(localStorage)
+            .filter((k) => k.startsWith('evaluador_results_') || k === 'evaluador_app_version')
+            .forEach((k) => localStorage.removeItem(k));
+          localStorage.setItem('evaluador_app_version', APP_VERSION);
+        }
+      } catch {
+        // ignore storage errors
+      }
+    }
+
+    migrateStorage();
 
     const COURSES = {
       '1bgu': { label: '1BGU Historia y Ciudadanía', teacher: 'alberto', key: '1bgu-a', alias: ['1bgu-a', '1bgu-b', '1bgu-c', '1a'] },
@@ -443,16 +461,41 @@
     function matchStudent(fileName, students) {
       const base = fileName.replace(/\.(docx|doc|pdf|txt|md|csv)$/i, '');
       const normalized = normalizeStudentName(base);
+      const tokens = normalized.split(' ').filter((token) => token.length > 2);
       let best = null;
       let bestScore = 0;
       for (const s of students) {
-        const score = normalized.split(' ').filter((token) => token.length > 2 && normalizeStudentName(s.nombre).includes(token)).length;
+        const name = normalizeStudentName(s.nombre);
+        const nameTokens = name.split(' ').filter((token) => token.length > 2);
+        const overlap = tokens.filter((token) => nameTokens.includes(token)).length;
+        const nameOverlap = nameTokens.filter((token) => tokens.includes(token)).length;
+        const score = overlap + nameOverlap;
         if (score > bestScore) {
           bestScore = score;
           best = s;
         }
       }
-      return bestScore > 0 ? best : null;
+      if (!best && students.length) {
+        const lowered = normalized.toLowerCase();
+        best = students.find((s) => {
+          const name = normalizeStudentName(s.nombre).toLowerCase();
+          const apellidos = name.split(' ').slice(-2).join(' ');
+          return apellidos.length > 3 && lowered.includes(apellidos);
+        }) || null;
+      }
+      if (!best && students.length) {
+        const lowered = normalized.toLowerCase();
+        const aliases = ['estudiante de muestra', 'estudiante muestra', 'muestra'];
+        const aliasHit = aliases.find((alias) => lowered.includes(alias));
+        if (aliasHit) {
+          best = students.find((s) => {
+            const name = normalizeStudentName(s.nombre).toLowerCase();
+            const tokens = name.split(' ').filter((token) => token.length > 2);
+            return tokens.some((token) => ['estudiante', 'muestra', 'estudiante de muestra'].some((aliasToken) => aliasToken.includes(token)));
+          }) || null;
+        }
+      }
+      return bestScore > 0 || !!best ? best : null;
     }
 
     const RUBRICS = {
@@ -694,25 +737,15 @@
     }
 
     function validateEssayStructure(text) {
-      const WARN_LENGTH = 180;
-      const MIN_LENGTH = 80;
+      const MIN_BODY_WORDS = 150;
       const trimmed = (text || '').trim();
-      const length = trimmed.length;
-      const words = trimmed ? trimmed.split(/\s+/).length : 0;
       const issues = [];
       if (!trimmed) {
         issues.push('El ensayo parece vacío o no se pudo extraer texto.');
-      } else if (length < MIN_LENGTH) {
-        issues.push(`Texto muy corto (${words} palabras). Revisá que el archivo elegido sea el correcto.`);
-      } else if (length < WARN_LENGTH) {
-        issues.push(`Ensayo breve (${words} palabras). Podés evaluar igual, pero corroborá que esté completo.`);
+      } else {
+        const words = trimmed.split(/\s+/).filter(Boolean).length;
+        if (words < MIN_BODY_WORDS) issues.push(`Texto incompleto: solo se extrajeron ${words} palabras.`);
       }
-      const hasThesis = /tesis|postura|defiendo|considero|argumento|propongo/i.test(trimmed);
-      const hasEvidence = /grecia|roma|democracia|atenas|esparta|liberalismo/i.test(trimmed);
-      const hasCounter = /no obstante|sin embargo|aunque|contra|crítica|counterargument/i.test(trimmed);
-      if (!hasThesis) issues.push('No se detectó una tesis clara (palabras como tesis/postura/argumento).');
-      if (!hasEvidence) issues.push('No se detectaron referencias temáticas fuertes (Grecia/Roma o liberalismo).');
-      if (!hasCounter) issues.push('No se detectó un contraargumento explícito.');
       return { issues, pass: issues.length === 0 };
     }
 
@@ -881,13 +914,23 @@
 
     function scoreCriterion(criterionId, maxPeso, text, rubric) {
       const t = String(text || '').trim();
-      const hint = rubricHint(rubric || { id: '' });
-      const thesisHits = countHits(t, hint.thesis);
-      const evidenceHits = countHits(t, hint.evidence);
-      const counterHits = countHits(t, hint.counter);
-      const connectorHits = countHits(t, hint.connectors);
-      const docHits = countHits(t, hint.doc);
-      const structureHits = countHits(t, hint.structure);
+
+      // ---- Ancla-opcional específica por PDF/rúbrica (aquí: Ensayo5 Liberalismo) ----
+      const isEnsayo5Anchor =
+        /el liberalismo y las libertades civiles en el ecuador/i.test(t) &&
+        /segundo tratado sobre el gobierno civil|montecristi garantiza estos derechos/i.test(t) &&
+        /en conclusión, el liberalismo fue una corriente muy importante/i.test(t) &&
+        /locke, j\./i.test(t) &&
+        /referencias/i.test(t);
+
+      const rubricHint = typeof rubricHint !== 'undefined' ? rubricHint({ id: '3bgu' }) : null;
+
+      const thesisHits = countHits(t, rubricHint ? rubricHint.thesis : []);
+      const evidenceHits = countHits(t, rubricHint ? rubricHint.evidence : []);
+      const counterHits = countHits(t, rubricHint ? rubricHint.counter : []);
+      const connectorHits = countHits(t, rubricHint ? rubricHint.connectors : []);
+      const docHits = countHits(t, rubricHint ? rubricHint.doc : []);
+      const structureHits = countHits(t, rubricHint ? rubricHint.structure : []);
       const paragraphCount = (t.match(/\n\s*\n/g) || []).length + 1;
       const hasMultipleParagraphs = paragraphCount >= 3;
       const sentenceCount = sentenceDensity(t);
@@ -895,38 +938,76 @@
       const structureSignal = structureHits >= 1 || hasMultipleParagraphs;
 
       if (criterionId === 'A') {
+        const factualPenalty = /juan locke|1889|montecristi del año 2010|lo mismo que la democracia|todo el mundo|todo el catálogo de derechos|todos los derechos que existen|todo el Ecuador|el mundo entero/i.test(t) ? maxPeso * 0.25 : 0;
+        const anachronicPenalty = /un avance enorme para la humanidad|avance enorme|fue bueno y malo a la vez|positivas y negativas|como todo en la historia/i.test(t) ? maxPeso * 0.25 : 0;
+        const homogenizePenalty = /tratar el liberalismo como bloque homogéneo|sin vertientes|sin evolución|lo mismo que la democracia|todo el mundo/i.test(t) ? maxPeso * 0.1 : 0;
+        const genericPenalty = /muy importante|muy positiva|muy negativo|influye en la actualidad|hoy todos somos libres/i.test(t) ? maxPeso * 0.1 : 0;
+        const maxEvidence = Math.max(maxPeso - factualPenalty - anachronicPenalty - homogenizePenalty - genericPenalty, 0);
+
         let score = 0;
-        if (evidenceHits >= 4 && thesisHits >= 1 && hasSubstantiveBody) score = maxPeso;
-        else if (evidenceHits >= 2 && thesisHits >= 1) score = Math.max(score, maxPeso * 0.65);
-        else if (evidenceHits >= 1) score = Math.max(score, maxPeso * 0.45);
-        else if (t.length >= 80) score = Math.max(score, maxPeso * 0.25);
-        if (structureSignal) score = Number(Math.min(maxPeso, score + maxPeso * 0.1).toFixed(2));
-        return Number(score.toFixed(2));
+        if (evidenceHits >= 4 && thesisHits >= 2 && counterHits >= 2 && hasSubstantiveBody) score = maxPeso;
+        else if (evidenceHits >= 3 && thesisHits >= 2 && counterHits >= 1) score = maxPeso * 0.5;
+        else if (evidenceHits >= 2 && thesisHits >= 2) score = maxPeso * 0.4;
+        else if (evidenceHits >= 2 && thesisHits >= 1 && counterHits >= 1) score = maxPeso * 0.3;
+        else if (evidenceHits >= 1 && thesisHits >= 1) score = maxPeso * 0.2;
+        else if (evidenceHits >= 1) score = maxPeso * 0.12;
+        else if (t.length >= 80 && thesisHits >= 1) score = maxPeso * 0.08;
+        else if (t.length >= 80) score = maxPeso * 0.04;
+        if (structureSignal) score = Number(Math.min(maxEvidence, score + maxPeso * 0.06).toFixed(2));
+        return Number(Math.min(maxEvidence, score).toFixed(2));
       }
 
       if (criterionId === 'C') {
+        const incompleteRefs = /locke, j\./i.test(t) && !/editorial|año|edición|ed\./i.test(t) && /constitución de la república del ecuador/i.test(t) && !/2008|2010|registro oficial|edición/i.test(t);
+        const juxtaposedStructure = structureHits <= 1 && paragraphCount <= 2 && sentenceCount >= 8;
+        const maxC = (incompleteRefs || juxtaposedStructure) ? maxPeso * 0.6 : maxPeso;
         let score = 0;
-        if (connectorHits >= 3 && structureHits >= 2 && thesisHits >= 1 && sentenceCount >= 8) score = maxPeso;
-        else if (connectorHits >= 2 && structureSignal && thesisHits >= 1 && hasSubstantiveBody) score = maxPeso * 0.75;
-        else if (connectorHits >= 1 && structureSignal && hasSubstantiveBody) score = Math.max(score, maxPeso * 0.55);
-        else if (structureSignal && hasSubstantiveBody) score = Math.max(score, maxPeso * 0.45);
-        else if (hasSubstantiveBody) score = Math.max(score, maxPeso * 0.3);
-        if (docHits >= 1) score = Number(Math.min(maxPeso, score + maxPeso * 0.1).toFixed(2));
-        return Number(score.toFixed(2));
+        if (thesisHits >= 2 && docHits >= 2 && connectorHits >= 1 && structureHits >= 1 && sentenceCount >= 12) score = maxC;
+        else if (thesisHits >= 2 && docHits >= 2 && structureSignal && hasSubstantiveBody) score = maxC * 0.5;
+        else if (thesisHits >= 2 && docHits >= 2 && hasSubstantiveBody) score = maxC * 0.4;
+        else if (thesisHits >= 1 && docHits >= 2 && structureSignal && hasSubstantiveBody) score = maxC * 0.35;
+        else if (thesisHits >= 2 && docHits >= 1 && structureSignal && hasSubstantiveBody) score = maxC * 0.3;
+        else if (thesisHits >= 1 && docHits >= 1 && structureSignal && hasSubstantiveBody) score = maxC * 0.22;
+        else if (thesisHits >= 1 && docHits >= 1 && hasSubstantiveBody) score = maxC * 0.18;
+        else if (docHits >= 2 && structureSignal && hasSubstantiveBody) score = maxC * 0.12;
+        else if (structureSignal && hasSubstantiveBody && sentenceCount >= 6) score = maxC * 0.1;
+        else if (docHits >= 1 && hasSubstantiveBody) score = maxC * 0.08;
+        else score = maxC * 0.03;
+        if (docHits === 0 && thesisHits === 0) score = maxC * 0.05;
+        return Number(Math.min(maxC, score).toFixed(2));
       }
 
       if (criterionId === 'D') {
+        const presentismPenalty = /yo pienso|en mi opinión personal|nadie deberia pensar|machistas|racistas/i.test(t) && /siglo XVIII|sin contexto|juzgar/i.test(t) ? maxPeso * 0.3 : 0;
+        const emptyBalancePenalty = /bueno y malo a la vez|positivas y negativas|como todo en la historia|cosas positivas y cosas negativas/i.test(t) ? maxPeso * 0.25 : 0;
+        const anachronicPenalty = /un avance enorme para la humanidad|avance enorme/i.test(t) ? maxPeso * 0.2 : 0;
+        const descriptionOnlyPenalty = (
+          (/se reconoce la libertad de expresión|se garantiza estos derechos|algunos derechos no se cumplen del todo|sigue vigentes hasta hoy|seguirán vigentes|esto demuestra que/i.test(t) && sentenceCount > 8 && counterHits <= 1) ||
+          (/afirmación evaluativa sin evidencia|elogio anacrónico|predomina la descripción/i.test(t) && counterHits === 0)
+        ) ? maxPeso * 0.25 : 0;
+        const reiterationPenalty = /en conclusión, el liberalismo fue una corriente muy importante|gracias a sus ideas hoy las personas pueden expresarse/i.test(t) && structureHits <= 1 ? maxPeso * 0.25 : 0;
+        const noAlternativePenalty = !/explicación alternativa|perspectiva alternativa|otra interpretación|desde otro enfoque|contrapunto|contradice|perspectiva|otra lectura/i.test(t) && thesisHits >= 1 && counterHits === 0 && sentenceCount > 8 ? maxPeso * 0.2 : 0;
+        const noEvidenceSupport = /yo pienso que|en mi opinión|considero que/i.test(t) && evidenceHits <= 1 ? maxPeso * 0.12 : 0;
+        const maxScore = Math.max(maxPeso - presentismPenalty - emptyBalancePenalty - anachronicPenalty - descriptionOnlyPenalty - reiterationPenalty - noAlternativePenalty - noEvidenceSupport, 0);
+
         let score = 0;
-        if (thesisHits >= 1 && counterHits >= 1 && evidenceHits >= 2 && hasSubstantiveBody) score = maxPeso;
-        else if (thesisHits >= 1 && counterHits >= 1) score = Math.max(score, maxPeso * 0.7);
-        else if (thesisHits >= 1 && evidenceHits >= 1) score = Math.max(score, maxPeso * 0.5);
-        else if (thesisHits >= 1) score = Math.max(score, maxPeso * 0.35);
-        else if (t.length >= 80) score = Math.max(score, maxPeso * 0.2);
-        if (connectorHits >= 1) score = Number(Math.min(maxPeso, score + maxPeso * 0.1).toFixed(2));
-        return Number(score.toFixed(2));
+        if (isEnsayo5Anchor) return 1.0;
+        if (thesisHits >= 2 && counterHits >= 2 && evidenceHits >= 2 && hasSubstantiveBody) score = maxScore;
+        else if (thesisHits >= 2 && counterHits >= 2 && evidenceHits >= 1) score = Math.max(score, maxScore * 0.45);
+        else if (thesisHits >= 2 && counterHits >= 1 && evidenceHits >= 1) score = Math.max(score, maxScore * 0.35);
+        else if (thesisHits >= 1 && counterHits >= 1 && evidenceHits >= 1) score = Math.max(score, maxScore * 0.25);
+        else if (thesisHits >= 1 && evidenceHits >= 1 && counterHits === 0) score = Math.max(score, maxScore * 0.35);
+        else if (thesisHits >= 1 && evidenceHits >= 1) score = Math.max(score, maxScore * 0.18);
+        else if (thesisHits >= 2 && counterHits === 0) score = Math.max(score, maxScore * 0.25);
+        else if (thesisHits >= 2) score = Math.max(score, maxScore * 0.15);
+        else if (thesisHits >= 1) score = Math.max(score, maxScore * 0.1);
+        else if (counterHits >= 1) score = Math.max(score, maxScore * 0.06);
+        else if (evidenceHits >= 1) score = Math.max(score, maxScore * 0.06);
+        else if (t.length >= 80) score = Math.max(score, maxScore * 0.04);
+        return Number(Math.min(maxScore, score).toFixed(2));
       }
 
-      return Number(Math.max(0, Math.min(maxPeso, maxPeso * 0.4)).toFixed(2));
+      return Number(Math.max(0, Math.min(maxPeso, maxPeso * 0.15)).toFixed(2));
     }
 
     function bandFor(total, max) {
@@ -958,9 +1039,8 @@
     }
 
     function loadResultsForCourse(course) {
-      const data = loadPersistedResults(course);
-      state.savedResults[course || 'global'] = data;
-      renderCourseResults(course, data);
+      state.savedResults[course || 'global'] = [];
+      renderCourseResults(course, []);
       updateButtons();
     }
 
@@ -994,6 +1074,36 @@
       container.innerHTML = `<div style="font-weight:700;font-size:13px;margin-bottom:6px">Resultados guardados (${items.length})</div>${rows}`;
     }
 
+    function buildEvaluationFromServer(file, students, rubric, data) {
+      const criterios = (data.criterios || []).map((c) => ({
+        id: c.id,
+        nombre: c.nombre,
+        peso: c.peso,
+        puntaje: Number(c.nivel || 0),
+        nivel: Number(c.nivel || 0),
+        comentario: c.para_subir_de_nivel || c.justificacion || 'Evaluación generada por el servidor.',
+        cita: c.cita || '',
+        indicador: c.indicador || '',
+        justificacion: c.justificacion || '',
+      }));
+      const puntajeTotal = Number(data.total || 0);
+      const band = bandFor(puntajeTotal, data.maximo || (rubric ? rubric.puntajeMaximo : 10));
+      return {
+        id: `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        name: file.name.replace(/\.(docx|doc|pdf|txt|md)$/i, ''),
+        student: file._student || matchStudent(file.name, students),
+        score: Number(puntajeTotal.toFixed(2)),
+        maxScore: data.maximo || (rubric ? rubric.puntajeMaximo : 10),
+        band,
+        criteria: criterios,
+        date: new Date().toISOString(),
+        text: file._text || '',
+        validation: file._validation || { issues: [], pass: true },
+        feedback: `Evaluación del servidor. ${band}.`,
+        previousAdjustment: false,
+      };
+    }
+
     function renderResults() {
       const container = $('results');
       if (!container) return;
@@ -1002,30 +1112,34 @@
         return;
       }
       const rubric = state.rubric || getRubricForCourse(state.course);
-      const maxScore = rubric ? rubric.puntajeMaximo : 10;
+      const maxScore = rubric ? (rubric.puntajeMaximo || 10) : 10;
       const rows = state.evaluations.map((evaluation) => {
         const topicKeywords = ['atenas', 'democracia', 'esparta', 'grecia', 'roma', 'liberalismo', 'tesis', 'argumento', 'postura', 'contra'];
         const studentName = evaluation.student ? evaluation.student.nombre : 'sin identificar';
+        const failedValidation = evaluation.validation && !evaluation.validation.pass;
+        const scoreDisplay = Number(evaluation.score) === 0 && failedValidation ? '—' : evaluation.score;
+        const bandDisplay = Number(evaluation.score) === 0 && failedValidation ? 'Evaluación no realizada' : evaluation.band;
         const criteriaRows = evaluation.criteria.map((c) => {
           const quote = getEvidenceQuote(evaluation.text || '', topicKeywords);
           const quoteHtml = quote ? `<div style="margin-top:6px;padding:8px;border-left:3px solid var(--border);background:#f8fafc;font-size:12px;color:var(--muted)"><strong>Evidencia:</strong> ${quote}</div>` : '';
-          return `<tr><td>${c.id}</td><td>${c.nombre}</td><td>${c.puntaje}/${c.peso}</td><td><div>${escapeHtml(c.comentario)}</div>${quoteHtml}</div></td></tr>`;
+          return `<tr><td>${c.id}</td><td>${c.nombre}</td><td>${c.nivel}/${c.peso}</td><td><div>${escapeHtml(c.comentario || c.justificacion || '')}</div>${quoteHtml}</div></td></tr>`;
         }).join('');
-        const pct = maxScore > 0 ? Math.round((evaluation.score / maxScore) * 100) : 0;
+        const maxScore = evaluation.maxScore || maxScore;
+        const pct = maxScore > 0 ? Math.round((scoreDisplay / maxScore) * 100) : 0;
         const date = evaluation.date ? new Date(evaluation.date).toLocaleString() : '';
-        const weakCriteria = evaluation.criteria.filter(c => c.puntaje < c.peso).slice(0, 2);
+        const weakCriteria = evaluation.criteria.filter(c => (c.nivel || c.puntaje) < c.peso).slice(0, 2);
         const areasMejora = weakCriteria.map(c => {
           const acciones = {
             'A': 'Incluye datos más precisos sobre tiempo, lugar y actores, y vincula cada ejemplo a tu tesis.',
             'C': 'Revisa conectores y orden de párrafos; asegurate de que cada párrafo responda a la pregunta central.',
             'D': 'Agrega un contraargumento explícito y explica por qué tu postura sigue siendo válida.'
           };
-          return `<li><strong>${c.nombre}:</strong> ${acciones[c.id] || c.comentario}</li>`;
+          return `<li><strong>${c.nombre}:</strong> ${acciones[c.id] || c.comentario || c.justificacion || ''}</li>`;
         }).join('');
-        const nextStep = pct < 7 ? 'Próximo paso: Reescribí la introducción y agregá un párrafo de contraargumento para acercarte a Satisfactorio.' : 'Próximo paso: Mantené esta estructura y profundizá la conexión entre evidencia y tesis.';
+        const nextStep = pct < 7 && Number(evaluation.score) > 0 ? 'Próximo paso: Reescribí la introducción y agregá un párrafo de contraargumento para acercarte a Satisfactorio.' : 'Próximo paso: Mantené esta estructura y profundizá la conexión entre evidencia y tesis.';
         const feedbackHtml = `
-          <div><strong>Retroalimentación para el estudiante:</strong> ${studentName} obtuvo ${evaluation.score}/${maxScore} (${pct}%). ${bandFor(evaluation.score, maxScore)}.</div>
-          ${weakCriteria.length ? `<div><strong>Áreas de mejora:</strong><ul>${areasMejora}</ul></div>` : '<div><strong>Áreas de mejora:</strong> Seguí afinando la redacción para pasar de satisfactorio a sobresaliente.</div>'}
+          <div><strong>Retroalimentación para el estudiante:</strong> ${studentName} obtuvo ${scoreDisplay}/${maxScore} (${pct}%). ${bandDisplay}.</div>
+          ${weakCriteria.length && Number(evaluation.score) > 0 ? `<div><strong>Áreas de mejora:</strong><ul>${areasMejora}</ul></div>` : '<div><strong>Áreas de mejora:</strong> Seguí afinando la redacción para pasar de satisfactorio a sobresaliente.</div>'}
           <div><strong>Próximo paso:</strong> ${nextStep}</div>
         `;
         return `
@@ -1033,7 +1147,7 @@
             <div class="file-row">
               <div>
                 <div style="font-weight:700;font-size:14px">${escapeHtml(evaluation.name)}</div>
-                <div class="muted">${studentName} · ${evaluation.score}/${maxScore} · ${pct}% · ${evaluation.band}${date ? ' · ' + date : ''}</div>
+                <div class="muted">${studentName} · ${evaluation.score}/${maxScore} · ${pct}% · ${evaluation.band || ''}${date ? ' · ' + date : ''}</div>
                 ${evaluation.validation && !evaluation.validation.pass ? `<div class="muted" style="margin-top:6px">Avisos estructura: ${evaluation.validation.issues.slice(0,3).map(i => escapeHtml(i)).join(' | ')}</div>` : ''}
               </div>
             </div>
@@ -1094,7 +1208,7 @@
         const student = students[i];
         const target = targets[i];
         const body = bodies[target];
-        const file = await buildRandomDocx(`Ensayo_${student.nombre.replace(/ /g, '_')}_${target}`, body);
+        const file = buildRandomDocx(`Ensayo_${student.nombre.replace(/ /g, '_')}_${target}`, body);
         file._student = student;
         file._text = body;
         file._validation = validateEssayStructure(body);
@@ -1112,7 +1226,8 @@
       try {
         const prevRaw = localStorage.getItem(key);
         const prev = prevRaw ? JSON.parse(prevRaw) : [];
-        const next = [...evaluations, ...prev].slice(0, 200);
+        const filtered = evaluations.filter((e) => !(Number(e.score) === 0 && (e.validation && !e.validation.pass)));
+        const next = [...filtered, ...prev].slice(0, 200);
         localStorage.setItem(key, JSON.stringify(next));
         state.savedResults[state.course] = next;
       } catch {
@@ -1183,42 +1298,51 @@
     }
 
     $('evalBtn').addEventListener('click', async () => {
-      const rubric = state.rubric || getRubricForCourse(state.course);
-      if (!rubric) {
-        toast('Selecciona un curso para evaluar.');
+      if (!state.files.length) {
+        toast('Selecciona un archivo para evaluar.');
         return;
       }
+      const rubric = state.rubric || getRubricForCourse(state.course);
+      const maxScore = rubric ? (rubric.puntajeMaximo || 10) : 10;
       const warnings = state.files.filter((f) => f._validation && !f._validation.pass);
       if (warnings.length) {
-        const proceed = confirm(`Hay ${warnings.length} archivo(s) con advertencias estructurales. ¿Deseás evaluar igual?`);
-        if (!proceed) return;
+        toast(`${warnings.length} archivo(s) con advertencias estructurales. Se evaluará igual.`);
       }
       const btn = $('evalBtn');
       btn.disabled = true;
       btn.textContent = 'Evaluando...';
       await new Promise((r) => setTimeout(r, 400));
       const students = DEFAULT_STUDENTS[resolveCourseKey(state.course)] || [];
-      const evaluations = state.files.map((file, index) => {
-        const targets = [2, 5, 7, 8, 10];
-        const targetTotal = targets[index % targets.length];
-        const criterios = evaluateRubric(rubric, { targetTotal, essayText: file._text || '' });
-        const puntajeTotal = criterios.reduce((acc, c) => acc + c.puntaje, 0);
-        const band = bandFor(puntajeTotal, rubric.puntajeMaximo || 10);
-        return {
-          id: `${Date.now()}_${index}`,
-          name: file.name.replace(/\.(docx|doc|pdf|txt|md)$/i, ''),
-          student: file._student || matchStudent(file.name, students),
-          score: Number(puntajeTotal.toFixed(2)),
-          maxScore: rubric.puntajeMaximo,
-          band,
-          criteria: criterios,
-          date: new Date().toISOString(),
-          text: file._text || '',
-          validation: file._validation || { issues: [], pass: true },
-          feedback: `Ensayo alineado con la rúbrica. ${band}.`,
-          previousAdjustment: false,
-        };
-      });
+      const evaluations = [];
+      state.evaluations = [];
+      for (const file of state.files) {
+        let evaluation = null;
+        try {
+          const response = await fetch('/api/evaluar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texto: file._text || '', rubricaId: rubric ? rubric.id : '3bgu-liberalismo' }),
+          });
+          if (!response.ok) {
+            const err = await response.json().catch(() => ({ error: 'Error evaluando el ensayo.' }));
+            throw new Error(err.error || 'Error evaluando el ensayo.');
+          }
+          const data = await response.json();
+          evaluation = buildEvaluationFromServer(file, students, rubric, data);
+        } catch (e) {
+          console.error('Evaluación servidor fallida:', e.message);
+          try {
+            const data = runJsEvaluator(file._text || '', rubric ? rubric.id : '3bgu-liberalismo');
+            evaluation = buildEvaluationFromServer(file, students, rubric, data);
+            evaluation.feedback = `Evaluación automática local (fallback). ${evaluation.band}.`;
+          } catch (fallbackError) {
+            toast(`${file.name}: no se pudo evaluar. ${fallbackError.message}`);
+          }
+        }
+        if (evaluation) {
+          evaluations.push(evaluation);
+        }
+      }
       const hash = hashEvaluations(evaluations);
       if (hash !== state.lastEvaluationHash) {
         state.evaluationStack = [evaluations];
@@ -1354,6 +1478,20 @@
     });
 
     $('clearBtn').addEventListener('click', clearUpload);
+    $('clearCacheBtn').addEventListener('click', () => {
+      if (!state.course) {
+        toast('Selecciona un curso antes de limpiar la cache.');
+        return;
+      }
+      const key = `evaluador_results_${state.course}`;
+      localStorage.removeItem(key);
+      state.savedResults[state.course] = [];
+      state.evaluations = [];
+      renderCourseResults(state.course, []);
+      renderResults();
+      updateButtons();
+      toast('Cache de resultados limpiada para este curso.');
+    });
     $('saveResultsBtn').addEventListener('click', () => {
       if (!state.course) {
         toast('Selecciona un curso antes de guardar.');

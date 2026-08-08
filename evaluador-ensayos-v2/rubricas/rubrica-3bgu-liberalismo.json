@@ -1,0 +1,194 @@
+{
+  "id": "3bgu-liberalismo",
+  "nombre": "Ensayo argumentativo — Liberalismo y libertades civiles en el Ecuador actual",
+  "puntajeMaximo": 10,
+  "extension": {
+    "objetivo": 300,
+    "min": 270,
+    "max": 330
+  },
+  "criterios": [
+    {
+      "id": "A",
+      "nombre": "Conocimiento y Comprensión",
+      "peso": 3,
+      "niveles": [
+        {
+          "valor": 3,
+          "descriptor": "Conocimiento detallado y comprensión matizada del liberalismo fundacional y del marco ecuatoriano vigente. Emplea con exactitud el texto liberal exigido (1689-1789). Domina un caso ecuatoriano posterior a 2008 con precisión factual. Distingue continuidad y ruptura entre el liberalismo fundacional y la Constitución de 2008.",
+          "indicadores": [
+            "Cita un pasaje o articulado concreto del texto fundacional, no solo su título",
+            "El caso ecuatoriano está datado y su contenido es correcto",
+            "Distingue libertad negativa de garantía positiva",
+            "Reconoce al menos un elemento no liberal del marco constitucional de 2008",
+            "Atribuye ideas a autores con obra y año, sin invención de fuentes"
+          ]
+        },
+        {
+          "valor": 2.5,
+          "descriptor": "Conocimiento preciso y comprensión sólida, con desarrollo desigual entre los dos polos temporales. Alude a la tensión continuidad/ruptura sin desarrollarla.",
+          "indicadores": [
+            "El caso ecuatoriano se menciona correctamente, pero sin fecha o sin contenido específico",
+            "La distinción continuidad/ruptura aparece en una sola cláusula",
+            "Una imprecisión conceptual menor que no altera el sentido"
+          ]
+        },
+        {
+          "valor": 2,
+          "descriptor": "Conocimiento adecuado pero de carácter general. Identifica el liberalismo y su vínculo con las libertades civiles sin diferenciar vertientes ni evolución. El caso ecuatoriano es aludido sin especificidad.",
+          "indicadores": [
+            "Alusiones del tipo 'la Constitución de Montecristi garantiza derechos' sin norma, caso ni fecha",
+            "Trata el liberalismo como bloque homogéneo y ahistórico",
+            "El texto fundacional se nombra, pero no se usa"
+          ]
+        },
+        {
+          "valor": 1,
+          "descriptor": "Conocimiento superficial y comprensión limitada. Evidencia genérica o ausente. Confusiones conceptuales relevantes.",
+          "indicadores": [
+            "Equipara liberalismo con democracia, o liberalismo económico con liberalismo político",
+            "Atribuye al liberalismo la totalidad del catálogo de derechos vigente",
+            "Omite por completo el texto fundacional o el caso ecuatoriano",
+            "Fórmulas de manual sin anclaje"
+          ]
+        },
+        {
+          "valor": 0.5,
+          "descriptor": "Conocimiento fragmentario. Errores factuales o conceptuales que comprometen la validez de la respuesta.",
+          "indicadores": [
+            "Errores de datación superiores a una década o atribuciones erróneas de autoría",
+            "Descripción incorrecta del contenido de la norma o sentencia invocada",
+            "Fuentes inventadas o no verificables"
+          ]
+        },
+        {
+          "valor": 0,
+          "descriptor": "No alcanza ninguno de los descriptores anteriores.",
+          "indicadores": [
+            "Respuesta ausente, ilegible o sin relación con la consigna"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "nombre": "Comunicación",
+      "peso": 3,
+      "niveles": [
+        {
+          "valor": 3,
+          "descriptor": "Ensayo argumentativo plenamente académico. Tesis explícita y gradada en la introducción. Párrafos con idea rectora única. Conclusión que responde a la tesis sin introducir contenido nuevo. Los tres requisitos de la consigna están integrados en el flujo argumental. Referencias completas en APA 7.",
+          "indicadores": [
+            "Tesis localizable en una sola oración e incluye gradación",
+            "Extensión entre 270 y 330 palabras",
+            "Ausencia de perífrasis y frases de transición vacías",
+            "Los requisitos a, b y c no aparecen rotulados: están tejidos en la argumentación",
+            "Sin marcas de oralidad ni primera persona coloquial"
+          ]
+        },
+        {
+          "valor": 2.5,
+          "descriptor": "Comunicación clara y estructura académica reconocible, con un desajuste menor. Registro formal sostenido. Referencias en APA con errores menores de formato.",
+          "indicadores": [
+            "Errores de puntuación u orden en las entradas de referencia",
+            "Una cita en el texto sin correlato exacto en la lista",
+            "Transición abrupta entre el marco fundacional y el caso ecuatoriano"
+          ]
+        },
+        {
+          "valor": 2,
+          "descriptor": "Comunicación adecuada. Estructura reconocible pero desequilibrada: los requisitos aparecen yuxtapuestos, sin articulación argumental. Referencias presentes pero incompletas.",
+          "indicadores": [
+            "Extensión entre 240 y 269 o entre 331 y 360 palabras",
+            "Estructura de bloques sucesivos sin nexo",
+            "Referencias sin año, sin editorial o sin autor"
+          ]
+        },
+        {
+          "valor": 1,
+          "descriptor": "Comunicación limitada. Organización confusa; tesis implícita o ausente. Registro inconsistente. Desviación de extensión superior al 20%.",
+          "indicadores": [
+            "Texto sin separación en párrafos o con párrafos de una sola oración",
+            "Referencias reducidas a enlaces pegados o a 'Google', 'Wikipedia', 'internet'",
+            "Errores ortográficos o de tildación recurrentes"
+          ]
+        },
+        {
+          "valor": 0.5,
+          "descriptor": "Comunicación muy deficiente. Texto desorganizado, sin tesis y sin documentación.",
+          "indicadores": [
+            "Ausencia total de referencias",
+            "Archivo dañado o ilegible"
+          ]
+        },
+        {
+          "valor": 0,
+          "descriptor": "No alcanza ninguno de los descriptores anteriores.",
+          "indicadores": [
+            "Sin entrega dentro del plazo o archivo vacío"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "nombre": "Pensamiento Crítico",
+      "peso": 4,
+      "niveles": [
+        {
+          "valor": 4,
+          "descriptor": "Juicio evaluativo explícito y gradado que responde a los dos lados de la consigna. Evita el presentismo: interpreta el texto fundacional en su propio contexto, incluidas sus exclusiones. Incorpora una explicación alternativa sustantiva y la pondera frente al liberalismo. Distingue proclamación jurídica de garantía efectiva.",
+          "indicadores": [
+            "El juicio delimita dimensiones",
+            "Explicación alternativa desarrollada y ponderada",
+            "Señala qué elementos del marco vigente el liberalismo no explica",
+            "Contextualiza las exclusiones del liberalismo fundacional sin condenarlo con criterios actuales"
+          ]
+        },
+        {
+          "valor": 3,
+          "descriptor": "Juicio explícito y bien sustentado, con gradación reconocible. La explicación alternativa está presente y sustentada, pero no se pondera frente al liberalismo.",
+          "indicadores": [
+            "La alternativa se enuncia en una o dos oraciones, sin comparación de peso explicativo",
+            "Un tramo del texto narra en lugar de evaluar",
+            "La conclusión no distingue proclamación jurídica de garantía efectiva"
+          ]
+        },
+        {
+          "valor": 2,
+          "descriptor": "Presenta un argumento, pero el texto es predominantemente descriptivo. El juicio es general y carece de gradación. La explicación alternativa se alude sin desarrollo.",
+          "indicadores": [
+            "Juicio del tipo 'el impacto fue muy importante', sin delimitación",
+            "Uso de 'sin embargo' o 'aunque' sin desarrollo posterior de la objeción",
+            "Equilibrio simétrico y vacío de 'aspectos positivos y negativos'",
+            "Confunde la existencia de la norma con la efectividad de la garantía"
+          ]
+        },
+        {
+          "valor": 1,
+          "descriptor": "Predomina la descripción o la narración. Se afirma una postura sin sustento suficiente. No hay consideración de perspectivas alternativas. Puede predominar el presentismo.",
+          "indicadores": [
+            "Condena o elogio anacrónico sin marco histórico",
+            "Afirmaciones evaluativas sin evidencia asociada",
+            "Conclusión que reitera la introducción"
+          ]
+        },
+        {
+          "valor": 0.5,
+          "descriptor": "Opinión personal sin evidencia ni razonamiento histórico.",
+          "indicadores": [
+            "Testimonio personal o valoración ideológica sin análisis",
+            "Contenido tangencial a la pregunta"
+          ]
+        },
+        {
+          "valor": 0,
+          "descriptor": "No alcanza ninguno de los descriptores anteriores.",
+          "indicadores": [
+            "Ausencia de argumentación identificable"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,372 @@
+[2026-08-02T21:45:19.255Z] === Inicio calibración agentes ===
+[2026-08-02T21:45:19.258Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:45:19.259Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:45:19.259Z] - Grecia y Roma medio: 0/7 => REVISE | banda=Insuficiente
+[2026-08-02T21:45:19.259Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:45:19.259Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:46:29.972Z] === Inicio calibración agentes ===
+[2026-08-02T21:46:29.975Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:46:29.976Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:46:29.976Z] - Grecia y Roma medio: 0/7 => REVISE | banda=Insuficiente
+[2026-08-02T21:46:29.976Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:46:29.976Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:47:18.806Z] === Inicio calibración agentes ===
+[2026-08-02T21:47:18.809Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:47:18.809Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:47:18.810Z] - Grecia y Roma medio: 0/7 => REVISE | banda=Insuficiente
+[2026-08-02T21:47:18.810Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:47:18.810Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:48:39.973Z] === Inicio calibración agentes ===
+[2026-08-02T21:48:39.976Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:48:39.976Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:48:39.977Z] - Grecia y Roma medio: 0/7 => REVISE | banda=Insuficiente
+[2026-08-02T21:48:39.977Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:48:39.977Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:50:00.048Z] === Inicio calibración agentes ===
+[2026-08-02T21:50:00.051Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:50:00.052Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:50:00.052Z] - Grecia y Roma medio: 0/6.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:50:00.052Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:50:00.052Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:50:53.175Z] === Inicio calibración agentes ===
+[2026-08-02T21:50:53.184Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:50:53.185Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:50:53.185Z] - Grecia y Roma medio: 0/6.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:50:53.186Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:50:53.186Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:52:07.988Z] === Inicio calibración agentes ===
+[2026-08-02T21:52:07.991Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:52:07.991Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:52:07.992Z] - Grecia y Roma medio: 0/6.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:52:07.992Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:52:07.992Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:53:03.257Z] === Inicio calibración agentes ===
+[2026-08-02T21:53:03.260Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:53:03.260Z] - Grecia y Roma bajo: 0/3.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:53:03.260Z] - Grecia y Roma medio: 0/6.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:53:03.260Z] - Grecia y Roma alto: 0/9.5 => REVISE | banda=Insuficiente
+[2026-08-02T21:53:03.261Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:54:25.659Z] === Inicio calibración agentes ===
+[2026-08-02T21:54:25.661Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:54:25.663Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T21:54:25.663Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T21:54:25.663Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T21:54:25.663Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:55:23.908Z] === Inicio calibración agentes ===
+[2026-08-02T21:55:23.910Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:55:23.912Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T21:55:23.912Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T21:55:23.912Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T21:55:23.912Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:56:31.043Z] === Inicio calibración agentes ===
+[2026-08-02T21:56:31.046Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:56:31.047Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T21:56:31.048Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T21:56:31.048Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T21:56:31.048Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T21:57:47.547Z] === Inicio calibración agentes ===
+[2026-08-02T21:57:47.550Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T21:57:47.552Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T21:57:47.552Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T21:57:47.552Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T21:57:47.552Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:02:50.573Z] === Inicio calibración agentes ===
+[2026-08-02T22:02:50.576Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:02:50.577Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T22:02:50.578Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T22:02:50.578Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T22:02:50.578Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:03:35.473Z] === Inicio calibración agentes ===
+[2026-08-02T22:03:35.476Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:03:35.477Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T22:03:35.477Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T22:03:35.478Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T22:03:35.478Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:05:56.560Z] === Inicio calibración agentes ===
+[2026-08-02T22:05:56.563Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:05:56.564Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T22:05:56.564Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T22:05:56.565Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T22:05:56.565Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:12:27.779Z] === Inicio calibración agentes ===
+[2026-08-02T22:12:27.782Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:12:27.783Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T22:12:27.783Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T22:12:27.783Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T22:12:27.784Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:13:26.481Z] === Inicio calibración agentes ===
+[2026-08-02T22:13:26.489Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:13:26.491Z] - Grecia y Roma bajo: 9/3.5 => REVISE | banda=Sobresaliente
+[2026-08-02T22:13:26.491Z] - Grecia y Roma medio: 8/6.5 => REVISE | banda=Notable
+[2026-08-02T22:13:26.491Z] - Grecia y Roma alto: 9/9.5 => OK | banda=Sobresaliente
+[2026-08-02T22:13:26.491Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:15:23.122Z] === Inicio calibración agentes ===
+[2026-08-02T22:15:23.130Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:15:23.195Z] - Grecia y Roma bajo: 5/3.5 => REVISE | banda=Regular
+[2026-08-02T22:15:23.197Z] - Grecia y Roma medio: 5/6.5 => REVISE | banda=Regular
+[2026-08-02T22:15:23.200Z] - Grecia y Roma alto: 5/9.5 => REVISE | banda=Regular
+[2026-08-02T22:15:23.200Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:20:08.319Z] === Inicio calibración agentes ===
+[2026-08-02T22:20:08.322Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:20:08.334Z] - Grecia y Roma bajo: 8/3.5 => REVISE | banda=Notable
+[2026-08-02T22:20:08.336Z] - Grecia y Roma medio: 7/6.5 => OK | banda=Aprobado
+[2026-08-02T22:20:08.337Z] - Grecia y Roma alto: 8/9.5 => REVISE | banda=Notable
+[2026-08-02T22:20:08.338Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:20:52.623Z] === Inicio calibración agentes ===
+[2026-08-02T22:20:52.626Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:20:52.645Z] - Grecia y Roma bajo: 7/3.5 => REVISE | banda=Aprobado
+[2026-08-02T22:20:52.646Z] - Grecia y Roma medio: 7/6.5 => OK | banda=Aprobado
+[2026-08-02T22:20:52.647Z] - Grecia y Roma alto: 8/9.5 => REVISE | banda=Notable
+[2026-08-02T22:20:52.647Z] Calibración 1BGU: REQUIERE AJUSTE
+[2026-08-02T22:25:37.110Z] === Inicio calibración agentes ===
+[2026-08-02T22:25:37.113Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T22:25:37.127Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-02T22:25:37.128Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-02T22:25:37.133Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-02T22:25:37.133Z] Calibración 1BGU: APROBADA
+[2026-08-02T23:21:16.379Z] === Inicio calibración agentes ===
+[2026-08-02T23:21:16.381Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T23:21:16.398Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:21:16.401Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:21:16.405Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-02T23:21:16.406Z] Calibración 1BGU: APROBADA
+[2026-08-02T23:21:48.408Z] === Inicio calibración agentes ===
+[2026-08-02T23:21:48.410Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T23:21:48.422Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:21:48.424Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:21:48.426Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-02T23:21:48.426Z] Calibración 1BGU: APROBADA
+[2026-08-02T23:22:20.382Z] === Inicio calibración agentes ===
+[2026-08-02T23:22:20.384Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T23:22:20.398Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:22:20.400Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:22:20.404Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-02T23:22:20.404Z] Calibración 1BGU: APROBADA
+[2026-08-02T23:22:52.459Z] === Inicio calibración agentes ===
+[2026-08-02T23:22:52.461Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T23:22:52.474Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:22:52.476Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:22:52.477Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-02T23:22:52.477Z] Calibración 1BGU: APROBADA
+[2026-08-02T23:23:24.509Z] === Inicio calibración agentes ===
+[2026-08-02T23:23:24.514Z] Calibrando: 1bgu-grecia-roma
+[2026-08-02T23:23:24.543Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:23:24.545Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-02T23:23:24.548Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-02T23:23:24.548Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:35:13.463Z] === Inicio calibración agentes ===
+[2026-08-03T12:35:13.465Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:35:13.479Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:13.489Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:13.491Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:35:13.491Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:35:19.862Z] === Inicio calibración agentes ===
+[2026-08-03T12:35:19.864Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:35:19.877Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:19.878Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:19.879Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:35:19.879Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:35:26.252Z] === Inicio calibración agentes ===
+[2026-08-03T12:35:26.254Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:35:26.266Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:26.268Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:26.269Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:35:26.269Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:35:32.549Z] === Inicio calibración agentes ===
+[2026-08-03T12:35:32.551Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:35:32.562Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:32.564Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:32.565Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:35:32.565Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:35:39.117Z] === Inicio calibración agentes ===
+[2026-08-03T12:35:39.119Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:35:39.132Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:39.134Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:35:39.136Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:35:39.136Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:36:51.318Z] === Inicio calibración agentes ===
+[2026-08-03T12:36:51.321Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:36:51.333Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:36:51.336Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:36:51.337Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:36:51.338Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:36:57.705Z] === Inicio calibración agentes ===
+[2026-08-03T12:36:57.707Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:36:57.721Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:36:57.725Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:36:57.727Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:36:57.728Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:37:04.083Z] === Inicio calibración agentes ===
+[2026-08-03T12:37:04.084Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:37:04.095Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:04.098Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:04.100Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:37:04.100Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:37:10.437Z] === Inicio calibración agentes ===
+[2026-08-03T12:37:10.439Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:37:10.450Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:10.452Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:10.453Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:37:10.454Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:37:16.876Z] === Inicio calibración agentes ===
+[2026-08-03T12:37:16.879Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:37:16.890Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:16.892Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:16.893Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:37:16.894Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:37:46.579Z] === Inicio calibración agentes ===
+[2026-08-03T12:37:46.581Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:37:46.591Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:46.593Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:46.595Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:37:46.595Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:37:52.940Z] === Inicio calibración agentes ===
+[2026-08-03T12:37:52.942Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:37:52.953Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:52.956Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:52.957Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:37:52.957Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:37:59.347Z] === Inicio calibración agentes ===
+[2026-08-03T12:37:59.350Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:37:59.363Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:59.366Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:37:59.368Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:37:59.368Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:38:05.677Z] === Inicio calibración agentes ===
+[2026-08-03T12:38:05.679Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:38:05.690Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:38:05.692Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:38:05.694Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:38:05.694Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:38:12.194Z] === Inicio calibración agentes ===
+[2026-08-03T12:38:12.196Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:38:12.207Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:38:12.210Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:38:12.212Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:38:12.212Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:39:39.185Z] === Inicio calibración agentes ===
+[2026-08-03T12:39:39.188Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:39:39.201Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:39:39.203Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:39:39.206Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:39:39.206Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:40:00.575Z] === Inicio calibración agentes ===
+[2026-08-03T12:40:00.577Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:40:00.590Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:40:00.594Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:40:00.596Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:40:00.596Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:40:21.935Z] === Inicio calibración agentes ===
+[2026-08-03T12:40:21.938Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:40:21.952Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:40:21.954Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:40:21.957Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:40:21.957Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:40:43.226Z] === Inicio calibración agentes ===
+[2026-08-03T12:40:43.228Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:40:43.240Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:40:43.243Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:40:43.246Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:40:43.246Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:41:04.688Z] === Inicio calibración agentes ===
+[2026-08-03T12:41:04.690Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:41:04.704Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:41:04.706Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:41:04.708Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:41:04.708Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:42:31.227Z] === Inicio calibración agentes ===
+[2026-08-03T12:42:31.229Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:42:31.241Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:42:31.243Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:42:31.245Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:42:31.245Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:42:47.611Z] === Inicio calibración agentes ===
+[2026-08-03T12:42:47.613Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:42:47.625Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:42:47.627Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:42:47.630Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:42:47.630Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:43:03.995Z] === Inicio calibración agentes ===
+[2026-08-03T12:43:03.996Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:43:04.007Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:43:04.009Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:43:04.011Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:43:04.012Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:43:20.472Z] === Inicio calibración agentes ===
+[2026-08-03T12:43:20.474Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:43:20.487Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:43:20.489Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:43:20.491Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:43:20.491Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:43:36.801Z] === Inicio calibración agentes ===
+[2026-08-03T12:43:36.803Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:43:36.814Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:43:36.816Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:43:36.817Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:43:36.817Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:44:03.954Z] === Inicio calibración agentes ===
+[2026-08-03T12:44:03.957Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:44:03.970Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:03.972Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:03.975Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:44:03.975Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:44:20.344Z] === Inicio calibración agentes ===
+[2026-08-03T12:44:20.346Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:44:20.356Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:20.359Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:20.360Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:44:20.360Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:44:36.808Z] === Inicio calibración agentes ===
+[2026-08-03T12:44:36.811Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:44:36.824Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:36.826Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:36.828Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:44:36.828Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:44:53.174Z] === Inicio calibración agentes ===
+[2026-08-03T12:44:53.177Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:44:53.187Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:53.190Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:44:53.192Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:44:53.192Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:45:09.564Z] === Inicio calibración agentes ===
+[2026-08-03T12:45:09.566Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:45:09.578Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:45:09.580Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:45:09.582Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:45:09.582Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:45:45.327Z] === Inicio calibración agentes ===
+[2026-08-03T12:45:45.329Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:45:45.342Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:45:45.344Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:45:45.346Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:45:45.346Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:46:01.680Z] === Inicio calibración agentes ===
+[2026-08-03T12:46:01.682Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:46:01.694Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:01.696Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:01.698Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:46:01.699Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:46:18.058Z] === Inicio calibración agentes ===
+[2026-08-03T12:46:18.061Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:46:18.071Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:18.073Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:18.074Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:46:18.074Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:46:34.392Z] === Inicio calibración agentes ===
+[2026-08-03T12:46:34.394Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:46:34.405Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:34.407Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:34.408Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:46:34.408Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:46:50.757Z] === Inicio calibración agentes ===
+[2026-08-03T12:46:50.759Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:46:50.773Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:50.775Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:46:50.776Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:46:50.776Z] Calibración 1BGU: APROBADA
+[2026-08-03T12:49:19.419Z] === Inicio calibración agentes ===
+[2026-08-03T12:49:19.421Z] Calibrando: 1bgu-grecia-roma
+[2026-08-03T12:49:19.432Z] - Grecia y Roma bajo: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:49:19.434Z] - Grecia y Roma medio: 7/7 => OK | banda=Aprobado
+[2026-08-03T12:49:19.435Z] - Grecia y Roma alto: 8/8 => OK | banda=Notable
+[2026-08-03T12:49:19.435Z] Calibración 1BGU: APROBADA

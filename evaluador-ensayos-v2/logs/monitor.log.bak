@@ -1,0 +1,21 @@
+[2026-08-02T16:29:11.784Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=1
+[2026-08-02T16:29:43.377Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=1
+[2026-08-02T16:30:26.075Z] START monitor interval=30000ms target=http://localhost:3002
+[2026-08-02T16:30:36.088Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=1
+[2026-08-02T16:30:36.088Z] INIT status={"healthy":false,"consecutiveFailures":1}
+[2026-08-02T16:31:06.096Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=2
+[2026-08-02T16:31:36.089Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=3
+[2026-08-02T16:31:36.091Z] ESCALATION Service unhealthy after 3 checks: [{"endpoint":"/api/health","ok":false,"status":0,"durationMs":10002,"error":"timeout"},{"endpoint":"/api/rubricas","ok":false,"status":0,"durationMs":10002,"error":"timeout"},{"endpoint":"/api/evaluar","ok":false,"status":0,"durationMs":10002,"error":"timeout"}]
+[2026-08-02T16:32:06.093Z] FAIL /api/health=0(timeout), /api/rubricas=0(timeout), /api/evaluar=0(timeout) consecutive=4
+[2026-08-02T16:32:06.093Z] ESCALATION Service unhealthy after 4 checks: [{"endpoint":"/api/health","ok":false,"status":0,"durationMs":10005,"error":"timeout"},{"endpoint":"/api/rubricas","ok":false,"status":0,"durationMs":10005,"error":"timeout"},{"endpoint":"/api/evaluar","ok":false,"status":0,"durationMs":10004,"error":"timeout"}]
+[2026-08-02T16:36:40.877Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:36:40.878Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:36:40.931Z] PORT_IN_USE_KILLED
+[2026-08-02T16:37:08.091Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:37:08.093Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:37:08.135Z] PORT_IN_USE_KILLED
+[2026-08-02T16:37:47.381Z] INCIDENT=PORT_IN_USE fix=Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.
+[2026-08-02T16:37:47.385Z] PORT_IN_USE_REMEDIATION_START port=3002
+[2026-08-02T16:37:47.425Z] PORT_IN_USE_KILLED
+[2026-08-02T16:38:41.578Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECONNREFUSED 127.0.0.1:3002) consecutive=1
+[2026-08-02T16:38:41.579Z] INCIDENT=TIMEOUT fix=Aumentar timeout de request o revisar latencia de red/servidor.

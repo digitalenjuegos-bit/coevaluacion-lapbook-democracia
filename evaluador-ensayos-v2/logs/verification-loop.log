@@ -1,0 +1,1363 @@
+[2026-08-02T23:20:59.416Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-02T23:20:59.420Z] --- Iteración 1/5 ---
+[2026-08-02T23:20:59.420Z] EJECUTANDO monitor...
+[2026-08-02T23:21:04.425Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-02T23:21:04.426Z] monitor => REVISE
+[2026-08-02T23:21:04.426Z] EJECUTANDO support...
+[2026-08-02T23:21:04.519Z] support => OK
+[2026-08-02T23:21:04.519Z] EJECUTANDO deploy-agent...
+[2026-08-02T23:21:16.067Z] deploy-agent => OK
+[2026-08-02T23:21:16.067Z] EJECUTANDO ui-agent...
+[2026-08-02T23:21:16.155Z] ui-agent => OK
+[2026-08-02T23:21:16.156Z] EJECUTANDO evaluation-agent...
+[2026-08-02T23:21:16.233Z] evaluation-agent => OK
+[2026-08-02T23:21:16.233Z] EJECUTANDO results-debugger...
+[2026-08-02T23:21:16.315Z] results-debugger => OK
+[2026-08-02T23:21:16.316Z] EJECUTANDO calibration-agent...
+[2026-08-02T23:21:16.408Z] calibration-agent => OK
+[2026-08-02T23:21:16.408Z] EJECUTANDO auto-improver...
+[2026-08-02T23:21:16.488Z] auto-improver => OK
+[2026-08-02T23:21:16.488Z] EJECUTANDO self-improvement-loop...
+[2026-08-02T23:21:31.496Z] self-improvement-loop => REVISE
+[2026-08-02T23:21:31.498Z] Iteración 1: allPass=false, fixed=0
+[2026-08-02T23:21:31.498Z] --- Iteración 2/5 ---
+[2026-08-02T23:21:31.498Z] EJECUTANDO monitor...
+[2026-08-02T23:21:36.505Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-02T23:21:36.506Z] monitor => REVISE
+[2026-08-02T23:21:36.506Z] EJECUTANDO support...
+[2026-08-02T23:21:36.601Z] support => OK
+[2026-08-02T23:21:36.602Z] EJECUTANDO deploy-agent...
+[2026-08-02T23:21:48.110Z] deploy-agent => OK
+[2026-08-02T23:21:48.111Z] EJECUTANDO ui-agent...
+[2026-08-02T23:21:48.193Z] ui-agent => OK
+[2026-08-02T23:21:48.193Z] EJECUTANDO evaluation-agent...
+[2026-08-02T23:21:48.265Z] evaluation-agent => OK
+[2026-08-02T23:21:48.265Z] EJECUTANDO results-debugger...
+[2026-08-02T23:21:48.347Z] results-debugger => OK
+[2026-08-02T23:21:48.348Z] EJECUTANDO calibration-agent...
+[2026-08-02T23:21:48.428Z] calibration-agent => OK
+[2026-08-02T23:21:48.428Z] EJECUTANDO auto-improver...
+[2026-08-02T23:21:48.506Z] auto-improver => OK
+[2026-08-02T23:21:48.506Z] EJECUTANDO self-improvement-loop...
+[2026-08-02T23:22:03.512Z] self-improvement-loop => REVISE
+[2026-08-02T23:22:03.513Z] Iteración 2: allPass=false, fixed=0
+[2026-08-02T23:22:03.514Z] --- Iteración 3/5 ---
+[2026-08-02T23:22:03.514Z] EJECUTANDO monitor...
+[2026-08-02T23:22:08.518Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-02T23:22:08.519Z] monitor => REVISE
+[2026-08-02T23:22:08.519Z] EJECUTANDO support...
+[2026-08-02T23:22:08.603Z] support => OK
+[2026-08-02T23:22:08.603Z] EJECUTANDO deploy-agent...
+[2026-08-02T23:22:20.086Z] deploy-agent => OK
+[2026-08-02T23:22:20.086Z] EJECUTANDO ui-agent...
+[2026-08-02T23:22:20.160Z] ui-agent => OK
+[2026-08-02T23:22:20.160Z] EJECUTANDO evaluation-agent...
+[2026-08-02T23:22:20.232Z] evaluation-agent => OK
+[2026-08-02T23:22:20.232Z] EJECUTANDO results-debugger...
+[2026-08-02T23:22:20.319Z] results-debugger => OK
+[2026-08-02T23:22:20.319Z] EJECUTANDO calibration-agent...
+[2026-08-02T23:22:20.406Z] calibration-agent => OK
+[2026-08-02T23:22:20.407Z] EJECUTANDO auto-improver...
+[2026-08-02T23:22:20.489Z] auto-improver => OK
+[2026-08-02T23:22:20.489Z] EJECUTANDO self-improvement-loop...
+[2026-08-02T23:22:35.495Z] self-improvement-loop => REVISE
+[2026-08-02T23:22:35.496Z] Iteración 3: allPass=false, fixed=0
+[2026-08-02T23:22:35.496Z] --- Iteración 4/5 ---
+[2026-08-02T23:22:35.496Z] EJECUTANDO monitor...
+[2026-08-02T23:22:40.501Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-02T23:22:40.501Z] monitor => REVISE
+[2026-08-02T23:22:40.501Z] EJECUTANDO support...
+[2026-08-02T23:22:40.593Z] support => OK
+[2026-08-02T23:22:40.594Z] EJECUTANDO deploy-agent...
+[2026-08-02T23:22:52.147Z] deploy-agent => OK
+[2026-08-02T23:22:52.148Z] EJECUTANDO ui-agent...
+[2026-08-02T23:22:52.234Z] ui-agent => OK
+[2026-08-02T23:22:52.234Z] EJECUTANDO evaluation-agent...
+[2026-08-02T23:22:52.310Z] evaluation-agent => OK
+[2026-08-02T23:22:52.310Z] EJECUTANDO results-debugger...
+[2026-08-02T23:22:52.394Z] results-debugger => OK
+[2026-08-02T23:22:52.394Z] EJECUTANDO calibration-agent...
+[2026-08-02T23:22:52.479Z] calibration-agent => OK
+[2026-08-02T23:22:52.480Z] EJECUTANDO auto-improver...
+[2026-08-02T23:22:52.563Z] auto-improver => OK
+[2026-08-02T23:22:52.563Z] EJECUTANDO self-improvement-loop...
+[2026-08-02T23:23:07.568Z] self-improvement-loop => REVISE
+[2026-08-02T23:23:07.569Z] Iteración 4: allPass=false, fixed=0
+[2026-08-02T23:23:07.569Z] --- Iteración 5/5 ---
+[2026-08-02T23:23:07.569Z] EJECUTANDO monitor...
+[2026-08-02T23:23:12.575Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-02T23:23:12.575Z] monitor => REVISE
+[2026-08-02T23:23:12.576Z] EJECUTANDO support...
+[2026-08-02T23:23:12.665Z] support => OK
+[2026-08-02T23:23:12.665Z] EJECUTANDO deploy-agent...
+[2026-08-02T23:23:24.212Z] deploy-agent => OK
+[2026-08-02T23:23:24.212Z] EJECUTANDO ui-agent...
+[2026-08-02T23:23:24.279Z] ui-agent => OK
+[2026-08-02T23:23:24.279Z] EJECUTANDO evaluation-agent...
+[2026-08-02T23:23:24.351Z] evaluation-agent => OK
+[2026-08-02T23:23:24.352Z] EJECUTANDO results-debugger...
+[2026-08-02T23:23:24.435Z] results-debugger => OK
+[2026-08-02T23:23:24.435Z] EJECUTANDO calibration-agent...
+[2026-08-02T23:23:24.551Z] calibration-agent => OK
+[2026-08-02T23:23:24.552Z] EJECUTANDO auto-improver...
+[2026-08-02T23:23:24.646Z] auto-improver => OK
+[2026-08-02T23:23:24.647Z] EJECUTANDO self-improvement-loop...
+[2026-08-02T23:23:39.653Z] self-improvement-loop => REVISE
+[2026-08-02T23:23:39.655Z] Iteración 5: allPass=false, fixed=0
+[2026-08-02T23:23:39.655Z] === LOOP FINALIZADO CON PENDIENTES: monitor, self-improvement-loop ===
+[2026-08-02T23:23:39.655Z] Duración total: 160s
+[2026-08-02T23:23:39.657Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": false,
+      "output": "[2026-08-02T23:23:07.663Z] START monitor interval=30000ms target=http://localhost:3002\n[2026-08-02T23:23:07.679Z] INIT status={\"healthy\":true,\"consecutiveFailures\":0}\n  spawnSync /bin/sh ETIMEDOUT"
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-02T17:02:48.182Z] FAIL /api/health=0(connect ECONNREFUSED 127.0.0.1:3002), /api/rubricas=0(connect ECONNREFUSED 127.0.0.1:3002), /api/evaluar=0(connect ECON..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-02T23:23:22.759Z] RECOVERY_NEEDED status=0 error=timeout\n[2026-08-02T23:23:22.764Z] DEPLOY_START command=railway redeploy -s undefined -y\n[2026-08-02T23:23:24.209Z] DEPLOY_FAILED Command failed: railway redeploy -s undefined -y\nService 'undefined' not found\n{\n  \"action\": \"failed\",\n  \"reason..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-02T23:23:24.414Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-02T23:23:24.416Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-02T23:23:24.430Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-02T23:23:24.430Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_ui_ok\",\n  \"snapshot\": {\n    \"at\": \"2026-08-02T23:23:24.642Z\",\n    \"monitor\": {\n      \"healthy\": true,\n      \"consecutiveFailures\": 0,\n      \"lastStatus\": {\n        \"/api/health\": {\n          \"endpoint\": \"/api/health\",\n          \"ok\": true,\n          \"st..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "spawnSync /bin/sh ETIMEDOUT"
+    }
+  ],
+  "failed": [
+    "monitor",
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:35:07.244Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:35:07.247Z] --- Iteración 1/5 ---
+[2026-08-03T12:35:07.247Z] EJECUTANDO monitor...
+[2026-08-03T12:35:12.255Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:35:12.256Z] monitor => REVISE
+[2026-08-03T12:35:12.256Z] EJECUTANDO support...
+[2026-08-03T12:35:12.339Z] support => OK
+[2026-08-03T12:35:12.339Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:35:13.169Z] deploy-agent => OK
+[2026-08-03T12:35:13.170Z] EJECUTANDO ui-agent...
+[2026-08-03T12:35:13.251Z] ui-agent => OK
+[2026-08-03T12:35:13.251Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:35:13.324Z] evaluation-agent => OK
+[2026-08-03T12:35:13.324Z] EJECUTANDO results-debugger...
+[2026-08-03T12:35:13.405Z] results-debugger => OK
+[2026-08-03T12:35:13.405Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:35:13.494Z] calibration-agent => OK
+[2026-08-03T12:35:13.494Z] EJECUTANDO auto-improver...
+[2026-08-03T12:35:13.571Z] auto-improver => REVISE
+[2026-08-03T12:35:13.571Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:35:13.667Z] self-improvement-loop => REVISE
+[2026-08-03T12:35:13.667Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:35:13.667Z] --- Iteración 2/5 ---
+[2026-08-03T12:35:13.667Z] EJECUTANDO monitor...
+[2026-08-03T12:35:18.672Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:35:18.673Z] monitor => REVISE
+[2026-08-03T12:35:18.673Z] EJECUTANDO support...
+[2026-08-03T12:35:18.756Z] support => OK
+[2026-08-03T12:35:18.756Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:35:19.580Z] deploy-agent => OK
+[2026-08-03T12:35:19.580Z] EJECUTANDO ui-agent...
+[2026-08-03T12:35:19.659Z] ui-agent => OK
+[2026-08-03T12:35:19.659Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:35:19.725Z] evaluation-agent => OK
+[2026-08-03T12:35:19.726Z] EJECUTANDO results-debugger...
+[2026-08-03T12:35:19.805Z] results-debugger => OK
+[2026-08-03T12:35:19.805Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:35:19.882Z] calibration-agent => OK
+[2026-08-03T12:35:19.882Z] EJECUTANDO auto-improver...
+[2026-08-03T12:35:19.959Z] auto-improver => REVISE
+[2026-08-03T12:35:19.960Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:35:20.035Z] self-improvement-loop => REVISE
+[2026-08-03T12:35:20.035Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:35:20.035Z] --- Iteración 3/5 ---
+[2026-08-03T12:35:20.035Z] EJECUTANDO monitor...
+[2026-08-03T12:35:25.041Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:35:25.042Z] monitor => REVISE
+[2026-08-03T12:35:25.042Z] EJECUTANDO support...
+[2026-08-03T12:35:25.126Z] support => OK
+[2026-08-03T12:35:25.126Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:35:25.956Z] deploy-agent => OK
+[2026-08-03T12:35:25.956Z] EJECUTANDO ui-agent...
+[2026-08-03T12:35:26.036Z] ui-agent => OK
+[2026-08-03T12:35:26.036Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:35:26.116Z] evaluation-agent => OK
+[2026-08-03T12:35:26.116Z] EJECUTANDO results-debugger...
+[2026-08-03T12:35:26.195Z] results-debugger => OK
+[2026-08-03T12:35:26.196Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:35:26.272Z] calibration-agent => OK
+[2026-08-03T12:35:26.272Z] EJECUTANDO auto-improver...
+[2026-08-03T12:35:26.348Z] auto-improver => REVISE
+[2026-08-03T12:35:26.348Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:35:26.423Z] self-improvement-loop => REVISE
+[2026-08-03T12:35:26.423Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:35:26.423Z] --- Iteración 4/5 ---
+[2026-08-03T12:35:26.423Z] EJECUTANDO monitor...
+[2026-08-03T12:35:31.428Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:35:31.428Z] monitor => REVISE
+[2026-08-03T12:35:31.429Z] EJECUTANDO support...
+[2026-08-03T12:35:31.505Z] support => OK
+[2026-08-03T12:35:31.505Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:35:32.300Z] deploy-agent => OK
+[2026-08-03T12:35:32.300Z] EJECUTANDO ui-agent...
+[2026-08-03T12:35:32.372Z] ui-agent => OK
+[2026-08-03T12:35:32.372Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:35:32.428Z] evaluation-agent => OK
+[2026-08-03T12:35:32.428Z] EJECUTANDO results-debugger...
+[2026-08-03T12:35:32.496Z] results-debugger => OK
+[2026-08-03T12:35:32.496Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:35:32.568Z] calibration-agent => OK
+[2026-08-03T12:35:32.568Z] EJECUTANDO auto-improver...
+[2026-08-03T12:35:32.641Z] auto-improver => REVISE
+[2026-08-03T12:35:32.641Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:35:32.717Z] self-improvement-loop => REVISE
+[2026-08-03T12:35:32.717Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:35:32.717Z] --- Iteración 5/5 ---
+[2026-08-03T12:35:32.717Z] EJECUTANDO monitor...
+[2026-08-03T12:35:37.721Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:35:37.722Z] monitor => REVISE
+[2026-08-03T12:35:37.722Z] EJECUTANDO support...
+[2026-08-03T12:35:37.858Z] support => OK
+[2026-08-03T12:35:37.859Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:35:38.744Z] deploy-agent => OK
+[2026-08-03T12:35:38.745Z] EJECUTANDO ui-agent...
+[2026-08-03T12:35:38.878Z] ui-agent => OK
+[2026-08-03T12:35:38.878Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:35:38.989Z] evaluation-agent => OK
+[2026-08-03T12:35:38.989Z] EJECUTANDO results-debugger...
+[2026-08-03T12:35:39.064Z] results-debugger => OK
+[2026-08-03T12:35:39.064Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:35:39.138Z] calibration-agent => OK
+[2026-08-03T12:35:39.138Z] EJECUTANDO auto-improver...
+[2026-08-03T12:35:39.243Z] auto-improver => REVISE
+[2026-08-03T12:35:39.243Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:35:39.322Z] self-improvement-loop => REVISE
+[2026-08-03T12:35:39.322Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:35:39.322Z] === LOOP FINALIZADO CON PENDIENTES: monitor, auto-improver, self-improvement-loop ===
+[2026-08-03T12:35:39.322Z] Duración total: 32s
+[2026-08-03T12:35:39.323Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": false,
+      "output": "[2026-08-03T12:35:32.769Z] START monitor interval=30000ms target=http://localhost:3002\n[2026-08-03T12:35:32.782Z] INIT status={\"healthy\":true,\"consecutiveFailures\":0}\n  spawnSync /bin/sh ETIMEDOUT"
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-02T23:20:59.486Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-02T23:20:59.510Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:35:37.975Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:35:38.733Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 1,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:35:39.047Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:35:39.049Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:35:39.059Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:35:39.059Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": false,
+      "output": "/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24\n  return getDeployStatus();\n         ^\n\nTypeError: getDeployStatus is not a function\n    at summarizeDeploy (/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24:10)\n ..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24\n  return getDeployStatus();\n         ^\n\nTypeError: getDeployStatus is not a function\n    at summarizeDeploy (/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24:10)\n ..."
+    }
+  ],
+  "failed": [
+    "monitor",
+    "auto-improver",
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:36:44.971Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:36:44.974Z] --- Iteración 1/5 ---
+[2026-08-03T12:36:44.974Z] EJECUTANDO monitor...
+[2026-08-03T12:36:49.983Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:36:49.983Z] monitor => REVISE
+[2026-08-03T12:36:49.983Z] EJECUTANDO support...
+[2026-08-03T12:36:50.087Z] support => OK
+[2026-08-03T12:36:50.087Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:36:50.992Z] deploy-agent => OK
+[2026-08-03T12:36:50.993Z] EJECUTANDO ui-agent...
+[2026-08-03T12:36:51.078Z] ui-agent => OK
+[2026-08-03T12:36:51.078Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:36:51.159Z] evaluation-agent => OK
+[2026-08-03T12:36:51.159Z] EJECUTANDO results-debugger...
+[2026-08-03T12:36:51.252Z] results-debugger => OK
+[2026-08-03T12:36:51.253Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:36:51.340Z] calibration-agent => OK
+[2026-08-03T12:36:51.340Z] EJECUTANDO auto-improver...
+[2026-08-03T12:36:51.418Z] auto-improver => REVISE
+[2026-08-03T12:36:51.418Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:36:51.500Z] self-improvement-loop => REVISE
+[2026-08-03T12:36:51.500Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:36:51.500Z] --- Iteración 2/5 ---
+[2026-08-03T12:36:51.500Z] EJECUTANDO monitor...
+[2026-08-03T12:36:56.506Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:36:56.507Z] monitor => REVISE
+[2026-08-03T12:36:56.507Z] EJECUTANDO support...
+[2026-08-03T12:36:56.591Z] support => OK
+[2026-08-03T12:36:56.592Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:36:57.433Z] deploy-agent => OK
+[2026-08-03T12:36:57.434Z] EJECUTANDO ui-agent...
+[2026-08-03T12:36:57.508Z] ui-agent => OK
+[2026-08-03T12:36:57.509Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:36:57.569Z] evaluation-agent => OK
+[2026-08-03T12:36:57.570Z] EJECUTANDO results-debugger...
+[2026-08-03T12:36:57.642Z] results-debugger => OK
+[2026-08-03T12:36:57.642Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:36:57.731Z] calibration-agent => OK
+[2026-08-03T12:36:57.731Z] EJECUTANDO auto-improver...
+[2026-08-03T12:36:57.820Z] auto-improver => REVISE
+[2026-08-03T12:36:57.820Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:36:57.895Z] self-improvement-loop => REVISE
+[2026-08-03T12:36:57.895Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:36:57.895Z] --- Iteración 3/5 ---
+[2026-08-03T12:36:57.895Z] EJECUTANDO monitor...
+[2026-08-03T12:37:02.901Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:37:02.901Z] monitor => REVISE
+[2026-08-03T12:37:02.901Z] EJECUTANDO support...
+[2026-08-03T12:37:02.979Z] support => OK
+[2026-08-03T12:37:02.979Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:37:03.762Z] deploy-agent => OK
+[2026-08-03T12:37:03.762Z] EJECUTANDO ui-agent...
+[2026-08-03T12:37:03.850Z] ui-agent => OK
+[2026-08-03T12:37:03.851Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:37:03.926Z] evaluation-agent => OK
+[2026-08-03T12:37:03.926Z] EJECUTANDO results-debugger...
+[2026-08-03T12:37:04.006Z] results-debugger => OK
+[2026-08-03T12:37:04.006Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:37:04.102Z] calibration-agent => OK
+[2026-08-03T12:37:04.103Z] EJECUTANDO auto-improver...
+[2026-08-03T12:37:04.181Z] auto-improver => REVISE
+[2026-08-03T12:37:04.181Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:37:04.272Z] self-improvement-loop => REVISE
+[2026-08-03T12:37:04.272Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:37:04.272Z] --- Iteración 4/5 ---
+[2026-08-03T12:37:04.272Z] EJECUTANDO monitor...
+[2026-08-03T12:37:09.277Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:37:09.278Z] monitor => REVISE
+[2026-08-03T12:37:09.278Z] EJECUTANDO support...
+[2026-08-03T12:37:09.361Z] support => OK
+[2026-08-03T12:37:09.361Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:37:10.155Z] deploy-agent => OK
+[2026-08-03T12:37:10.156Z] EJECUTANDO ui-agent...
+[2026-08-03T12:37:10.234Z] ui-agent => OK
+[2026-08-03T12:37:10.235Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:37:10.301Z] evaluation-agent => OK
+[2026-08-03T12:37:10.302Z] EJECUTANDO results-debugger...
+[2026-08-03T12:37:10.378Z] results-debugger => OK
+[2026-08-03T12:37:10.379Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:37:10.456Z] calibration-agent => OK
+[2026-08-03T12:37:10.456Z] EJECUTANDO auto-improver...
+[2026-08-03T12:37:10.532Z] auto-improver => REVISE
+[2026-08-03T12:37:10.532Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:37:10.606Z] self-improvement-loop => REVISE
+[2026-08-03T12:37:10.606Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:37:10.606Z] --- Iteración 5/5 ---
+[2026-08-03T12:37:10.606Z] EJECUTANDO monitor...
+[2026-08-03T12:37:15.614Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:37:15.616Z] monitor => REVISE
+[2026-08-03T12:37:15.616Z] EJECUTANDO support...
+[2026-08-03T12:37:15.701Z] support => OK
+[2026-08-03T12:37:15.701Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:37:16.584Z] deploy-agent => OK
+[2026-08-03T12:37:16.585Z] EJECUTANDO ui-agent...
+[2026-08-03T12:37:16.667Z] ui-agent => OK
+[2026-08-03T12:37:16.667Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:37:16.735Z] evaluation-agent => OK
+[2026-08-03T12:37:16.735Z] EJECUTANDO results-debugger...
+[2026-08-03T12:37:16.811Z] results-debugger => OK
+[2026-08-03T12:37:16.811Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:37:16.897Z] calibration-agent => OK
+[2026-08-03T12:37:16.897Z] EJECUTANDO auto-improver...
+[2026-08-03T12:37:16.986Z] auto-improver => REVISE
+[2026-08-03T12:37:16.986Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:37:17.064Z] self-improvement-loop => REVISE
+[2026-08-03T12:37:17.064Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:37:17.064Z] === LOOP FINALIZADO CON PENDIENTES: monitor, auto-improver, self-improvement-loop ===
+[2026-08-03T12:37:17.064Z] Duración total: 32s
+[2026-08-03T12:37:17.064Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": false,
+      "output": "[2026-08-03T12:37:10.662Z] START monitor interval=30000ms target=http://localhost:3002\n[2026-08-03T12:37:10.674Z] INIT status={\"healthy\":true,\"consecutiveFailures\":0}\n  spawnSync /bin/sh ETIMEDOUT"
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:35:07.311Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:35:07.337Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:37:15.789Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:37:16.577Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 3,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:37:16.793Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:37:16.795Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:37:16.806Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:37:16.806Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": false,
+      "output": "/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24\n  return getDeployStatus();\n         ^\n\nTypeError: getDeployStatus is not a function\n    at summarizeDeploy (/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24:10)\n ..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24\n  return getDeployStatus();\n         ^\n\nTypeError: getDeployStatus is not a function\n    at summarizeDeploy (/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24:10)\n ..."
+    }
+  ],
+  "failed": [
+    "monitor",
+    "auto-improver",
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:37:40.393Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:37:40.396Z] --- Iteración 1/5 ---
+[2026-08-03T12:37:40.396Z] EJECUTANDO monitor...
+[2026-08-03T12:37:45.402Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:37:45.402Z] monitor => REVISE
+[2026-08-03T12:37:45.403Z] EJECUTANDO support...
+[2026-08-03T12:37:45.494Z] support => OK
+[2026-08-03T12:37:45.494Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:37:46.278Z] deploy-agent => OK
+[2026-08-03T12:37:46.279Z] EJECUTANDO ui-agent...
+[2026-08-03T12:37:46.358Z] ui-agent => OK
+[2026-08-03T12:37:46.358Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:37:46.437Z] evaluation-agent => OK
+[2026-08-03T12:37:46.437Z] EJECUTANDO results-debugger...
+[2026-08-03T12:37:46.524Z] results-debugger => OK
+[2026-08-03T12:37:46.524Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:37:46.597Z] calibration-agent => OK
+[2026-08-03T12:37:46.597Z] EJECUTANDO auto-improver...
+[2026-08-03T12:37:46.671Z] auto-improver => REVISE
+[2026-08-03T12:37:46.671Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:37:46.743Z] self-improvement-loop => REVISE
+[2026-08-03T12:37:46.743Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:37:46.744Z] --- Iteración 2/5 ---
+[2026-08-03T12:37:46.744Z] EJECUTANDO monitor...
+[2026-08-03T12:37:51.748Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:37:51.749Z] monitor => REVISE
+[2026-08-03T12:37:51.750Z] EJECUTANDO support...
+[2026-08-03T12:37:51.834Z] support => OK
+[2026-08-03T12:37:51.834Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:37:52.647Z] deploy-agent => OK
+[2026-08-03T12:37:52.648Z] EJECUTANDO ui-agent...
+[2026-08-03T12:37:52.730Z] ui-agent => OK
+[2026-08-03T12:37:52.731Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:37:52.804Z] evaluation-agent => OK
+[2026-08-03T12:37:52.804Z] EJECUTANDO results-debugger...
+[2026-08-03T12:37:52.884Z] results-debugger => OK
+[2026-08-03T12:37:52.884Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:37:52.960Z] calibration-agent => OK
+[2026-08-03T12:37:52.960Z] EJECUTANDO auto-improver...
+[2026-08-03T12:37:53.034Z] auto-improver => REVISE
+[2026-08-03T12:37:53.034Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:37:53.109Z] self-improvement-loop => REVISE
+[2026-08-03T12:37:53.109Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:37:53.109Z] --- Iteración 3/5 ---
+[2026-08-03T12:37:53.109Z] EJECUTANDO monitor...
+[2026-08-03T12:37:58.114Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:37:58.115Z] monitor => REVISE
+[2026-08-03T12:37:58.115Z] EJECUTANDO support...
+[2026-08-03T12:37:58.194Z] support => OK
+[2026-08-03T12:37:58.194Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:37:59.036Z] deploy-agent => OK
+[2026-08-03T12:37:59.037Z] EJECUTANDO ui-agent...
+[2026-08-03T12:37:59.119Z] ui-agent => OK
+[2026-08-03T12:37:59.120Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:37:59.196Z] evaluation-agent => OK
+[2026-08-03T12:37:59.197Z] EJECUTANDO results-debugger...
+[2026-08-03T12:37:59.281Z] results-debugger => OK
+[2026-08-03T12:37:59.282Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:37:59.371Z] calibration-agent => OK
+[2026-08-03T12:37:59.371Z] EJECUTANDO auto-improver...
+[2026-08-03T12:37:59.473Z] auto-improver => REVISE
+[2026-08-03T12:37:59.473Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:37:59.559Z] self-improvement-loop => REVISE
+[2026-08-03T12:37:59.559Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:37:59.559Z] --- Iteración 4/5 ---
+[2026-08-03T12:37:59.559Z] EJECUTANDO monitor...
+[2026-08-03T12:38:04.567Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:38:04.568Z] monitor => REVISE
+[2026-08-03T12:38:04.568Z] EJECUTANDO support...
+[2026-08-03T12:38:04.650Z] support => OK
+[2026-08-03T12:38:04.650Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:38:05.415Z] deploy-agent => OK
+[2026-08-03T12:38:05.415Z] EJECUTANDO ui-agent...
+[2026-08-03T12:38:05.488Z] ui-agent => OK
+[2026-08-03T12:38:05.488Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:38:05.554Z] evaluation-agent => OK
+[2026-08-03T12:38:05.554Z] EJECUTANDO results-debugger...
+[2026-08-03T12:38:05.624Z] results-debugger => OK
+[2026-08-03T12:38:05.624Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:38:05.696Z] calibration-agent => OK
+[2026-08-03T12:38:05.696Z] EJECUTANDO auto-improver...
+[2026-08-03T12:38:05.771Z] auto-improver => REVISE
+[2026-08-03T12:38:05.771Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:38:05.845Z] self-improvement-loop => REVISE
+[2026-08-03T12:38:05.845Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:38:05.845Z] --- Iteración 5/5 ---
+[2026-08-03T12:38:05.845Z] EJECUTANDO monitor...
+[2026-08-03T12:38:10.852Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:38:10.853Z] monitor => REVISE
+[2026-08-03T12:38:10.853Z] EJECUTANDO support...
+[2026-08-03T12:38:10.946Z] support => OK
+[2026-08-03T12:38:10.946Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:38:11.938Z] deploy-agent => OK
+[2026-08-03T12:38:11.938Z] EJECUTANDO ui-agent...
+[2026-08-03T12:38:12.013Z] ui-agent => OK
+[2026-08-03T12:38:12.013Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:38:12.072Z] evaluation-agent => OK
+[2026-08-03T12:38:12.072Z] EJECUTANDO results-debugger...
+[2026-08-03T12:38:12.140Z] results-debugger => OK
+[2026-08-03T12:38:12.140Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:38:12.214Z] calibration-agent => OK
+[2026-08-03T12:38:12.214Z] EJECUTANDO auto-improver...
+[2026-08-03T12:38:12.289Z] auto-improver => REVISE
+[2026-08-03T12:38:12.289Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:38:12.364Z] self-improvement-loop => REVISE
+[2026-08-03T12:38:12.364Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:38:12.364Z] === LOOP FINALIZADO CON PENDIENTES: monitor, auto-improver, self-improvement-loop ===
+[2026-08-03T12:38:12.364Z] Duración total: 32s
+[2026-08-03T12:38:12.365Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": false,
+      "output": "[2026-08-03T12:38:05.897Z] START monitor interval=30000ms target=http://localhost:3002\n[2026-08-03T12:38:05.910Z] INIT status={\"healthy\":true,\"consecutiveFailures\":0}\n  spawnSync /bin/sh ETIMEDOUT"
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:36:45.041Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:36:45.059Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:38:11.018Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:38:11.929Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 2,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:38:12.124Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:38:12.125Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:38:12.135Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:38:12.135Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": false,
+      "output": "/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24\n  return getDeployStatus();\n         ^\n\nTypeError: getDeployStatus is not a function\n    at summarizeDeploy (/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24:10)\n ..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24\n  return getDeployStatus();\n         ^\n\nTypeError: getDeployStatus is not a function\n    at summarizeDeploy (/Users/albertoottatirosas/coeval-lapbook-ada3/evaluador-ensayos-v2/agents/orchestrator.js:24:10)\n ..."
+    }
+  ],
+  "failed": [
+    "monitor",
+    "auto-improver",
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:39:32.838Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:39:32.841Z] --- Iteración 1/5 ---
+[2026-08-03T12:39:32.842Z] EJECUTANDO monitor...
+[2026-08-03T12:39:37.849Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:39:37.850Z] monitor => REVISE
+[2026-08-03T12:39:37.850Z] EJECUTANDO support...
+[2026-08-03T12:39:37.954Z] support => OK
+[2026-08-03T12:39:37.954Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:39:38.888Z] deploy-agent => OK
+[2026-08-03T12:39:38.888Z] EJECUTANDO ui-agent...
+[2026-08-03T12:39:38.971Z] ui-agent => OK
+[2026-08-03T12:39:38.972Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:39:39.042Z] evaluation-agent => OK
+[2026-08-03T12:39:39.042Z] EJECUTANDO results-debugger...
+[2026-08-03T12:39:39.125Z] results-debugger => OK
+[2026-08-03T12:39:39.126Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:39:39.208Z] calibration-agent => OK
+[2026-08-03T12:39:39.209Z] EJECUTANDO auto-improver...
+[2026-08-03T12:39:39.294Z] auto-improver => OK
+[2026-08-03T12:39:39.294Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:39:54.300Z] self-improvement-loop => REVISE
+[2026-08-03T12:39:54.300Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:39:54.300Z] --- Iteración 2/5 ---
+[2026-08-03T12:39:54.300Z] EJECUTANDO monitor...
+[2026-08-03T12:39:59.305Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:39:59.306Z] monitor => REVISE
+[2026-08-03T12:39:59.307Z] EJECUTANDO support...
+[2026-08-03T12:39:59.394Z] support => OK
+[2026-08-03T12:39:59.394Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:40:00.281Z] deploy-agent => OK
+[2026-08-03T12:40:00.281Z] EJECUTANDO ui-agent...
+[2026-08-03T12:40:00.360Z] ui-agent => OK
+[2026-08-03T12:40:00.361Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:40:00.428Z] evaluation-agent => OK
+[2026-08-03T12:40:00.428Z] EJECUTANDO results-debugger...
+[2026-08-03T12:40:00.505Z] results-debugger => OK
+[2026-08-03T12:40:00.505Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:40:00.599Z] calibration-agent => OK
+[2026-08-03T12:40:00.600Z] EJECUTANDO auto-improver...
+[2026-08-03T12:40:00.682Z] auto-improver => OK
+[2026-08-03T12:40:00.682Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:40:15.688Z] self-improvement-loop => REVISE
+[2026-08-03T12:40:15.689Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:40:15.689Z] --- Iteración 3/5 ---
+[2026-08-03T12:40:15.689Z] EJECUTANDO monitor...
+[2026-08-03T12:40:20.695Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:40:20.695Z] monitor => REVISE
+[2026-08-03T12:40:20.695Z] EJECUTANDO support...
+[2026-08-03T12:40:20.790Z] support => OK
+[2026-08-03T12:40:20.790Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:40:21.600Z] deploy-agent => OK
+[2026-08-03T12:40:21.600Z] EJECUTANDO ui-agent...
+[2026-08-03T12:40:21.686Z] ui-agent => OK
+[2026-08-03T12:40:21.687Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:40:21.774Z] evaluation-agent => OK
+[2026-08-03T12:40:21.774Z] EJECUTANDO results-debugger...
+[2026-08-03T12:40:21.868Z] results-debugger => OK
+[2026-08-03T12:40:21.868Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:40:21.959Z] calibration-agent => OK
+[2026-08-03T12:40:21.959Z] EJECUTANDO auto-improver...
+[2026-08-03T12:40:22.043Z] auto-improver => OK
+[2026-08-03T12:40:22.043Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:40:37.048Z] self-improvement-loop => REVISE
+[2026-08-03T12:40:37.050Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:40:37.050Z] --- Iteración 4/5 ---
+[2026-08-03T12:40:37.050Z] EJECUTANDO monitor...
+[2026-08-03T12:40:42.055Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:40:42.056Z] monitor => REVISE
+[2026-08-03T12:40:42.056Z] EJECUTANDO support...
+[2026-08-03T12:40:42.136Z] support => OK
+[2026-08-03T12:40:42.136Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:40:42.922Z] deploy-agent => OK
+[2026-08-03T12:40:42.923Z] EJECUTANDO ui-agent...
+[2026-08-03T12:40:43.003Z] ui-agent => OK
+[2026-08-03T12:40:43.003Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:40:43.084Z] evaluation-agent => OK
+[2026-08-03T12:40:43.084Z] EJECUTANDO results-debugger...
+[2026-08-03T12:40:43.166Z] results-debugger => OK
+[2026-08-03T12:40:43.166Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:40:43.248Z] calibration-agent => OK
+[2026-08-03T12:40:43.248Z] EJECUTANDO auto-improver...
+[2026-08-03T12:40:43.329Z] auto-improver => OK
+[2026-08-03T12:40:43.329Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:40:58.338Z] self-improvement-loop => REVISE
+[2026-08-03T12:40:58.338Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:40:58.339Z] --- Iteración 5/5 ---
+[2026-08-03T12:40:58.339Z] EJECUTANDO monitor...
+[2026-08-03T12:41:03.345Z] AGENTE monitor FALLIDO. Intentando auto-fix...
+[2026-08-03T12:41:03.345Z] monitor => REVISE
+[2026-08-03T12:41:03.345Z] EJECUTANDO support...
+[2026-08-03T12:41:03.433Z] support => OK
+[2026-08-03T12:41:03.433Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:41:04.353Z] deploy-agent => OK
+[2026-08-03T12:41:04.353Z] EJECUTANDO ui-agent...
+[2026-08-03T12:41:04.440Z] ui-agent => OK
+[2026-08-03T12:41:04.441Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:41:04.521Z] evaluation-agent => OK
+[2026-08-03T12:41:04.521Z] EJECUTANDO results-debugger...
+[2026-08-03T12:41:04.619Z] results-debugger => OK
+[2026-08-03T12:41:04.620Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:41:04.711Z] calibration-agent => OK
+[2026-08-03T12:41:04.711Z] EJECUTANDO auto-improver...
+[2026-08-03T12:41:04.795Z] auto-improver => OK
+[2026-08-03T12:41:04.795Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:41:19.802Z] self-improvement-loop => REVISE
+[2026-08-03T12:41:19.802Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:41:19.802Z] === LOOP FINALIZADO CON PENDIENTES: monitor, self-improvement-loop ===
+[2026-08-03T12:41:19.802Z] Duración total: 107s
+[2026-08-03T12:41:19.803Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": false,
+      "output": "[2026-08-03T12:40:58.424Z] START monitor interval=30000ms target=http://localhost:3002\n[2026-08-03T12:40:58.440Z] INIT status={\"healthy\":true,\"consecutiveFailures\":0}\n  spawnSync /bin/sh ETIMEDOUT"
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:37:40.465Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:37:40.482Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:41:03.503Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:41:04.345Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 2,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:41:04.592Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:41:04.594Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:41:04.610Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:41:04.610Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_ui_ok\",\n  \"snapshot\": {\n    \"at\": \"2026-08-03T12:41:04.791Z\",\n    \"monitor\": {\n      \"healthy\": true,\n      \"consecutiveFailures\": 0,\n      \"lastStatus\": {\n        \"/api/health\": {\n          \"endpoint\": \"/api/health\",\n          \"ok\": true,\n          \"st..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "spawnSync /bin/sh ETIMEDOUT"
+    }
+  ],
+  "failed": [
+    "monitor",
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:42:29.900Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:42:29.903Z] --- Iteración 1/5 ---
+[2026-08-03T12:42:29.903Z] EJECUTANDO monitor...
+[2026-08-03T12:42:29.992Z] monitor => OK
+[2026-08-03T12:42:29.992Z] EJECUTANDO support...
+[2026-08-03T12:42:30.054Z] support => OK
+[2026-08-03T12:42:30.054Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:42:30.924Z] deploy-agent => OK
+[2026-08-03T12:42:30.924Z] EJECUTANDO ui-agent...
+[2026-08-03T12:42:31.009Z] ui-agent => OK
+[2026-08-03T12:42:31.009Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:42:31.079Z] evaluation-agent => OK
+[2026-08-03T12:42:31.079Z] EJECUTANDO results-debugger...
+[2026-08-03T12:42:31.163Z] results-debugger => OK
+[2026-08-03T12:42:31.164Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:42:31.248Z] calibration-agent => OK
+[2026-08-03T12:42:31.248Z] EJECUTANDO auto-improver...
+[2026-08-03T12:42:31.329Z] auto-improver => OK
+[2026-08-03T12:42:31.329Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:42:46.336Z] self-improvement-loop => REVISE
+[2026-08-03T12:42:46.337Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:42:46.337Z] --- Iteración 2/5 ---
+[2026-08-03T12:42:46.338Z] EJECUTANDO monitor...
+[2026-08-03T12:42:46.443Z] monitor => OK
+[2026-08-03T12:42:46.443Z] EJECUTANDO support...
+[2026-08-03T12:42:46.511Z] support => OK
+[2026-08-03T12:42:46.512Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:42:47.299Z] deploy-agent => OK
+[2026-08-03T12:42:47.300Z] EJECUTANDO ui-agent...
+[2026-08-03T12:42:47.383Z] ui-agent => OK
+[2026-08-03T12:42:47.383Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:42:47.459Z] evaluation-agent => OK
+[2026-08-03T12:42:47.459Z] EJECUTANDO results-debugger...
+[2026-08-03T12:42:47.547Z] results-debugger => OK
+[2026-08-03T12:42:47.547Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:42:47.633Z] calibration-agent => OK
+[2026-08-03T12:42:47.633Z] EJECUTANDO auto-improver...
+[2026-08-03T12:42:47.714Z] auto-improver => OK
+[2026-08-03T12:42:47.714Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:43:02.721Z] self-improvement-loop => REVISE
+[2026-08-03T12:43:02.721Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:43:02.721Z] --- Iteración 3/5 ---
+[2026-08-03T12:43:02.722Z] EJECUTANDO monitor...
+[2026-08-03T12:43:02.830Z] monitor => OK
+[2026-08-03T12:43:02.831Z] EJECUTANDO support...
+[2026-08-03T12:43:02.905Z] support => OK
+[2026-08-03T12:43:02.905Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:43:03.687Z] deploy-agent => OK
+[2026-08-03T12:43:03.688Z] EJECUTANDO ui-agent...
+[2026-08-03T12:43:03.759Z] ui-agent => OK
+[2026-08-03T12:43:03.759Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:43:03.848Z] evaluation-agent => OK
+[2026-08-03T12:43:03.848Z] EJECUTANDO results-debugger...
+[2026-08-03T12:43:03.937Z] results-debugger => OK
+[2026-08-03T12:43:03.938Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:43:04.014Z] calibration-agent => OK
+[2026-08-03T12:43:04.014Z] EJECUTANDO auto-improver...
+[2026-08-03T12:43:04.093Z] auto-improver => OK
+[2026-08-03T12:43:04.094Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:43:19.099Z] self-improvement-loop => REVISE
+[2026-08-03T12:43:19.101Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:43:19.101Z] --- Iteración 4/5 ---
+[2026-08-03T12:43:19.101Z] EJECUTANDO monitor...
+[2026-08-03T12:43:19.212Z] monitor => OK
+[2026-08-03T12:43:19.212Z] EJECUTANDO support...
+[2026-08-03T12:43:19.315Z] support => OK
+[2026-08-03T12:43:19.315Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:43:20.138Z] deploy-agent => OK
+[2026-08-03T12:43:20.139Z] EJECUTANDO ui-agent...
+[2026-08-03T12:43:20.227Z] ui-agent => OK
+[2026-08-03T12:43:20.228Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:43:20.309Z] evaluation-agent => OK
+[2026-08-03T12:43:20.309Z] EJECUTANDO results-debugger...
+[2026-08-03T12:43:20.403Z] results-debugger => OK
+[2026-08-03T12:43:20.403Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:43:20.494Z] calibration-agent => OK
+[2026-08-03T12:43:20.495Z] EJECUTANDO auto-improver...
+[2026-08-03T12:43:20.579Z] auto-improver => OK
+[2026-08-03T12:43:20.579Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:43:35.585Z] self-improvement-loop => REVISE
+[2026-08-03T12:43:35.586Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:43:35.586Z] --- Iteración 5/5 ---
+[2026-08-03T12:43:35.587Z] EJECUTANDO monitor...
+[2026-08-03T12:43:35.674Z] monitor => OK
+[2026-08-03T12:43:35.674Z] EJECUTANDO support...
+[2026-08-03T12:43:35.738Z] support => OK
+[2026-08-03T12:43:35.738Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:43:36.526Z] deploy-agent => OK
+[2026-08-03T12:43:36.527Z] EJECUTANDO ui-agent...
+[2026-08-03T12:43:36.594Z] ui-agent => OK
+[2026-08-03T12:43:36.594Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:43:36.661Z] evaluation-agent => OK
+[2026-08-03T12:43:36.661Z] EJECUTANDO results-debugger...
+[2026-08-03T12:43:36.737Z] results-debugger => OK
+[2026-08-03T12:43:36.737Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:43:36.819Z] calibration-agent => OK
+[2026-08-03T12:43:36.819Z] EJECUTANDO auto-improver...
+[2026-08-03T12:43:36.905Z] auto-improver => OK
+[2026-08-03T12:43:36.905Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:43:51.912Z] self-improvement-loop => REVISE
+[2026-08-03T12:43:51.914Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:43:51.915Z] === LOOP FINALIZADO CON PENDIENTES: self-improvement-loop ===
+[2026-08-03T12:43:51.915Z] Duración total: 82s
+[2026-08-03T12:43:51.917Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": true,
+      "output": "{\n  \"healthy\": true,\n  \"consecutiveFailures\": 0,\n  \"results\": [\n    {\n      \"endpoint\": \"/api/health\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 11,\n      \"body\": \"ok\"\n    },\n    {\n      \"endpoint\": \"/api/rubricas\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 4,\n     ..."
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:37:40.465Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:37:40.482Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:43:35.817Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:43:36.522Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 1,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:43:36.721Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:43:36.723Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:43:36.733Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:43:36.733Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_ui_ok\",\n  \"snapshot\": {\n    \"at\": \"2026-08-03T12:43:36.901Z\",\n    \"monitor\": {\n      \"healthy\": true,\n      \"consecutiveFailures\": 0,\n      \"lastStatus\": {\n        \"/api/health\": {\n          \"endpoint\": \"/api/health\",\n          \"ok\": true,\n          \"st..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "spawnSync /bin/sh ETIMEDOUT"
+    }
+  ],
+  "failed": [
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:44:02.614Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:44:02.616Z] --- Iteración 1/5 ---
+[2026-08-03T12:44:02.616Z] EJECUTANDO monitor...
+[2026-08-03T12:44:02.709Z] monitor => OK
+[2026-08-03T12:44:02.710Z] EJECUTANDO support...
+[2026-08-03T12:44:02.776Z] support => OK
+[2026-08-03T12:44:02.776Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:44:03.643Z] deploy-agent => OK
+[2026-08-03T12:44:03.643Z] EJECUTANDO ui-agent...
+[2026-08-03T12:44:03.722Z] ui-agent => OK
+[2026-08-03T12:44:03.723Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:44:03.807Z] evaluation-agent => OK
+[2026-08-03T12:44:03.807Z] EJECUTANDO results-debugger...
+[2026-08-03T12:44:03.894Z] results-debugger => OK
+[2026-08-03T12:44:03.894Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:44:03.978Z] calibration-agent => OK
+[2026-08-03T12:44:03.978Z] EJECUTANDO auto-improver...
+[2026-08-03T12:44:04.060Z] auto-improver => OK
+[2026-08-03T12:44:04.060Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:44:19.069Z] self-improvement-loop => REVISE
+[2026-08-03T12:44:19.070Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:44:19.070Z] --- Iteración 2/5 ---
+[2026-08-03T12:44:19.070Z] EJECUTANDO monitor...
+[2026-08-03T12:44:19.183Z] monitor => OK
+[2026-08-03T12:44:19.183Z] EJECUTANDO support...
+[2026-08-03T12:44:19.288Z] support => OK
+[2026-08-03T12:44:19.289Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:44:20.066Z] deploy-agent => OK
+[2026-08-03T12:44:20.067Z] EJECUTANDO ui-agent...
+[2026-08-03T12:44:20.145Z] ui-agent => OK
+[2026-08-03T12:44:20.145Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:44:20.213Z] evaluation-agent => OK
+[2026-08-03T12:44:20.213Z] EJECUTANDO results-debugger...
+[2026-08-03T12:44:20.287Z] results-debugger => OK
+[2026-08-03T12:44:20.288Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:44:20.362Z] calibration-agent => OK
+[2026-08-03T12:44:20.362Z] EJECUTANDO auto-improver...
+[2026-08-03T12:44:20.450Z] auto-improver => OK
+[2026-08-03T12:44:20.450Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:44:35.455Z] self-improvement-loop => REVISE
+[2026-08-03T12:44:35.457Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:44:35.457Z] --- Iteración 3/5 ---
+[2026-08-03T12:44:35.457Z] EJECUTANDO monitor...
+[2026-08-03T12:44:35.569Z] monitor => OK
+[2026-08-03T12:44:35.569Z] EJECUTANDO support...
+[2026-08-03T12:44:35.648Z] support => OK
+[2026-08-03T12:44:35.648Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:44:36.450Z] deploy-agent => OK
+[2026-08-03T12:44:36.451Z] EJECUTANDO ui-agent...
+[2026-08-03T12:44:36.533Z] ui-agent => OK
+[2026-08-03T12:44:36.533Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:44:36.626Z] evaluation-agent => OK
+[2026-08-03T12:44:36.626Z] EJECUTANDO results-debugger...
+[2026-08-03T12:44:36.735Z] results-debugger => OK
+[2026-08-03T12:44:36.736Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:44:36.831Z] calibration-agent => OK
+[2026-08-03T12:44:36.831Z] EJECUTANDO auto-improver...
+[2026-08-03T12:44:36.928Z] auto-improver => OK
+[2026-08-03T12:44:36.928Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:44:51.935Z] self-improvement-loop => REVISE
+[2026-08-03T12:44:51.937Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:44:51.937Z] --- Iteración 4/5 ---
+[2026-08-03T12:44:51.937Z] EJECUTANDO monitor...
+[2026-08-03T12:44:52.037Z] monitor => OK
+[2026-08-03T12:44:52.038Z] EJECUTANDO support...
+[2026-08-03T12:44:52.103Z] support => OK
+[2026-08-03T12:44:52.103Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:44:52.877Z] deploy-agent => OK
+[2026-08-03T12:44:52.877Z] EJECUTANDO ui-agent...
+[2026-08-03T12:44:52.957Z] ui-agent => OK
+[2026-08-03T12:44:52.957Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:44:53.039Z] evaluation-agent => OK
+[2026-08-03T12:44:53.039Z] EJECUTANDO results-debugger...
+[2026-08-03T12:44:53.116Z] results-debugger => OK
+[2026-08-03T12:44:53.116Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:44:53.195Z] calibration-agent => OK
+[2026-08-03T12:44:53.195Z] EJECUTANDO auto-improver...
+[2026-08-03T12:44:53.272Z] auto-improver => OK
+[2026-08-03T12:44:53.272Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:45:08.278Z] self-improvement-loop => REVISE
+[2026-08-03T12:45:08.279Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:45:08.279Z] --- Iteración 5/5 ---
+[2026-08-03T12:45:08.279Z] EJECUTANDO monitor...
+[2026-08-03T12:45:08.376Z] monitor => OK
+[2026-08-03T12:45:08.376Z] EJECUTANDO support...
+[2026-08-03T12:45:08.440Z] support => OK
+[2026-08-03T12:45:08.440Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:45:09.226Z] deploy-agent => OK
+[2026-08-03T12:45:09.227Z] EJECUTANDO ui-agent...
+[2026-08-03T12:45:09.328Z] ui-agent => OK
+[2026-08-03T12:45:09.328Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:45:09.410Z] evaluation-agent => OK
+[2026-08-03T12:45:09.410Z] EJECUTANDO results-debugger...
+[2026-08-03T12:45:09.500Z] results-debugger => OK
+[2026-08-03T12:45:09.501Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:45:09.585Z] calibration-agent => OK
+[2026-08-03T12:45:09.585Z] EJECUTANDO auto-improver...
+[2026-08-03T12:45:09.681Z] auto-improver => OK
+[2026-08-03T12:45:09.681Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:45:24.687Z] self-improvement-loop => REVISE
+[2026-08-03T12:45:24.689Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:45:24.690Z] === LOOP FINALIZADO CON PENDIENTES: self-improvement-loop ===
+[2026-08-03T12:45:24.690Z] Duración total: 82s
+[2026-08-03T12:45:24.691Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": true,
+      "output": "{\n  \"healthy\": true,\n  \"consecutiveFailures\": 0,\n  \"results\": [\n    {\n      \"endpoint\": \"/api/health\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 13,\n      \"body\": \"ok\"\n    },\n    {\n      \"endpoint\": \"/api/rubricas\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 5,\n     ..."
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:37:40.465Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:37:40.482Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:45:08.503Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:45:09.218Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 1,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:45:09.479Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:45:09.481Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:45:09.494Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:45:09.494Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_ui_ok\",\n  \"snapshot\": {\n    \"at\": \"2026-08-03T12:45:09.671Z\",\n    \"monitor\": {\n      \"healthy\": true,\n      \"consecutiveFailures\": 0,\n      \"lastStatus\": {\n        \"/api/health\": {\n          \"endpoint\": \"/api/health\",\n          \"ok\": true,\n          \"st..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "spawnSync /bin/sh ETIMEDOUT"
+    }
+  ],
+  "failed": [
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:45:43.980Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:45:43.983Z] --- Iteración 1/5 ---
+[2026-08-03T12:45:43.984Z] EJECUTANDO monitor...
+[2026-08-03T12:45:44.072Z] monitor => OK
+[2026-08-03T12:45:44.072Z] EJECUTANDO support...
+[2026-08-03T12:45:44.132Z] support => OK
+[2026-08-03T12:45:44.132Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:45:44.996Z] deploy-agent => OK
+[2026-08-03T12:45:44.996Z] EJECUTANDO ui-agent...
+[2026-08-03T12:45:45.083Z] ui-agent => OK
+[2026-08-03T12:45:45.083Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:45:45.177Z] evaluation-agent => OK
+[2026-08-03T12:45:45.177Z] EJECUTANDO results-debugger...
+[2026-08-03T12:45:45.265Z] results-debugger => OK
+[2026-08-03T12:45:45.265Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:45:45.349Z] calibration-agent => OK
+[2026-08-03T12:45:45.349Z] EJECUTANDO auto-improver...
+[2026-08-03T12:45:45.432Z] auto-improver => OK
+[2026-08-03T12:45:45.432Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:46:00.438Z] self-improvement-loop => REVISE
+[2026-08-03T12:46:00.440Z] Iteración 1: allPass=false, fixed=0
+[2026-08-03T12:46:00.440Z] --- Iteración 2/5 ---
+[2026-08-03T12:46:00.440Z] EJECUTANDO monitor...
+[2026-08-03T12:46:00.543Z] monitor => OK
+[2026-08-03T12:46:00.543Z] EJECUTANDO support...
+[2026-08-03T12:46:00.619Z] support => OK
+[2026-08-03T12:46:00.619Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:46:01.396Z] deploy-agent => OK
+[2026-08-03T12:46:01.396Z] EJECUTANDO ui-agent...
+[2026-08-03T12:46:01.473Z] ui-agent => OK
+[2026-08-03T12:46:01.474Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:46:01.544Z] evaluation-agent => OK
+[2026-08-03T12:46:01.545Z] EJECUTANDO results-debugger...
+[2026-08-03T12:46:01.623Z] results-debugger => OK
+[2026-08-03T12:46:01.623Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:46:01.701Z] calibration-agent => OK
+[2026-08-03T12:46:01.701Z] EJECUTANDO auto-improver...
+[2026-08-03T12:46:01.782Z] auto-improver => OK
+[2026-08-03T12:46:01.782Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:46:16.788Z] self-improvement-loop => REVISE
+[2026-08-03T12:46:16.789Z] Iteración 2: allPass=false, fixed=0
+[2026-08-03T12:46:16.789Z] --- Iteración 3/5 ---
+[2026-08-03T12:46:16.789Z] EJECUTANDO monitor...
+[2026-08-03T12:46:16.914Z] monitor => OK
+[2026-08-03T12:46:16.914Z] EJECUTANDO support...
+[2026-08-03T12:46:16.994Z] support => OK
+[2026-08-03T12:46:16.995Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:46:17.768Z] deploy-agent => OK
+[2026-08-03T12:46:17.769Z] EJECUTANDO ui-agent...
+[2026-08-03T12:46:17.851Z] ui-agent => OK
+[2026-08-03T12:46:17.851Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:46:17.920Z] evaluation-agent => OK
+[2026-08-03T12:46:17.920Z] EJECUTANDO results-debugger...
+[2026-08-03T12:46:18.000Z] results-debugger => OK
+[2026-08-03T12:46:18.000Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:46:18.077Z] calibration-agent => OK
+[2026-08-03T12:46:18.077Z] EJECUTANDO auto-improver...
+[2026-08-03T12:46:18.165Z] auto-improver => OK
+[2026-08-03T12:46:18.165Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:46:33.170Z] self-improvement-loop => REVISE
+[2026-08-03T12:46:33.172Z] Iteración 3: allPass=false, fixed=0
+[2026-08-03T12:46:33.172Z] --- Iteración 4/5 ---
+[2026-08-03T12:46:33.172Z] EJECUTANDO monitor...
+[2026-08-03T12:46:33.267Z] monitor => OK
+[2026-08-03T12:46:33.268Z] EJECUTANDO support...
+[2026-08-03T12:46:33.335Z] support => OK
+[2026-08-03T12:46:33.335Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:46:34.109Z] deploy-agent => OK
+[2026-08-03T12:46:34.110Z] EJECUTANDO ui-agent...
+[2026-08-03T12:46:34.188Z] ui-agent => OK
+[2026-08-03T12:46:34.188Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:46:34.256Z] evaluation-agent => OK
+[2026-08-03T12:46:34.256Z] EJECUTANDO results-debugger...
+[2026-08-03T12:46:34.333Z] results-debugger => OK
+[2026-08-03T12:46:34.334Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:46:34.411Z] calibration-agent => OK
+[2026-08-03T12:46:34.411Z] EJECUTANDO auto-improver...
+[2026-08-03T12:46:34.488Z] auto-improver => OK
+[2026-08-03T12:46:34.488Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:46:49.495Z] self-improvement-loop => REVISE
+[2026-08-03T12:46:49.496Z] Iteración 4: allPass=false, fixed=0
+[2026-08-03T12:46:49.496Z] --- Iteración 5/5 ---
+[2026-08-03T12:46:49.496Z] EJECUTANDO monitor...
+[2026-08-03T12:46:49.623Z] monitor => OK
+[2026-08-03T12:46:49.624Z] EJECUTANDO support...
+[2026-08-03T12:46:49.697Z] support => OK
+[2026-08-03T12:46:49.697Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:46:50.464Z] deploy-agent => OK
+[2026-08-03T12:46:50.464Z] EJECUTANDO ui-agent...
+[2026-08-03T12:46:50.545Z] ui-agent => OK
+[2026-08-03T12:46:50.546Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:46:50.617Z] evaluation-agent => OK
+[2026-08-03T12:46:50.617Z] EJECUTANDO results-debugger...
+[2026-08-03T12:46:50.694Z] results-debugger => OK
+[2026-08-03T12:46:50.694Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:46:50.779Z] calibration-agent => OK
+[2026-08-03T12:46:50.779Z] EJECUTANDO auto-improver...
+[2026-08-03T12:46:50.872Z] auto-improver => OK
+[2026-08-03T12:46:50.872Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:47:05.880Z] self-improvement-loop => REVISE
+[2026-08-03T12:47:05.880Z] Iteración 5: allPass=false, fixed=0
+[2026-08-03T12:47:05.881Z] === LOOP FINALIZADO CON PENDIENTES: self-improvement-loop ===
+[2026-08-03T12:47:05.881Z] Duración total: 82s
+[2026-08-03T12:47:05.882Z] RESUMEN_FINAL={
+  "status": "pendiente",
+  "iteration": 5,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": true,
+      "output": "{\n  \"healthy\": true,\n  \"consecutiveFailures\": 0,\n  \"results\": [\n    {\n      \"endpoint\": \"/api/health\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 19,\n      \"body\": \"ok\"\n    },\n    {\n      \"endpoint\": \"/api/rubricas\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 14,\n    ..."
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:37:40.465Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:37:40.482Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:46:49.764Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:46:50.458Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 2,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:46:50.677Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:46:50.679Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:46:50.689Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:46:50.689Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_ui_ok\",\n  \"snapshot\": {\n    \"at\": \"2026-08-03T12:46:50.868Z\",\n    \"monitor\": {\n      \"healthy\": true,\n      \"consecutiveFailures\": 0,\n      \"lastStatus\": {\n        \"/api/health\": {\n          \"endpoint\": \"/api/health\",\n          \"ok\": true,\n          \"st..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": false,
+      "output": "spawnSync /bin/sh ETIMEDOUT"
+    }
+  ],
+  "failed": [
+    "self-improvement-loop"
+  ]
+}
+[2026-08-03T12:49:18.120Z] === INICIO LOOP DE VERIFICACIÓN Y CORRECCIÓN ===
+[2026-08-03T12:49:18.124Z] --- Iteración 1/5 ---
+[2026-08-03T12:49:18.124Z] EJECUTANDO monitor...
+[2026-08-03T12:49:18.204Z] monitor => OK
+[2026-08-03T12:49:18.204Z] EJECUTANDO support...
+[2026-08-03T12:49:18.263Z] support => OK
+[2026-08-03T12:49:18.263Z] EJECUTANDO deploy-agent...
+[2026-08-03T12:49:19.152Z] deploy-agent => OK
+[2026-08-03T12:49:19.153Z] EJECUTANDO ui-agent...
+[2026-08-03T12:49:19.226Z] ui-agent => OK
+[2026-08-03T12:49:19.226Z] EJECUTANDO evaluation-agent...
+[2026-08-03T12:49:19.288Z] evaluation-agent => OK
+[2026-08-03T12:49:19.288Z] EJECUTANDO results-debugger...
+[2026-08-03T12:49:19.363Z] results-debugger => OK
+[2026-08-03T12:49:19.363Z] EJECUTANDO calibration-agent...
+[2026-08-03T12:49:19.437Z] calibration-agent => OK
+[2026-08-03T12:49:19.437Z] EJECUTANDO auto-improver...
+[2026-08-03T12:49:19.514Z] auto-improver => OK
+[2026-08-03T12:49:19.514Z] EJECUTANDO self-improvement-loop...
+[2026-08-03T12:49:19.662Z] self-improvement-loop => OK
+[2026-08-03T12:49:19.662Z] Iteración 1: allPass=true, fixed=0
+[2026-08-03T12:49:19.662Z] === LOOP FINALIZADO: TODOS LOS AGENTES EN ESTADO OK ===
+[2026-08-03T12:49:19.662Z] Duración total: 2s
+[2026-08-03T12:49:19.662Z] RESUMEN_FINAL={
+  "status": "resuelto",
+  "iteration": 1,
+  "results": [
+    {
+      "agent": "monitor",
+      "ok": true,
+      "output": "{\n  \"healthy\": true,\n  \"consecutiveFailures\": 0,\n  \"results\": [\n    {\n      \"endpoint\": \"/api/health\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 15,\n      \"body\": \"ok\"\n    },\n    {\n      \"endpoint\": \"/api/rubricas\",\n      \"ok\": true,\n      \"status\": 200,\n      \"durationMs\": 9,\n     ..."
+    },
+    {
+      "agent": "support",
+      "ok": true,
+      "output": "{\n  \"incident\": \"PORT_IN_USE\",\n  \"fix\": \"Liberar puerto con `lsof -ti:3001 | xargs kill -9` o cambiar puerto.\",\n  \"recentLogs\": [\n    \"[2026-08-03T12:37:40.465Z] START monitor interval=30000ms target=http://localhost:3002\",\n    \"[2026-08-03T12:37:40.482Z] INIT status={\\\"healthy\\\":true,\\\"consecutiveF..."
+    },
+    {
+      "agent": "deploy-agent",
+      "ok": true,
+      "output": "[2026-08-03T12:49:18.321Z] === DEPLOY AGENT RECOVERY START ===\n[2026-08-03T12:49:19.147Z] Local health=OK Production health=OK Production evaluate=OK\n{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_evaluate_ok\",\n  \"localHealth\": {\n    \"ok\": true,\n    \"status\": 200,\n    \"durationMs\": 1,\n    \"body\": \"{..."
+    },
+    {
+      "agent": "ui-agent",
+      "ok": true,
+      "output": "{\n  \"audit\": {\n    \"audits\": {\n      \"html\": {\n        \"file\": \"index.html\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"css\": {\n        \"file\": \"css/styles.css\",\n        \"issues\": [],\n        \"pass\": true\n      },\n      \"js\": {\n        \"file\": \"js/app.js\",\n        \"issues\": [],\n     ..."
+    },
+    {
+      "agent": "evaluation-agent",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"evaluation_ok\",\n  \"audit\": {\n    \"issues\": [],\n    \"fixes\": [],\n    \"pass\": true\n  },\n  \"calibration\": {\n    \"pass\": true,\n    \"reason\": \"calibrated\"\n  }\n}"
+    },
+    {
+      "agent": "results-debugger",
+      "ok": true,
+      "output": "[2026-08-03T12:49:19.346Z] === Diagnóstico: resultados 0/10 en sección de resultados ===\n[2026-08-03T12:49:19.347Z] 1. Probando /api/evaluar con texto corto (menos de 150 palabras)...\n[2026-08-03T12:49:19.358Z]    Resultado: status=TEXTO_INCOMPLETO, total=0, words=7\n[2026-08-03T12:49:19.358Z] 2. Pro..."
+    },
+    {
+      "agent": "calibration-agent",
+      "ok": true,
+      "output": "=== Inicio calibración agentes ===\nCalibrando: 1bgu-grecia-roma\n- Grecia y Roma bajo: 7/7 => OK | banda=Aprobado\n- Grecia y Roma medio: 7/7 => OK | banda=Aprobado\n- Grecia y Roma alto: 8/8 => OK | banda=Notable\nCalibración 1BGU: APROBADA"
+    },
+    {
+      "agent": "auto-improver",
+      "ok": true,
+      "output": "{\n  \"action\": \"none\",\n  \"reason\": \"healthy_and_ui_ok\",\n  \"snapshot\": {\n    \"at\": \"2026-08-03T12:49:19.510Z\",\n    \"monitor\": {\n      \"healthy\": true,\n      \"consecutiveFailures\": 0,\n      \"lastStatus\": {\n        \"/api/health\": {\n          \"endpoint\": \"/api/health\",\n          \"ok\": true,\n          \"st..."
+    },
+    {
+      "agent": "self-improvement-loop",
+      "ok": true,
+      "output": "APP_READY_FOR_TESTING cycle=1\nVerification: HEALTH 200 ok\nRUBRICAS 200 [{\"id\":\"3bgu-liberalismo\",\"nombre\":\"Ensayo argumentativo — Liberalismo y libertades civiles en el Ecuador actual\",\"puntajeMaximo\":10},{\"id\":\"1bgu-grecia-roma\",\"nombre\":\"Rúbrica 1BGU Historia y Ciudadanía — Grecia y Roma\",\"puntaje..."
+    }
+  ]
+}

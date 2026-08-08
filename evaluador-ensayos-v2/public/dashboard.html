@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Evaluador de ensayos</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <header class="dashboard-header">
+      <div>
+        <h1>Dashboard</h1>
+        <p class="muted">Métricas, salud y actividad reciente del evaluador.</p>
+      </div>
+      <div class="header-actions">
+        <button id="refreshBtn" class="ghost">Actualizar</button>
+        <a href="/" class="ghost">Ir al evaluador</a>
+      </div>
+    </header>
+
+    <section class="summary">
+      <article class="card" id="healthCard">
+        <div class="card-label">Salud general</div>
+        <div class="card-value" id="healthValue">...</div>
+        <div class="card-meta" id="healthMeta">Cargando...</div>
+      </article>
+      <article class="card">
+        <div class="card-label">Rúbricas cargadas</div>
+        <div class="card-value" id="rubricsValue">...</div>
+        <div class="card-meta" id="rubricsMeta">Cargando...</div>
+      </article>
+      <article class="card">
+        <div class="card-label">Eventos recientes</div>
+        <div class="card-value" id="logsCountValue">...</div>
+        <div class="card-meta" id="logsCountMeta">Cargando...</div>
+      </article>
+      <article class="card">
+        <div class="card-label">Actualización</div>
+        <div class="card-value" id="updatedValue">...</div>
+        <div class="card-meta" id="updatedMeta">Tiempo relativo</div>
+      </article>
+    </section>
+
+    <section class="panels">
+      <section class="panel">
+        <h2>Endpoints</h2>
+        <div id="endpoints" class="endpoints">Cargando...</div>
+      </section>
+
+      <section class="panel">
+        <h2>Rúbricas</h2>
+        <div id="rubrics" class="rubrics">Cargando...</div>
+      </section>
+
+      <section class="panel panel-full">
+        <h2>Actividad reciente</h2>
+        <div id="logs" class="logs">Cargando...</div>
+      </section>
+    </section>
+
+    <footer class="dashboard-footer">
+      <div class="muted">Estado derivado de /api/dashboard · No requiere keys externas.</div>
+    </footer>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

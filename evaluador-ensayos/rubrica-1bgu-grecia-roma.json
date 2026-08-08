@@ -1,0 +1,171 @@
+{
+  "id": "1bgu-grecia-roma",
+  "nombre": "Rúbrica 1BGU Historia y Ciudadanía — Grecia y Roma",
+  "descripcion": "ADA autónoma: Grecia y Roma, ensayo argumentativo (Unidad 2).",
+  "puntajeMaximo": 10,
+  "extension": {
+    "objetivo": 300,
+    "min": 270,
+    "max": 330
+  },
+  "criterios": [
+    {
+      "id": "A",
+      "nombre": "Conocimiento y Comprensión",
+      "peso": 3,
+      "niveles": [
+        {
+          "valor": 3,
+          "descriptor": "Conocimiento detallado y comprensión matizada de Grecia y Roma. Emplea evidencia histórica concreta (fechas, actores, instituciones, fuentes primarias) y distingue matices entre ambos polos sin homogeneizarlos.",
+          "indicadores": [
+            "Cita hechos o fuentes concretas, no solo menciones genéricas de 'Grecia' o 'Roma'",
+            "Distingue continuidades y rupturas entre ambos mundos antiguos",
+            "Atribuye ideas o hechos a actores/época correctos, sin invención"
+          ]
+        },
+        {
+          "valor": 2.5,
+          "descriptor": "Conocimiento preciso con desarrollo desigual entre Grecia y Roma. Alude a continuidades/rupturas sin desarrollarlas.",
+          "indicadores": [
+            "Ejemplos correctos pero poco contextualizados",
+            "Una imprecisión menor que no altera el sentido"
+          ]
+        },
+        {
+          "valor": 2,
+          "descriptor": "Conocimiento adecuado pero general. Identifica Grecia y Roma sin diferenciar matices. El caso es aludido sin especificidad.",
+          "indicadores": [
+            "Alusiones del tipo 'la democracia ateniense' sin desarrollo",
+            "Trata Grecia y Roma como bloques homogéneos"
+          ]
+        },
+        {
+          "valor": 1,
+          "descriptor": "Conocimiento superficial. Evidencia genérica o ausente. Confusiones conceptuales relevantes.",
+          "indicadores": [
+            "Equivoca democracia con libertad sin matiz",
+            "Omite uno de los dos polos o confunde períodos",
+            "Fórmulas de manual sin anclaje factual"
+          ]
+        },
+        {
+          "valor": 0.5,
+          "descriptor": "Conocimiento fragmentario. Errores factuales o conceptuales que comprometen la validez de la respuesta.",
+          "indicadores": [
+            "Errores de datación superiores a una década o atribuciones erróneas",
+            "Fuentes inventadas o no verificables"
+          ]
+        },
+        {
+          "valor": 0,
+          "descriptor": "No alcanza ninguno de los descriptores anteriores.",
+          "indicadores": ["Respuesta ausente, ilegible o sin relación con la consigna"]
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "nombre": "Comunicación",
+      "peso": 3,
+      "niveles": [
+        {
+          "valor": 3,
+          "descriptor": "Ensayo argumentativo plenamente académico. Tesis explícita y gradada en la introducción. Párrafos con idea rectora única. Conclusión que responde a la tesis sin contenido nuevo. Referencias completas.",
+          "indicadores": [
+            "Tesis localizable en una sola oración e incluye gradación",
+            "Extensión entre 270 y 330 palabras",
+            "Ausencia de perífrasis y frases de transición vacías",
+            "Sin marcas de oralidad ni primera persona coloquial"
+          ]
+        },
+        {
+          "valor": 2.5,
+          "descriptor": "Comunicación clara y estructura académica reconocible, con un desajuste menor. Registro formal sostenido. Referencias con errores menores.",
+          "indicadores": [
+            "Errores de puntuación u orden en entradas de referencia",
+            "Transición abrupta entre Grecia y Roma"
+          ]
+        },
+        {
+          "valor": 2,
+          "descriptor": "Comunicación adecuada. Estructura reconocible pero desequilibrada. Referencias presentes pero incompletas.",
+          "indicadores": [
+            "Extensión entre 240 y 269 o entre 331 y 360 palabras",
+            "Estructura de bloques sucesivos sin nexo",
+            "Referencias sin año, sin editorial o sin autor"
+          ]
+        },
+        {
+          "valor": 1,
+          "descriptor": "Comunicación limitada. Organización confusa; tesis implícita o ausente. Registro inconsistente.",
+          "indicadores": [
+            "Texto sin separación en párrafos o con párrafos de una sola oración",
+            "Referencias reducidas a enlaces pegados o a 'Google', 'Wikipedia', 'internet'"
+          ]
+        },
+        {
+          "valor": 0.5,
+          "descriptor": "Comunicación muy deficiente. Texto desorganizado, sin tesis y sin documentación.",
+          "indicadores": ["Ausencia total de referencias", "Archivo dañado o ilegible"]
+        },
+        {
+          "valor": 0,
+          "descriptor": "No alcanza ninguno de los descriptores anteriores.",
+          "indicadores": ["Sin entrega dentro del plazo o archivo vacío"]
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "nombre": "Pensamiento Crítico",
+      "peso": 4,
+      "niveles": [
+        {
+          "valor": 4,
+          "descriptor": "Juicio evaluativo explícito y gradado. Incorpora una explicación alternativa sustantiva y la pondera frente al modelo analizado. Distingue continuidad y ruptura con rigor.",
+          "indicadores": [
+            "El juicio delimita dimensiones",
+            "Explicación alternativa desarrollada y ponderada",
+            "Contextualiza sin condenar con criterios actuales"
+          ]
+        },
+        {
+          "valor": 3,
+          "descriptor": "Juicio explícito y bien sustentado, con gradación reconocible. La explicación alternativa está presente y sustentada, pero no se pondera.",
+          "indicadores": [
+            "La alternativa se enuncia sin comparación de peso explicativo",
+            "Un tramo del texto narra en lugar de evaluar"
+          ]
+        },
+        {
+          "valor": 2,
+          "descriptor": "Presenta un argumento, pero el texto es predominantemente descriptivo. El juicio es general y carece de gradación.",
+          "indicadores": [
+            "Juicio del tipo 'el impacto fue muy importante', sin delimitación",
+            "Uso de 'sin embargo' o 'aunque' sin desarrollo posterior",
+            "Equilibrio simétrico y vacío de 'aspectos positivos y negativos'"
+          ]
+        },
+        {
+          "valor": 1,
+          "descriptor": "Predomina la descripción o la narración. Se afirma una postura sin sustento suficiente. No hay consideración de perspectivas alternativas.",
+          "indicadores": [
+            "Condena o elogio anacrónico sin marco histórico",
+            "Afirmaciones evaluativas sin evidencia asociada",
+            "Conclusión que reitera la introducción"
+          ]
+        },
+        {
+          "valor": 0.5,
+          "descriptor": "Opinión personal sin evidencia ni razonamiento histórico.",
+          "indicadores": ["Testimonio personal o valoración ideológica sin análisis", "Contenido tangencial a la pregunta"]
+        },
+        {
+          "valor": 0,
+          "descriptor": "No alcanza ninguno de los descriptores anteriores.",
+          "indicadores": ["Ausencia de argumentación identificable"]
+        }
+      ]
+    }
+  ]
+}

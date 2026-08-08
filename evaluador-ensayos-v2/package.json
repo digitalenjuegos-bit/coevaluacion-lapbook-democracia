@@ -1,0 +1,16 @@
+{
+  "name": "evaluador-ensayos-v2",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node scripts/verify-loop.js",
+    "monitor": "node agents/monitor.js",
+    "support": "node agents/support.js",
+    "deploy:recover": "node agents/deploy-agent.js",
+    "agents:start": "node agents/orchestrator.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

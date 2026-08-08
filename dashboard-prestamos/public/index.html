@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Financiero - Préstamos</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+      <h1>Dashboard Financiero</h1>
+      <p>Control de préstamos y proyección de flujo</p>
+      <button id="loginBtn" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 21 21" fill="none">
+          <path fill="#f3f3f3" d="M10.5 0H0v10.5h10.5V0z"/>
+          <path fill="#737373" d="M21 0h-10.5v10.5H21V0z"/>
+          <path fill="#f3f3f3" d="M10.5 10.5H0V21h10.5v-10.5z"/>
+          <path fill="#737373" d="M21 10.5h-10.5V21H21v-10.5z"/>
+        </svg>
+        Iniciar sesión con Microsoft
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      window.location.href = '/auth/microsoft';
+    });
+  </script>
+</body>
+</html>

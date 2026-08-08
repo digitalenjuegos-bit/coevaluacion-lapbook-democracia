@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación IB: Pobreza y Desigualdad</title>
+    <script src="@url:`https://cdn.tailwindcss.com`"></script>
+    <script src="@url:`https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js`"></script>
+    <script src="@url:`https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js`"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .option-btn { transition: all 0.2s ease; }
+        .option-btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <!-- CONFIGURACIÓN -->
+    <script>
+        const EXAM_ID = 'economia-pobreza-desigualdad';
+        const API_BASE = './api/quiz/' + EXAM_ID;
+        const TEACHER_EMAIL = "tu_correo@dominio.com";
+    </script>
+
+    <div id="app" class="max-w-3xl mx-auto p-4 md:p-8">
+        
+        <!-- PANEL DOCENTE -->
+        <div id="admin-screen" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h1 class="text-2xl font-bold text-blue-900">Panel de Control Docente</h1>
+                <button id="logout-admin" class="text-sm text-red-500 hover:underline">Cerrar Sesión</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-center">
+                    <p class="text-sm text-slate-500 mb-1">Estado Actual del Examen</p>
+                    <p id="exam-status-text" class="text-2xl font-bold text-red-600 mb-3">CERRADO</p>
+                    <button id="toggle-exam-btn" class="w-full bg-blue-900 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-800 transition">
+                        Abrir Evaluación
+                    </button>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-center flex flex-col justify-center">
+                    <p class="text-sm text-slate-500 mb-1">Estudiantes Evaluados</p>
+                    <p id="student-count" class="text-4xl font-bold text-green-600">0</p>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Reporte de Notas en Tiempo Real</h2>
+                <button id="download-teacher-pdf" class="bg-orange-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-orange-700 transition text-sm">
+                    Descargar Reporte PDF
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-200">
+                            <th class="p-3 border">#</th>
+                            <th class="p-3 border">Estudiante</th>
+                            <th class="p-3 border">Curso</th>
+                            <th class="p-3 border text-center">Nota</th>
+                            <th class="p-3 border">Fecha y Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grades-table-body">
+                        <!-- Los datos se insertan aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE INICIO ESTUDIANTE -->
+        <div id="start-screen" class="bg-white rounded-xl shadow-lg p-8 text-center hidden">
+            <h1 class="text-3xl font-bold text-blue-900 mb-2">Economía IB (NM) - Tema 3.4</h1>
+            <h2 class="text-xl font-semibold text-blue-700 mb-6">La economía de la desigualdad y la pobreza</h2>
+            
+            <div id="exam-closed-alert" class="hidden mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                ⚠️ La evaluación no está disponible en este momento. Espera las indicaciones de tu profesor.
+            </div>
+
+            <div class="mb-6 text-left bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre del estudiante:</label>
+                <select id="student-name" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 bg-white">
+                    <option value="" disabled selected>Selecciona tu nombre de la lista...</option>
+                    <option value="ANDRADE GAROFALO, EDUARDO">ANDRADE GAROFALO, EDUARDO</option>
+                    <option value="ARAUJO LOPEZ, MARTINA">ARAUJO LOPEZ, MARTINA</option>
+                    <option value="BENALCAZAR RUEDA, SEBASTIAN">BENALCAZAR RUEDA, SEBASTIAN</option>
+                    <option value="CADENA MORA, DANIELA">CADENA MORA, DANIELA</option>
+                    <option value="CALDERON MOYA, MATEO">CALDERON MOYA, MATEO</option>
+                    <option value="CARRASCO VEGA, VALENTINA">CARRASCO VEGA, VALENTINA</option>
+                    <option value="CARRION PEREZ, JUAN">CARRION PEREZ, JUAN</option>
+                    <option value="CASTRO SALAZAR, EMILIA">CASTRO SALAZAR, EMILIA</option>
+                    <option value="CEDENO RAMIREZ, DIEGO">CEDENO RAMIREZ, DIEGO</option>
+                    <option value="CEVALLOS ORTEGA, ANTONIA">CEVALLOS ORTEGA, ANTONIA</option>
+                    <option value="CORTEZ LARA, NICOLAS">CORTEZ LARA, NICOLAS</option>
+                    <option value="COSTA GOMEZ, ISABELA">COSTA GOMEZ, ISABELA</option>
+                    <option value="DELGADO FERNANDEZ, TOMAS">DELGADO FERNANDEZ, TOMAS</option>
+                    <option value="ESPINOZA LOOR, SARA">ESPINOZA LOOR, SARA</option>
+                    <option value="FERNANDEZ PAZ, ALEJANDRO">FERNANDEZ PAZ, ALEJANDRO</option>
+                    <option value="GUILERA TERRANOVA, ALEJANDRO">GUILERA TERRANOVA, ALEJANDRO</option>
+                    <option value="HIDALGO BUSTOS, RODRIGO">HIDALGO BUSTOS, RODRIGO</option>
+                    <option value="JARAMILLO SOTO, CATALINA">JARAMILLO SOTO, CATALINA</option>
+                    <option value="LOPEZ TINAJERO, JOAQUIN">LOPEZ TINAJERO, JOAQUIN</option>
+                    <option value="MENDOZA QUIROZ, FERNANDA">MENDOZA QUIROZ, FERNANDA</option>
+                    <option value="MORALES ALMEIDA, SAMUEL">MORALES ALMEIDA, SAMUEL</option>
+                    <option value="NAVARRETE ZAMBRANO, MARIANA">NAVARRETE ZAMBRANO, MARIANA</option>
+                    <option value="ORTIZ MONTES, FRANCISCO">ORTIZ MONTES, FRANCISCO</option>
+                    <option value="PILALOA CHICAIZA, GABRIELA">PILALOA CHICAIZA, GABRIELA</option>
+                    <option value="QUILERA TERRANOVA, ALEJANDRO">QUILERA TERRANOVA, ALEJANDRO</option>
+                    <option value="SALAZAR PINTO, RAFAEL">SALAZAR PINTO, RAFAEL</option>
+                    <option value="TELLO MACIAS, SOFIA">TELLO MACIAS, SOFIA</option>
+                    <option value="UTRERAS VERA, MARTIN">UTRERAS VERA, MARTIN</option>
+                    <option value="VALDIVIEZO ROBLES, CAMILA">VALDIVIEZO ROBLES, CAMILA</option>
+                    <option value="ZAMBRANO LEON, JUAN PABLO">ZAMBRANO LEON, JUAN PABLO</option>
+                </select>
+                
+                <label class="block text-sm font-medium text-slate-700 mt-4 mb-1">Curso:</label>
+                <input type="text" id="student-class" value="3BGU Economía" readonly class="w-full px-4 py-2 border rounded-md bg-slate-100 text-slate-500 cursor-not-allowed">
+            </div>
+            
+            <button id="start-btn" class="w-full bg-blue-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                Iniciar Evaluación
+            </button>
+        </div>
+
+        <!-- PANTALLA DE EXAMEN -->
+        <div id="quiz-screen" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm font-bold text-blue-700" id="question-counter"></span>
+                <span class="text-sm text-slate-500" id="score-counter"></span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2 mb-6">
+                <div id="progress-bar" class="bg-blue-700 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-xs uppercase tracking-wide text-slate-500 mb-2">Contexto del mundo real</p>
+                <p id="context-text" class="text-slate-700 italic bg-slate-50 p-3 border-l-4 border-slate-300 rounded"></p>
+            </div>
+            
+            <h3 id="question-text" class="text-lg font-semibold mb-6 text-slate-800"></h3>
+
+            <div id="options-container" class="space-y-3"></div>
+
+            <button id="next-btn" class="hidden mt-8 w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition">
+                Siguiente Pregunta
+            </button>
+            <button id="finish-btn" class="hidden mt-8 w-full bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition">
+                Finalizar y Enviar Notas
+            </button>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS ESTUDIANTE -->
+        <div id="results-screen" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h2 class="text-2xl font-bold text-blue-900 mb-4 text-center">Resultados de la Evaluación</h2>
+            <div class="text-center mb-6">
+                <p class="text-slate-600">Estudiante: <span id="res-name" class="font-bold"></span></p>
+                <p class="text-4xl font-bold text-green-600 mt-2"><span id="res-score"></span> / 10</p>
+                <p class="text-slate-500 mt-1" id="res-grade"></p>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <button id="download-pdf" class="w-full bg-blue-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition">
+                    Descargar PDF de Resultados
+                </button>
+                <p id="send-status" class="text-center text-sm text-slate-600 bg-slate-50 p-2 rounded">
+                    Enviando nota a tu profesor...
+                </p>
+            </div>
+
+            <div class="mt-8 max-h-64 overflow-y-auto p-4 border border-slate-200 rounded-lg">
+                <h4 class="font-bold mb-2">Revisión de respuestas:</h4>
+                <div id="review-container" class="space-y-3 text-sm"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // BANCO DE PREGUNTAS
+        const questions = [
+            {
+                context: "El país 'Zephyria' implementa un impuesto del 15% sobre las ganancias de capital y utiliza los fondos para dar una transferencia mensual a los hogares del primer decil de ingresos.",
+                question: "¿Cuál es el efecto más probable de esta política sobre la curva de Lorenz del ingreso disponible?",
+                options: [
+                    "Se desplaza hacia la diagonal, reduciendo el área entre la línea de igualdad y la curva en el lado izquierdo.",
+                    "Se aleja de la diagonal, ya que los impuestos desincentivan la inversión y reducen el ingreso nacional total.",
+                    "Permanece sin cambios, porque las transferencias solo afectan el ingreso de mercado, no el ingreso disponible.",
+                    "Se vuelve una línea recta de 45 grados, eliminando la desigualdad económica por completo en el país."
+                ],
+                correct: 0,
+                explanation: "Los impuestos progresivos y las transferencias aumentan el ingreso disponible de los más pobres, desplazando la curva de Lorenz hacia la diagonal (reduciendo el área A). No eliminan la desigualdad por completo."
+            },
+            {
+                context: "Aethelgard experimentó un boom económico que triplicó los ingresos medios. La línea internacional de pobreza extrema dejó de aplicarse a casi toda la población, pero la brecha entre el ingreso medio y el percentil 40 aumentó drásticamente.",
+                question: "Según el contexto, ¿qué ocurrió con la pobreza en Aethelgard?",
+                options: [
+                    "La pobreza absoluta disminuyó, pero la pobreza relativa aumentó debido a la mayor dispersión de los ingresos.",
+                    "Ambos tipos de pobreza disminuyeron, ya que el crecimiento económico eleva el bienestar de toda la población.",
+                    "La pobreza relativa disminuyó, pero la pobreza absoluta aumentó por la inflación generada por el boom.",
+                    "La pobreza absoluta se mantuvo constante, pues las líneas internacionales no cambian con los ingresos."
+                ],
+                correct: 0,
+                explanation: "La pobreza absoluta se mide con un umbral fijo (ej. 3.00 USD PPA), por lo que un boom reduce la privación material. La pobreza relativa depende de la mediana, así que si aumenta la desigualdad, la exclusión social sube."
+            },
+            {
+                context: "Para financiar un nuevo sistema de transporte, el gobierno de Lumina elimina el impuesto a la renta y establece un 20% de impuesto al valor agregado (IVA) en todos los productos.",
+                question: "¿Por qué este cambio tributario podría ampliar la desigualdad económica en Lumina?",
+                options: [
+                    "Porque los hogares de menores ingresos destinan una proporción mayor de sus ingresos al consumo que los hogares ricos.",
+                    "Porque el impuesto al valor agregado desincentiva el ahorro en los hogares de altos ingresos, reduciendo la inversión.",
+                    "Porque la eliminación del impuesto sobre la renta reduce los incentivos para que los trabajadores busquen ascensos.",
+                    "Porque los impuestos indirectos son más fáciles de evadir por parte de las grandes corporaciones locales."
+                ],
+                correct: 0,
+                explanation: "Los impuestos indirectos (como el IVA) tienden a ser regresivos porque las personas de bajos ingresos gastan un porcentaje mayor de su ingreso en bienes de consumo básico, afectando su ingreso disponible más que al de los ricos."
+            },
+            {
+                context: "Un país recibe a miles de jóvenes inmigrantes cualificados con salarios altísimos en el sector tecnológico, pero sin propiedades. Al mismo tiempo, sus habitantes jubilados tienen pensiones modestas pero viviendas completamente pagadas.",
+                question: "¿Cómo afecta esta situación a la distribución de ingreso y riqueza en dicho país?",
+                options: [
+                    "La desigualdad de ingreso puede ser menor que la desigualdad de riqueza, pues el ingreso es un flujo y la riqueza es un acervo.",
+                    "La desigualdad de riqueza será menor, ya que los jóvenes con altos salarios pronto superarán el valor de las viviendas.",
+                    "Ambos tipos de desigualdad serán idénticos, porque un alto ingreso siempre se traduce inmediatamente en alta riqueza.",
+                    "La desigualdad de ingreso será máxima, ya que los jubilados sin ingresos líquidos no pueden competir con los jóvenes."
+                ],
+                correct: 0,
+                explanation: "El ingreso es un flujo (dinero por período) y la riqueza es un acervo (activos acumulados). Es perfectamente posible tener alta desigualdad de riqueza (jóvenes sin activos vs jubilados con casas) pero menor desigualdad de ingreso."
+            },
+            {
+                context: "El gobierno de Caelum ofrece una subsidio mensual de 400 USD a quienes no tienen empleo. Si una persona consigue un trabajo informal que paga 300 USD, el subsidio se elimina por completo.",
+                question: "¿Cuál es la consecuencia económica de este diseño de política pública?",
+                options: [
+                    "Genera una trampa de pobreza, ya que aceptar el empleo implica una pérdida total del beneficio, desincentivando el trabajo.",
+                    "Promueve la movilidad social, ya que los beneficiarios buscarán empleos formales con salarios superiores a 400 USD.",
+                    "Reduce el desempleo estructural, porque los trabajadores están dispuestos a aceptar cualquier empleo disponible.",
+                    "Disminuye la desigualdad de ingresos, porque el subsidio actúa como un salario mínimo garantizado para todos."
+                ],
+                correct: 0,
+                explanation: "Este es el efecto de la 'trampa de pobreza' o 'trampa del bienestar'. Al retirar las prestaciones bruscamente al obtener un ingreso, la tasa marginal efectiva de impuesto/beneficio perdido hace que trabajar no sea rentable."
+            },
+            {
+                context: "En la nación de Oakhaven, una fuerte sequía destruyó los cultivos locales y obligó a los niños a caminar largas distancias para buscar agua, aumentando la deserción escolar. El gobierno distribuyó subsidios en efectivo a las familias.",
+                question: "¿Qué indicador reflejaría con mayor precisión el empeoramiento del bienestar en Oakhaven?",
+                options: [
+                    "El Índice de Pobreza Multidimensional, porque capta privaciones simultáneas en salud, educación y nivel de vida.",
+                    "La línea internacional de pobreza extrema, ya que la pérdida de cultivos reduce el ingreso diario por debajo de 3 USD.",
+                    "El coeficiente de Gini, porque la concentración de recursos hídricos genera una desigualdad extrema en la riqueza.",
+                    "El estándar mínimo de ingreso, debido a que la consulta pública sobre canastas básicas reflejaría el nuevo costo."
+                ],
+                correct: 0,
+                explanation: "El IPM es ideal aquí porque mide privaciones no monetarias (asistencia escolar, acceso a agua saneada). Un subsidio en efectivo podría mantener el 'ingreso' pero no resuelve la deserción escolar ni la falta de agua."
+            },
+            {
+                context: "Una sociedad decide otorgar exactamente el mismo ingreso mensual a todos sus ciudadanos, independientemente de su profesión, horas trabajadas o nivel de educación.",
+                question: "Desde la perspectiva económica, ¿cuál es el principal riesgo de mantener esta distribución a largo plazo?",
+                options: [
+                    "Elimina los incentivos para esforzarse, formarse y asumir riesgos, lo que puede afectar la eficiencia y el crecimiento.",
+                    "Garantiza la equidad normativa absoluta, pero genera un aumento en la inflación debido al exceso de poder adquisitivo.",
+                    "Reduce la movilidad social a cero, impidiendo que los individuos cambien de estrato socioeconómico a lo largo del tiempo.",
+                    "Transforma la pobreza relativa en pobreza absoluta, ya que los recursos del Estado no serán suficientes para sostenerlos."
+                ],
+                correct: 0,
+                explanation: "Igualdad no es lo mismo que equidad. Una distribución perfectamente igualitaria elimina los incentivos económicos (premio al esfuerzo y al riesgo), generando ineficiencia y reduciendo el crecimiento futuro."
+            },
+            {
+                context: "En un país en desarrollo, una gran parte de la población rural abandona la escuela primaria para trabajar en agricultura de subsistencia. Las empresas tecnológicas locales elevan los salarios de los pocos ingenieros disponibles.",
+                question: "¿Qué cadena causal explica mejor el aumento de la desigualdad en este país?",
+                options: [
+                    "La falta de capital humano limita la productividad de los trabajadores rurales, mientras que la escasez cualifica sube salarios.",
+                    "El exceso de oferta laboral en el sector rural deprime los salarios agrícolas, financiando los altos sueldos tecnológicos.",
+                    "La discriminación hacia los trabajadores rurales impide su movilidad hacia las ciudades, concentrando la riqueza urbana.",
+                    "La globalización permite a las empresas contratar ingenieros extranjeros, deprimiendo los salarios rurales locales."
+                ],
+                correct: 0,
+                explanation: "La falta de educación (capital humano) crea un círculo vicioso: baja productividad en el campo y, simultáneamente, una baja oferta de trabajadores cualificados en la ciudad, lo que eleva la prima salarial de los ingenieros."
+            },
+            {
+                context: "Un país con un coeficiente de Gini muy alto experimenta tensiones políticas constantes, alta criminalidad y una caída drástica en la inversión extranjera directa, a pesar de tener un PIB per cápita promedio considerable.",
+                question: "Según la teoría económica, ¿cuál es la consecuencia principal de esta situación?",
+                options: [
+                    "La desigualdad erosiona la estabilidad social y la cohesión institucional, desincentivando la inversión de largo plazo.",
+                    "La alta desigualdad obliga al gobierno a aumentar impuestos a los ricos, generando una caída en el consumo agregado.",
+                    "La concentración de la riqueza permite mayores niveles de ahorro, pero la falta de seguridad impide los proyectos.",
+                    "La brecha entre ricos y pobres reduce el consumo de bienes de lujo, obligando a las empresas a cerrar operaciones."
+                ],
+                correct: 0,
+                explanation: "Una consecuencia clave de la desigualdad extrema es la pérdida de cohesión social e inestabilidad política. La incertidumbre institucional desincentiva la inversión de largo plazo, dañando el crecimiento."
+            },
+            {
+                context: "Un gobierno establece un impuesto marginal del 85% sobre los ingresos superiores a un millón de dólares. Sin embargo, muchos profesionales de altos ingresos comienzan a reducir sus horas de trabajo o migrar a otros países.",
+                question: "¿Qué concepto económico ilustra directamente la reacción de los profesionales en este contexto?",
+                options: [
+                    "El compromiso entre equidad y eficiencia, ya que la redistribución extrema altera los incentivos al esfuerzo.",
+                    "El argumento de la complementariedad, donde la alta desigualdad inicial justifica la intervención estatal extrema.",
+                    "El fallo del Estado, dado que la provisión directa de servicios públicos genera un déficit presupuestario severo.",
+                    "La incidencia fiscal indirecta, donde la carga del impuesto a las altas rentas se traslada a los consumidores finales."
+                ],
+                correct: 0,
+                explanation: "El 'trade-off' (compromiso) entre equidad y eficiencia postula que altas tasas marginales para financiar redistribución pueden desincentivar la oferta de trabajo, el ahorro y la inversión, reduciendo la eficiencia del mercado."
+            }
+        ];
+
+        // ESTADO
+        let isExamOpen = false;
+        let currentQuestion = 0;
+        let score = 0;
+        let studentAnswers = [];
+        let shuffledOptions = [];
+        let gradesDB = [];
+
+        const adminScreen = document.getElementById('admin-screen');
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+
+        if (window.location.search.includes('admin=1')) {
+            showAdminPanel();
+        } else {
+            startScreen.classList.remove('hidden');
+            checkExamStatus();
+            setInterval(checkExamStatus, 3000);
+        }
+
+        // --- API QUIZ ---
+        async function apiStatus() {
+            const res = await fetch(`${API_BASE}/status`);
+            if (!res.ok) throw new Error('status_failed');
+            return res.json();
+        }
+
+        async function apiSetStatus(open) {
+            const res = await fetch(`${API_BASE}/status`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ open })
+            });
+            if (!res.ok) throw new Error('set_status_failed');
+            return res.json();
+        }
+
+        async function apiGrades() {
+            const res = await fetch(`${API_BASE}/grades`);
+            if (!res.ok) throw new Error('grades_failed');
+            return res.json();
+        }
+
+        async function apiAddGrade(grade) {
+            const res = await fetch(`${API_BASE}/grades`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(grade)
+            });
+            if (!res.ok) throw new Error('add_grade_failed');
+            return res.json();
+        }
+
+        // --- LÓGICA ESTUDIANTE ---
+        async function checkExamStatus() {
+            try {
+                const data = await apiStatus();
+                isExamOpen = Boolean(data.open);
+            } catch (e) {
+                isExamOpen = false;
+            }
+            const startBtn = document.getElementById('start-btn');
+            const alert = document.getElementById('exam-closed-alert');
+            
+            if (isExamOpen) {
+                startBtn.disabled = false;
+                alert.classList.add('hidden');
+            } else {
+                startBtn.disabled = true;
+                alert.classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('start-btn').addEventListener('click', () => {
+            const name = document.getElementById('student-name').value;
+            if(!name) {
+                alert("Por favor selecciona tu nombre de la lista desplegable.");
+                return;
+            }
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            loadQuestion();
+        });
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            let optionsWithIndex = q.options.map((opt, idx) => ({text: opt, isCorrect: idx === q.correct}));
+            shuffledOptions = shuffleArray(optionsWithIndex);
+
+            document.getElementById('question-counter').innerText = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
+            document.getElementById('score-counter').innerText = `Puntuación actual: ${score}`;
+            document.getElementById('progress-bar').style.width = `${((currentQuestion) / questions.length) * 100}%`;
+            document.getElementById('context-text').innerText = q.context;
+            document.getElementById('question-text').innerText = q.question;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.innerText = opt.text;
+                btn.classList.add('option-btn', 'w-full', 'text-left', 'p-4', 'border', 'border-slate-300', 'rounded-lg', 'hover:bg-blue-50', 'hover:border-blue-500');
+                btn.addEventListener('click', () => selectOption(idx, btn, opt.isCorrect));
+                container.appendChild(btn);
+            });
+
+            document.getElementById('next-btn').classList.add('hidden');
+            if (currentQuestion === questions.length - 1) {
+                document.getElementById('finish-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-btn').classList.remove('hidden');
+            }
+        }
+
+        let selectedBtn = null;
+        let isCorrectFlag = false;
+
+        function selectOption(index, btn, isCorrect) {
+            document.querySelectorAll('.option-btn').forEach(b => {
+                b.classList.remove('bg-blue-100', 'border-blue-500', 'font-bold');
+            });
+            btn.classList.add('bg-blue-100', 'border-blue-500', 'font-bold');
+            selectedBtn = btn;
+            isCorrectFlag = isCorrect;
+        }
+
+        document.getElementById('next-btn').addEventListener('click', () => {
+            if (!selectedBtn) return alert("Por favor selecciona una opción.");
+            if (isCorrectFlag) score++;
+            studentAnswers.push({
+                question: questions[currentQuestion].question,
+                selected: selectedBtn.innerText,
+                correct: questions[currentQuestion].options[questions[currentQuestion].correct],
+                isCorrect: isCorrectFlag
+            });
+            currentQuestion++;
+            selectedBtn = null;
+            loadQuestion();
+        });
+
+        document.getElementById('finish-btn').addEventListener('click', () => {
+            if (!selectedBtn) return alert("Por favor selecciona una opción.");
+            if (isCorrectFlag) score++;
+            studentAnswers.push({
+                question: questions[currentQuestion].question,
+                selected: selectedBtn.innerText,
+                correct: questions[currentQuestion].options[questions[currentQuestion].correct],
+                isCorrect: isCorrectFlag
+            });
+            showResults();
+        });
+
+        async function showResults() {
+            quizScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            
+            const name = document.getElementById('student-name').value;
+            const cls = document.getElementById('student-class').value;
+            const dateStr = new Date().toLocaleString();
+            
+            document.getElementById('res-name').innerText = `${name} (${cls})`;
+            document.getElementById('res-score').innerText = score;
+            
+            let grade = "";
+            if (score >= 9) grade = "Nivel 7 - Excelente";
+            else if (score >= 7) grade = "Nivel 5-6 - Muy bueno";
+            else if (score >= 5) grade = "Nivel 4 - Satisfactorio";
+            else grade = "Necesita refuerzo";
+            
+            document.getElementById('res-grade').innerText = grade;
+            document.getElementById('progress-bar').style.width = `100%`;
+
+            const gradeData = { name, cls, score, date: dateStr };
+            let saved = false;
+            let sent = false;
+
+            try {
+                await apiAddGrade(gradeData);
+                saved = true;
+            } catch (e) {
+                console.error(e);
+            }
+
+            try {
+                await sendEmailToTeacher(gradeData);
+                sent = true;
+            } catch (e) {
+                console.error(e);
+            }
+
+            const statusEl = document.getElementById('send-status');
+            if (saved && sent) {
+                statusEl.innerHTML = '✓ Tus notas han sido enviadas a tu profesor automáticamente.';
+                statusEl.className = 'text-center text-sm text-green-700 bg-green-50 p-2 rounded';
+            } else if (saved) {
+                statusEl.innerHTML = 'Nota guardada. El correo al profesor no se envió correctamente.';
+                statusEl.className = 'text-center text-sm text-orange-700 bg-orange-50 p-2 rounded';
+            } else {
+                statusEl.innerHTML = 'No se pudo guardar la nota. Intenta nuevamente.';
+                statusEl.className = 'text-center text-sm text-red-700 bg-red-50 p-2 rounded';
+            }
+
+            const reviewContainer = document.getElementById('review-container');
+            studentAnswers.forEach((ans, idx) => {
+                const div = document.createElement('div');
+                div.classList.add('border-b', 'pb-2');
+                div.innerHTML = `
+                    <p class="font-semibold">P${idx+1}: ${ans.question}</p>
+                    <p class="text-red-500">Tu respuesta: ${ans.selected} ${ans.isCorrect ? '✓' : '✗'}</p>
+                    ${!ans.isCorrect ? `<p class="text-green-600">Correcta: ${ans.correct}</p>` : ''}
+                `;
+                reviewContainer.appendChild(div);
+            });
+        });
+
+        async function sendEmailToTeacher(data) {
+            const formData = new FormData();
+            formData.append('name', data.name);
+            formData.append('class', data.cls);
+            formData.append('score', `${data.score} / 10`);
+            formData.append('date', data.date);
+            formData.append('_subject', `Nueva Nota: ${data.name}`);
+
+            const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(TEACHER_EMAIL)}`, {
+                method: 'POST',
+                body: formData
+            });
+            if (!res.ok) throw new Error('email_failed');
+            return res.json();
+        }
+
+        // --- PDF ESTUDIANTE ---
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            const name = document.getElementById('student-name').value;
+            const cls = document.getElementById('student-class').value;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.text("Reporte de Evaluación - Economía IB", 20, 20);
+            doc.setFontSize(12);
+            doc.text(`Estudiante: ${name}`, 20, 35);
+            doc.text(`Curso: ${cls}`, 20, 42);
+            doc.text(`Fecha: ${new Date().toLocaleString()}`, 20, 49);
+            doc.text(`Calificación: ${score} / 10`, 20, 56);
+            
+            doc.setFontSize(14);
+            doc.text("Detalle de respuestas:", 20, 70);
+            let y = 80;
+            doc.setFontSize(10);
+            
+            studentAnswers.forEach((ans, idx) => {
+                if (y > 260) { doc.addPage(); y = 20; }
+                doc.setFont(undefined, 'bold');
+                doc.text(`Pregunta ${idx + 1}:`, 20, y);
+                doc.setFont(undefined, 'normal');
+                const qLines = doc.splitTextToSize(ans.question, 170);
+                doc.text(qLines, 20, y + 5);
+                y += 10 + (qLines.length * 5);
+                doc.setTextColor(ans.isCorrect ? 0 : 255, ans.isCorrect ? 128 : 0, 0);
+                const yourAnsLines = doc.splitTextToSize(`Tu respuesta: ${ans.selected} ${ans.isCorrect ? '(Correcta)' : '(Incorrecta)'}`, 170);
+                doc.text(yourAnsLines, 20, y);
+                y += 5 + (yourAnsLines.length * 5);
+                if (!ans.isCorrect) {
+                    doc.setTextColor(0, 100, 0);
+                    const correntLines = doc.splitTextToSize(`Respuesta correcta: ${ans.correct}`, 170);
+                    doc.text(correntLines, 20, y);
+                    y += 5 + (correntLines.length * 5);
+                }
+                doc.setTextColor(0, 0, 0);
+                y += 5;
+            });
+            doc.save(`Evaluacion_${name.replace(/\s/g, '_')}.pdf`);
+        });
+
+        // --- LÓGICA PANEL DOCENTE ---
+        async function showAdminPanel() {
+            startScreen.classList.add('hidden');
+            adminScreen.classList.remove('hidden');
+            await loadAdminData();
+            setInterval(loadAdminData, 3000);
+        }
+
+        async function loadAdminData() {
+            let status = false;
+            let grades = [];
+            try {
+                const statusData = await apiStatus();
+                status = Boolean(statusData.open);
+            } catch (e) {
+                status = false;
+            }
+            try {
+                grades = await apiGrades();
+            } catch (e) {
+                grades = [];
+            }
+            
+            const statusText = document.getElementById('exam-status-text');
+            const toggleBtn = document.getElementById('toggle-exam-btn');
+            const tableBody = document.getElementById('grades-table-body');
+            const countText = document.getElementById('student-count');
+
+            if (status) {
+                statusText.innerText = "ABIERTO";
+                statusText.classList.remove('text-red-600');
+                statusText.classList.add('text-green-600');
+                toggleBtn.innerText = "Cerrar Evaluación";
+                toggleBtn.classList.remove('bg-blue-900');
+                toggleBtn.classList.add('bg-red-600');
+            } else {
+                statusText.innerText = "CERRADO";
+                statusText.classList.remove('text-green-600');
+                statusText.classList.add('text-red-600');
+                toggleBtn.innerText = "Abrir Evaluación";
+                toggleBtn.classList.remove('bg-red-600');
+                toggleBtn.classList.add('bg-blue-900');
+            }
+
+            countText.innerText = grades.length;
+            tableBody.innerHTML = '';
+            grades.forEach((g, idx) => {
+                const row = `
+                    <tr class="border-b hover:bg-slate-50">
+                        <td class="p-3 border">${idx + 1}</td>
+                        <td class="p-3 border font-medium">${g.name}</td>
+                        <td class="p-3 border">${g.cls}</td>
+                        <td class="p-3 border text-center font-bold ${g.score >= 7 ? 'text-green-600' : 'text-orange-600'}">${g.score}/10</td>
+                        <td class="p-3 border text-xs text-slate-500">${g.date}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        document.getElementById('toggle-exam-btn').addEventListener('click', async () => {
+            try {
+                const data = await apiStatus();
+                await apiSetStatus(!data.open);
+                await loadAdminData();
+            } catch (e) {
+                alert('No se pudo cambiar el estado del examen.');
+            }
+        });
+
+        document.getElementById('logout-admin').addEventListener('click', () => {
+            window.location.href = window.location.pathname;
+        });
+
+        document.getElementById('download-teacher-pdf').addEventListener('click', async () => {
+            let grades = [];
+            try {
+                grades = await apiGrades();
+            } catch (e) {
+                grades = [];
+            }
+            if (grades.length === 0) return alert("No hay notas para descargar.");
+            
+            const doc = new jsPDF();
+            doc.text("Reporte Docente - Evaluación Tema 3.4", 14, 15);
+            doc.text(`Fecha de reporte: ${new Date().toLocaleString()}`, 14, 22);
+            
+            const tableData = grades.map((g, i) => [i+1, g.name, g.cls, `${g.score}/10`, g.date]);
+            
+            doc.autoTable({
+                startY: 30,
+                head: [['#', 'Estudiante', 'Curso', 'Nota', 'Fecha']],
+                body: tableData,
+                theme: 'grid',
+                headStyles: { fillColor: [30, 58, 138] }
+            });
+            
+            doc.save('Reporte_Docente_Evaluacion.pdf');
+        });
+    </script>
+</body>
+</html>
