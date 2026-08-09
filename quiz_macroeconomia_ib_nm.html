@@ -603,29 +603,29 @@ function toggleReview(){
  const list = document.getElementById('reviewList');
  const visible = section.style.display === 'block';
  if(!visible){
- if(list.children.length === 0){
-  if(STATE.userAnswers.length === 0){ list.innerHTML = '<div class="tp-empty">No hay respuestas para revisar.</div>'; }
- else {
- STATE.userAnswers.forEach((a, i)=>{
- const item = document.createElement('div');
- item.className = 'review-item';
- const letter = String.fromCharCode(65 + a.selected);
- const correctLetter = String.fromCharCode(65 + a.correct);
- item.innerHTML = `
- <div class="ri-q"><strong>${i+1}.</strong> ${a.question.question}</div>
- <div class="ri-a">
- <span class="badge ${a.isCorrect?'ok':'bad'}">${a.isCorrect ? 'Correcta' : 'Incorrecta'}</span> 
- Tu respuesta: ${letter}. ${a.question.options[a.selected]} 
- ${!a.isCorrect ? ` &nbsp;·&nbsp; <span style="color:var(--ok);font-weight:600">Correcta: ${correctLetter}. ${a.question.options[a.correct]}</span>` : ''}
- </div>
- <span class="syllabus-tag"><i class="fa-solid fa-book"></i> ${a.question.syllabus}</span>
- `;
- list.appendChild(item);
- });
- }
- section.style.display = 'block';
+  if(list.children.length === 0){
+   if(STATE.userAnswers.length === 0){ list.innerHTML = '<div class="tp-empty">No hay respuestas para revisar.</div>'; }
+   else {
+    STATE.userAnswers.forEach((a, i)=>{
+     const item = document.createElement('div');
+     item.className = 'review-item';
+     const letter = String.fromCharCode(65 + a.selected);
+     const correctLetter = String.fromCharCode(65 + a.correct);
+     item.innerHTML = `
+     <div class="ri-q"><strong>${i+1}.</strong> ${a.question.question}</div>
+     <div class="ri-a">
+     <span class="badge ${a.isCorrect?'ok':'bad'}">${a.isCorrect ? 'Correcta' : 'Incorrecta'}</span> 
+     Tu respuesta: ${letter}. ${a.question.options[a.selected]} 
+     ${!a.isCorrect ? ` &nbsp;·&nbsp; <span style="color:var(--ok);font-weight:600">Correcta: ${correctLetter}. ${a.question.options[a.correct]}</span>` : ''}
+     </div>
+     <span class="syllabus-tag"><i class="fa-solid fa-book"></i> ${a.question.syllabus}</span>
+     `;
+     list.appendChild(item);
+    });
+   }
+  }
+  section.style.display = 'block';
  } else { section.style.display = 'none'; }
-}
 }
 
 // ─── SAFE EVENT LISTENER ATTACHMENT ─────────────────────────
