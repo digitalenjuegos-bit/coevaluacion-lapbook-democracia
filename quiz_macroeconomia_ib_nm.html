@@ -461,7 +461,11 @@ function shuffleWithOptions(opts, correctIdx) {
     answerIdx: newCorrectIdx 
   };
 }
-function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+function printPDF() {
+  const studentName = document.getElementById('resultsName').textContent.trim();
+  document.title = 'Políticas de oferta y demanda — ' + studentName + '.pdf';
+  window.print();
+}
 
 function startQuiz(){
  const nameSelect = document.getElementById('studentName');
