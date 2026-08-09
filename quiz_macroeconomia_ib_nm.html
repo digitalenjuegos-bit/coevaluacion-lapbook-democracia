@@ -236,6 +236,11 @@
       page-break-inside: avoid !important;
     }
   }
+
+    
+    /* Make grade feedback visible in PDF */
+    .grade-pill, #gradePill { display: block !important; visibility: visible !important; }
+    .grade-pill .fa-book, .grade-pill i { color: #2c1a0a !important; }
 </style>
 </head>
 <body>
@@ -412,7 +417,7 @@ const QUESTION_BANK = [
  {topic:"Integración 3.5-3.7",unit:"Cálculo integrado",syllabus:"Tasa real + brecha producto",scenario:"Tasa nominal = 7 %, inflación esperada = 4 %. Producto actual = $900 mm, producto potencial (PIB potencial) = $1.000 mm. Brecha deflacionaria = $100 mm.",question:"La tasa real esperada y la brecha de producto (en %) son:",options:["r = 3 % ; brecha = 10 % del PIB potencial..", "r = 11 %: se suma la tasa nominal con la inflación; brecha = 10 % sobre PIB potencial.", "r = 3 %; brecha = 11 %: usa Y actual en lugar de PIB potencial en el cálculo.", "r = 4 %; brecha = 9 %: debería ser 10 % sobre PIB potencial según modelo."],answer:0,explanation:"r = i menos inflación esperada = 7 % - 4 % = 3 %. Brecha % = (PIB potencial - Y)/PIB potencial × 100 = (1000-900)/1000 × 100 = 10 %."},
 ];
 
-const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false };
+const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false, shuffledAnswers: [] };
 const TOTAL_QUESTIONS = 20;
 
 // === API CONFIG (Railway backend) ===
@@ -420,6 +425,16 @@ const EXAM_ID = 'macroeconomia-35-37';
 const API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/' + EXAM_ID;
 
 function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function shuffleWithOptions(opts, correctIdx) {
+  const indexed = opts.map((opt, i) => ({ text: opt, originalIdx: i }));
+  const shuffled = shuffle([...indexed]);
+  const newCorrectIdx = shuffled.findIndex(item => item.originalIdx === correctIdx);
+  return { 
+    options: shuffled.map(item => item.text), 
+    answerIdx: newCorrectIdx 
+  };
+}
 function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
 
 function startQuiz(){
@@ -440,6 +455,8 @@ function startQuiz(){
 function renderQuestion(){
  STATE.answered = false;
  const q = STATE.selectedQuestions[STATE.currentIndex];
+ const shuffled = shuffleWithOptions(q.options, q.answer);
+ STATE.shuffledAnswers[STATE.currentIndex] = shuffled.answerIdx;
  const card = document.getElementById('questionCard');
  const num = STATE.currentIndex + 1;
  card.innerHTML = `
@@ -447,7 +464,7 @@ function renderQuestion(){
  <div class="scenario"><span class="scenario-label">Mini-lectura</span>${q.scenario}</div>
  <h2 class="question-text">${q.question}</h2>
  <div class="options" id="optionsList">
- ${q.options.map((opt,i)=>`<button class="option" data-idx="${i}"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${opt}</span></button>`).join('')}
+ ${shuffled.options.map((opt,i)=>`<button class="option" data-idx="${i}"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${opt}</span></button>`).join('')}
  </div>
  <div class="feedback" id="feedback"></div>`;
  document.getElementById('progressFill').style.width = ((STATE.currentIndex / TOTAL_QUESTIONS) * 100) + '%';
@@ -462,7 +479,7 @@ function handleAnswer(e){
  if(STATE.answered) return; STATE.answered = true;
  const selected = parseInt(e.currentTarget.dataset.idx);
  const q = STATE.selectedQuestions[STATE.currentIndex];
- const correct = q.answer;
+ const correct = STATE.shuffledAnswers[STATE.currentIndex] || q.answer;
  const options = document.querySelectorAll('.option');
  options.forEach((btn,i)=>{ btn.disabled=true; if(i===correct) btn.classList.add('correct'); else if(i===selected) btn.classList.add('incorrect'); });
  STATE.userAnswers.push({ selected, correct, isCorrect: selected === correct, question: q });
