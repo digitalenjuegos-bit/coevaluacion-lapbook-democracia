@@ -425,6 +425,64 @@ app.post('/api/quiz/:examId/status', (req, res) => {
   }
 });
 
+app.get('/api/quiz/:examId/grades/csv', (req, res) => {
+  const examId = resolveExamId(req.params.examId);
+  if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
+  const grades = getQuizGrades(examId).slice(-500);
+  
+  // Enhanced CSV with pedagogical columns
+  const headers = ['Timestamp','StudentID','ExamID','Topic','Unit','Syllabus','QuestionID',
+    'QuestionText','SelectedOption','CorrectOption','IsCorrect','ResponseTimeSeconds',
+    'Score','DistractorAnalysis'];
+  
+  const rows = [headers.join(',')];
+  
+  grades.forEach((grade, idx) => {
+    const studentName = grade.studentName || `ANON_${idx}`;
+    const timestamp = grade.savedAt || new Date().toISOString();
+    
+    if (grade.details && Array.isArray(grade.details)) {
+      grade.details.forEach((detail, qIdx) => {
+        const selectedChar = String.fromCharCode(65 + detail.selected);
+        const correctChar = String.fromCharCode(65 + detail.correct);
+        const isCorrect = detail.selected === detail.correct;
+        const distractorAnalysis = isCorrect ? 'CorrectAnswer' : 
+          (detail.options && detail.options[detail.selected]?.length > 
+           (detail.options[detail.correct]?.length || 0) * 1.2 ? 
+           'LongestDistractorSelected' : 'PlausibleDistractorSelected');
+        
+        rows.push([
+          timestamp,
+          studentName,
+          examId,
+          (detail.topic || '').replace(/,/g, ';'),
+          (detail.unit || '').replace(/,/g, ';'),
+          (detail.syllabus || '').replace(/,/g, ';'),
+          qIdx + 1,
+          '"'+((detail.question||'').replace(/"/g, '""'))+'"',
+          selectedChar,
+          correctChar,
+          isCorrect ? 'TRUE' : 'FALSE',
+          detail.timeSpent || '0',
+          grade.score || 0,
+          distractorAnalysis
+        ].join(','));
+      });
+    } else {
+      // Fallback for simple format
+      const percentage = grade.pct || Math.round((grade.score / 20) * 100);
+      rows.push([
+        timestamp, studentName, examId, '', '', '', '',
+        '','','','','', percentage, ''
+      ].join(','));
+    }
+  });
+  
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', `attachment; filename="${examId}-enhanced-report.csv"`);
+  res.end(rows.join('\n'));
+});
+
 app.get('/api/quiz/:examId/grades', (req, res) => {
   const examId = resolveExamId(req.params.examId);
   if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });

@@ -1,0 +1,10 @@
+#!/bin/bash
+# hermes-auto-qc-hook v1
+echo "🔍 Running Auto-QC Loop..."
+python3 .githooks/qc-validate.py quiz_macroeconomia_ib_nm.html
+if [ $? -ne 0 ]; then
+  echo "❌ QC FAILED — Commit bloqueado. Arregla antes de hacer commit."
+  exit 1
+fi
+echo "✅ QC PASSED"
+exit 0
