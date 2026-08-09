@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Políticas de oferta y demanda — Evaluación IB NM</title>
+<title>Políticas del lado de la oferta y la demanda — Evaluación IB NM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -383,7 +383,7 @@
  </div>
  <div class="results-actions">
  <button class="btn btn-ghost" id="reviewBtn"><i class="fa-solid fa-list-check"></i> Revisar respuestas</button>
- <button class="btn btn-ghost" onclick="document.title='Políticas de oferta y demanda — '+document.getElementById('resultsName').textContent.trim()+'.pdf';window.print();"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+ <button class="btn btn-ghost" onclick="printPDF()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
  <button class="btn btn-primary" id="retryBtn"><i class="fa-solid fa-rotate-right"></i> Intentar de nuevo</button>
  </div>
  <div class="review-section" id="reviewSection" style="display:none;">
@@ -465,7 +465,7 @@ function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.class
 
 function printPDF() {
   const studentName = document.getElementById('resultsName').textContent.trim();
-  document.title = 'Políticas de oferta y demanda — ' + studentName + '.pdf';
+  document.title = 'Políticas del lado de la oferta y la demanda — ' + studentName + '.pdf';
   window.print();
 }
 
@@ -526,18 +526,26 @@ function nextQuestion(){
  else { showResults(); }
 }
 
-function getWeakTopics(userAnswers, quizData) {
+function getWeakTopics(userAnswers) {
   const topicWrong = {};
+  const topicTips = {
+    '3.5 Política Monetaria': 'revisa los objetivos del banco central y practica la ecuación de Fisher (r = i − inflación esperada)',
+    '3.6 Política Fiscal': 'repasa la clasificación del gasto público (corriente, capital, transferencias) y las fuentes de ingresos fiscales',
+    '3.7 Políticas de Oferta': 'repasa las políticas basadas en mercado vs. intervencionistas y sus limitaciones (equidad, tiempo, intereses creados)',
+    'Integración 3.5-3.7': 'repasa los conceptos clave (intervención, equidad, eficiencia, sostenibilidad) y la mezcla de políticas monetaria-fiscal-oferta'
+  };
   userAnswers.forEach(a => {
-    const wrong = !a.isCorrect;
-    if (wrong) {
+    if (!a.isCorrect) {
       const t = a.question.topic;
       topicWrong[t] = (topicWrong[t] || 0) + 1;
     }
   });
-  const weak = Object.entries(topicWrong).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0]);
-  if (weak.length === 0) return 'inténtalo de nuevo';
-  return weak.join(', ') + '. Practica más estos temas.';
+  const weak = Object.entries(topicWrong).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  if (weak.length === 0) return '¡Excelente trabajo! No se identificaron temas débiles en este intento.';
+  return weak.map(([t, n]) => {
+    const tip = topicTips[t] || 'vuelve a revisar los apuntes de este tema en la Guía de Estudio';
+    return t + ' (' + n + ' error' + (n > 1 ? 'es' : '') + '): ' + tip;
+  }).join(' · ');
 }
 
 function showResults(){
@@ -565,7 +573,7 @@ function showResults(){
  else if(score10 >= 7){ grade='Buen desempeño'; icon='fa-thumbs-up'; cls='grade-good'; }
  else if(score10 >= 5){ grade='Desempeño aceptable'; icon='fa-circle-check'; cls='grade-fair'; }
  else { 
-        grade='¡Buen intento! Continúa practicando estos temas: ' + getWeakTopics(STATE.userAnswers); 
+        grade='¡Buen intento, ' + STATE.studentName + '! Para mejorar, enfócate en: ' + getWeakTopics(STATE.userAnswers); 
         icon='fa-book'; 
         cls='grade-poor'; 
       }
