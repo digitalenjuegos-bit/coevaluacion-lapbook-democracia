@@ -430,16 +430,20 @@ app.get('/api/quiz/:examId/grades/csv', (req, res) => {
   if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
   const grades = getQuizGrades(examId).slice(-500);
   
-  // Enhanced CSV with pedagogical columns
+  // Enhanced CSV with pedagogical columns including quiz duration
   const headers = ['Timestamp','StudentID','ExamID','Topic','Unit','Syllabus','QuestionID',
     'QuestionText','SelectedOption','CorrectOption','IsCorrect','ResponseTimeSeconds',
-    'Score','DistractorAnalysis'];
+    'Score','DistractorAnalysis','StartTimestamp','EndTimestamp','TotalDurationSeconds'];
   
   const rows = [headers.join(',')];
   
   grades.forEach((grade, idx) => {
     const studentName = grade.studentName || `ANON_${idx}`;
     const timestamp = grade.savedAt || new Date().toISOString();
+    const startT = grade.startTimestamp || timestamp;
+    const endT = grade.endTimestamp || timestamp;
+    const durationSec = grade.totalDurationSeconds ||
+      Math.round((new Date(endT) - new Date(startT)) / 1000) || '0';
     
     if (grade.details && Array.isArray(grade.details)) {
       grade.details.forEach((detail, qIdx) => {
@@ -465,7 +469,10 @@ app.get('/api/quiz/:examId/grades/csv', (req, res) => {
           isCorrect ? 'TRUE' : 'FALSE',
           detail.timeSpent || '0',
           grade.score || 0,
-          distractorAnalysis
+          distractorAnalysis,
+          startT,
+          endT,
+          durationSec
         ].join(','));
       });
     } else {
@@ -473,7 +480,7 @@ app.get('/api/quiz/:examId/grades/csv', (req, res) => {
       const percentage = grade.pct || Math.round((grade.score / 20) * 100);
       rows.push([
         timestamp, studentName, examId, '', '', '', '',
-        '','','','','', percentage, ''
+        '','','','','', percentage, '', startT, endT, durationSec
       ].join(','));
     }
   });

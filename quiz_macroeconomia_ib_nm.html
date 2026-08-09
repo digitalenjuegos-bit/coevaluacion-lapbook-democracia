@@ -325,6 +325,7 @@ function startQuiz(){
  STATE.studentName = name;
  STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
  STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
+ STATE.startTime = new Date().toISOString();  // ← Capture start timestamp
  document.getElementById('studentDisplay').textContent = name;
  document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
  showScreen('quiz-screen'); renderQuestion();
@@ -492,7 +493,10 @@ document.addEventListener('keydown', e => {
  correct: result.correct,
  wrong: result.wrong,
  date: result.timestamp,
- weakestUnit: result.weakestUnit
+ weakestUnit: result.weakestUnit,
+ startTimestamp: STATE.startTime || result.timestamp,  // ← Start timestamp
+ endTimestamp: new Date().toISOString(),                 // ← End timestamp
+ totalDurationSeconds: Math.round((Date.now() - new Date(STATE.startTime || result.timestamp).getTime()) / 1000)  // ← Duration
  };
  fetch(API_BASE + '/grades', {
  method: 'POST',
