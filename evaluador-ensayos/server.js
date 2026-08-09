@@ -487,7 +487,27 @@ app.get('/api/quiz/:examId/grades/csv', (req, res) => {
   
   res.setHeader('Content-Type', 'text/csv; charset=utf-8');
   res.setHeader('Content-Disposition', `attachment; filename="${examId}-enhanced-report.csv"`);
-  res.end(rows.join('\n'));
+  res.end(rows.join('\\n'));
+});
+
+// ─── RANKINGS ENDPOINT ───────────────────────────────────────────────
+app.get('/api/quiz/:examId/rankings', (req, res) => {
+  const examId = resolveExamId(req.params.examId);
+  if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
+  const grades = getQuizGrades(examId);
+  
+  const rankings = grades
+    .filter(g => g.studentName && g.score)
+    .map(g => ({
+      studentName: g.studentName,
+      score: g.score,
+      percentage: g.pct || Math.round(g.score / 20 * 100),
+      duration: g.totalDurationSeconds || 0
+    }))
+    .sort((a, b) => b.score - a.score || (a.duration || 0) - (b.duration || 0));
+  
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.end(JSON.stringify(rankings));
 });
 
 app.get('/api/quiz/:examId/grades', (req, res) => {

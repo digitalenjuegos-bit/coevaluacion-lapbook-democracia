@@ -112,7 +112,14 @@
  padding: 12px 16px;
  border-bottom: 1px solid var(--border);
  font-size: 14px;
- }.tp-result-item:last-child { border-bottom: none; }.tp-result-item.tp-student { font-weight: 600; color: var(--forest-deep); }.tp-result-item.tp-info { color: var(--ink-soft); font-size: 13px; }.tp-result-item.tp-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--gold); }.tp-empty { text-align: center; color: var(--muted); padding: 30px; font-style: italic; }.student-select {
+ }.tp-result-item:last-child { border-bottom: none; }.tp-result-item.tp-student { font-weight: 600; color: var(--forest-deep); }.tp-result-item.tp-info { color: var(--ink-soft); font-size: 13px; }.tp-result-item.tp-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--gold); }.tp-empty { text-align: center; color: var(--muted); padding: 30px; font-style: italic; }
+.tp-ranking-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.tp-ranking-item:last-child { border-bottom: none; }
+.tp-rank { font-weight: 700; color: var(--gold); min-width: 40px; }
+.tp-student { font-weight: 600; color: var(--forest-deep); flex-grow: 1; }
+.tp-score-rank { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--forest); }
+.tp-time-rank { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; }
+.student-select {
  width: 100%;
  padding: 16px 18px;
  font-family: 'Outfit', sans-serif;
@@ -656,8 +663,31 @@ document.addEventListener('keydown', e => {
  alert('Código. Usa ALT+SHIFT+D y el código DOCENTE2026');
  }
  });
+ 
+// Ranking button
+document.getElementById('tpRankings').addEventListener('click', async () => {
+ try {
+ const res = await fetch(API_BASE + '/rankings');
+ if (!res.ok) throw new Error('HTTP ' + res.status);
+ const rankings = await res.json();
+ 
+ if (!rankings || rankings.length === 0) {
+ document.getElementById('tpResults').innerHTML = '<div class="tp-empty">No hay datos de ranking aún.</div>';
+ return;
+ }
+ 
+ document.getElementById('tpResults').innerHTML = rankings.map((r, i) => {
+ const medal = i < 3 ? ['🥇','🥈','🥉'][i] : '';
+ const safeName = (r.studentName || 'ANON').replace(/"/g, '&quot;');
+ return '<div class="tp-ranking-item"><span class="tp-rank">' + medal + (i+1) + '</span><span class="tp-student">' + safeName + '</span><span class="tp-score-rank">' + r.score + '/20 (' + r.percentage + '%)</span><span class="tp-time-rank">' + r.duration + 's</span></div>';
+ }).join('');
+ document.getElementById('tpCount').textContent = rankings.length + ' estudiantes rankeados';
+ } catch(e) {
+ document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Error al cargar ranking</div>';
+ }
+});
 
- // Export CSV
+// Export CSV
  document.getElementById('tpExportCsv').addEventListener('click', () => exportResultsCSV());
 
  // Clear grades
@@ -702,6 +732,7 @@ document.addEventListener('keydown', e => {
  </div>
  <div class="tp-meta" id="tpActions" style="display:none;">
  <button class="tp-btn tp-btn-ghost" id="tpExportCsv"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+ <button class="tp-btn tp-btn-ghost" id="tpRankings"><i class="fa-solid fa-rank-rank"></i> Ver Ranking</button>
  <button class="tp-btn tp-btn-danger" id="tpClear"><i class="fa-solid fa-trash"></i> Limpiar notas</button>
  <span class="tp-count" id="tpCount" style="font-size:13px;color:var(--muted);"></span>
  </div>
