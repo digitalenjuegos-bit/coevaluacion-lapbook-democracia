@@ -604,6 +604,8 @@ function toggleReview(){
  const visible = section.style.display === 'block';
  if(!visible){
  if(list.children.length === 0){
+  if(STATE.userAnswers.length === 0){ list.innerHTML = '<div class="tp-empty">No hay respuestas para revisar.</div>'; }
+ else {
  STATE.userAnswers.forEach((a, i)=>{
  const item = document.createElement('div');
  item.className = 'review-item';
