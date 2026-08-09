@@ -565,7 +565,7 @@ function showResults(){
  else if(score10 >= 7){ grade='Buen desempeño'; icon='fa-thumbs-up'; cls='grade-good'; }
  else if(score10 >= 5){ grade='Desempeño aceptable'; icon='fa-circle-check'; cls='grade-fair'; }
  else { 
-        grade='¡Buen intento! Continúa practicando estos temas: ' + getWeakTopics(userAnswers, STATE.quizData); 
+        grade='¡Buen intento! Continúa practicando estos temas: ' + getWeakTopics(STATE.userAnswers); 
         icon='fa-book'; 
         cls='grade-poor'; 
       }
