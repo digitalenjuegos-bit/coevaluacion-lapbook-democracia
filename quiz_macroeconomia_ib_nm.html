@@ -143,6 +143,35 @@
     color: #D4B483 !important;
     font-weight: 600;
   }
+
+
+  @media print {
+    .score-circle {
+      background: transparent !important;
+      box-shadow: 0 0 0 2px #333 !important;
+    }
+    .score-inner,
+    .score-value,
+    .score-value * {
+      background: #f4f1ea !important;
+      color: #333333 !important;
+      text-shadow: none !important;
+    }
+    .score-value {
+      color: #2c1a0a !important;
+    }
+    .score-value.slash,
+    .score-value.max {
+      color: #2c1a0a !important;
+    }
+    .grade-excellent, .grade-good, .grade-fair, .grade-poor {
+      filter: grayscale(50%) !important;
+    }
+    .results-card {
+      border: 2px solid #333 !important;
+      page-break-inside: avoid !important;
+    }
+  }
 </style>
 </head>
 <body>
