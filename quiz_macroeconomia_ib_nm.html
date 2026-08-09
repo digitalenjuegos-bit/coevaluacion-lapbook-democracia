@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refuerzo Pedagógico · Economía IB NM — Macroeconomía (3.5, 3.6, 3.7)</title>
+<title>Políticas de oferta y demanda — Evaluación IB NM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -223,6 +223,11 @@
     }
     .score-value {
       color: #2c1a0a !important;
+      font-size: 48px !important;
+      font-weight: 900 !important;
+      text-shadow: none !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
     }
     .score-value.slash,
     .score-value.max {
@@ -235,12 +240,33 @@
       border: 2px solid #333 !important;
       page-break-inside: avoid !important;
     }
-  }
 
     
     /* Make grade feedback visible in PDF */
     .grade-pill, #gradePill { display: block !important; visibility: visible !important; }
     .grade-pill .fa-book, .grade-pill i { color: #2c1a0a !important; }
+    .grade-pill { 
+      background: #f4f1ea !important; 
+      color: #2c1a0a !important; 
+      border: 1px solid #2c1a0a !important; 
+      padding: 12px 18px !important; 
+      border-radius: 10px !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 600 !important;
+      margin: 12px 0 !important;
+      text-align: center !important;
+      page-break-inside: avoid !important;
+    }
+    .grade-excerpt { 
+      background: #f4f1ea !important; 
+      color: #2c1a0a !important; 
+      padding: 10px 14px !important; 
+      border-radius: 8px !important; 
+      margin-top: 8px !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 14px !important;
+      page-break-inside: avoid !important;
+    }
 </style>
 </head>
 <body>
@@ -357,7 +383,7 @@
  </div>
  <div class="results-actions">
  <button class="btn btn-ghost" id="reviewBtn"><i class="fa-solid fa-list-check"></i> Revisar respuestas</button>
- <button class="btn btn-ghost" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+ <button class="btn btn-ghost" onclick="document.title='Políticas de oferta y demanda — '+document.getElementById('resultsName').textContent.trim()+'.pdf';window.print();"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
  <button class="btn btn-primary" id="retryBtn"><i class="fa-solid fa-rotate-right"></i> Intentar de nuevo</button>
  </div>
  <div class="review-section" id="reviewSection" style="display:none;">
