@@ -497,9 +497,9 @@ app.get('/api/quiz/:examId/rankings', (req, res) => {
   const grades = getQuizGrades(examId);
   
   const rankings = grades
-    .filter(g => g.studentName && g.score)
+    .filter(g => (g.studentName || g.name) && g.score)
     .map(g => ({
-      studentName: g.studentName,
+      studentName: g.studentName || g.name,
       score: g.score,
       percentage: g.pct || Math.round(g.score / 20 * 100),
       duration: g.totalDurationSeconds || 0
