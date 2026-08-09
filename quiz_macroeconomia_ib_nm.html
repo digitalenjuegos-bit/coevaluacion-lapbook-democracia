@@ -327,11 +327,11 @@
  <div class="results-eyebrow">Evaluación completada</div>
  <div class="results-name" id="resultsName">—</div>
  <div class="score-circle">
- <svg viewBox="0 0 220 220">
+ <svg viewBox="0 0 220 220" style="-webkit-print-color-adjust:exact;print-color-adjust:exact">
  <defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d4af37"/><stop offset="100%" stop-color="#2d6a4f"/></linearGradient></defs>
- <circle cx="110" cy="110" r="100" fill="#7d5a50"/>
- <circle class="track" cx="110" cy="110" r="100"/>
- <circle class="fill" id="scoreRing" cx="110" cy="110" r="100"/>
+ <circle cx="110" cy="110" r="100" fill="#7d5a50" style="fill:#7d5a50"/>
+ <circle class="track" cx="110" cy="110" r="100" style="fill:#f4f1ea;stroke:#f4f1ea"/>
+ <circle class="fill" id="scoreRing" cx="110" cy="110" r="100" style="fill:#4a3a35"/>
  </svg>
  <div class="score-inner">
  <div class="score-value"><span id="scoreNum">0</span><span class="slash">/</span><span class="max">10</span></div>
@@ -501,7 +501,11 @@ function showResults(){
  if(score10 >= 9){ grade='Excelente dominio'; icon='fa-trophy'; cls='grade-excellent'; }
  else if(score10 >= 7){ grade='Buen desempeño'; icon='fa-thumbs-up'; cls='grade-good'; }
  else if(score10 >= 5){ grade='Desempeño aceptable'; icon='fa-circle-check'; cls='grade-fair'; }
- else { grade='Requiere refuerzo'; icon='fa-book'; cls='grade-poor'; }
+ else { 
+        grade='¡Buen intento! Continúa practicando estos temas: ' + getWeakTopics(userAnswers, STATE.quizData); 
+        icon='fa-book'; 
+        cls='grade-poor'; 
+      }
  pill.className = 'grade-pill ' + cls;
  pill.innerHTML = `<i class="fa-solid ${icon}"></i> ${grade}`;
 
