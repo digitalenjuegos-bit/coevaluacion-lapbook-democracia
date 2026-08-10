@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El mercado del aguacate hass — EPO | Evaluación 2BGU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+ :root{
+ --bg:#f3ebd9; --bg-2:#e8dcc2; --paper:#fbf6ea; --ink:#1c2b27; --ink-soft:#3a4a44;
+ --muted:#7a7264; --gold:#b8842a; --gold-bright:#d9a23e; --forest:#1f4a3d;
+ --forest-deep:#0f2a23; --sage:#5d8a6b; --error:#b5453a; --error-soft:#e8c4be;
+ --ok:#3d7a4f; --ok-soft:#c5dcb8; --border:#cdbf9d; --shadow:0 18px 50px -20px rgba(28,43,39,.35);
+ /* Colores específicos para diagramas macro */
+ --demand:#1e40af; --supply:#b45309; --fiscal:#7b2cbf; --lras:#2e7d32;
+ }
+ *{box-sizing:border-box;margin:0;padding:0}
+ html,body{height:100%}
+ body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--bg);
+ background-image:radial-gradient(circle at 12% 18%, rgba(184,132,42,.10), transparent 45%),radial-gradient(circle at 88% 82%, rgba(31,74,61,.12), transparent 50%);min-height:100vh;overflow-x:hidden;line-height:1.55}
+ body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.5;pointer-events:none;z-index:0;mix-blend-mode:multiply}.container{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:32px 24px 80px}.brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}.brand-left{display:flex;align-items:center;gap:14px}.brand-mark{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--gold-bright), var(--gold) 70%, #6b4a16);display:grid;place-items:center;color:#fbf6ea;font-family:'Fraunces',serif;font-weight:900;font-size:20px;box-shadow:0 6px 18px -6px rgba(184,132,42,.55), inset 0 -3px 8px rgba(0,0,0,.2)}.brand-text{font-family:'Fraunces',serif;line-height:1.1}.brand-text.t1{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:500}.brand-text.t2{font-size:20px;font-weight:700;color:var(--forest-deep)}.brand-right{font-size:12px;color:var(--muted);text-align:right;font-family:'Outfit',sans-serif;letter-spacing:.05em}.brand-right strong{color:var(--forest);font-weight:600}.screen{display:none;animation:fadeUp.55s cubic-bezier(.2,.7,.2,1) both}.screen.active{display:block}
+ @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}.welcome-card{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:54px 48px;box-shadow:var(--shadow);position:relative;overflow:hidden}.welcome-card::before{content:"";position:absolute;top:-120px;right:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle, rgba(217,162,62,.25), transparent 70%);pointer-events:none}.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(31,74,61,.08);border:1px solid rgba(31,74,61,.18);color:var(--forest);padding:6px 14px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px}.welcome-title{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(38px,5vw,58px);line-height:1.02;color:var(--forest-deep);letter-spacing:-.02em;margin-bottom:18px}.welcome-title em{font-style:italic;color:var(--gold);font-weight:700}.welcome-sub{font-size:17px;color:var(--ink-soft);max-width:620px;margin-bottom:24px}.skills-box{background:rgba(31,74,61,.05);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:36px;max-width:620px}.skills-title{font-size:12px;font-weight:600;color:var(--forest);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}.skills-list{list-style:none;font-size:14px;color:var(--ink-soft)}.skills-list li{margin-bottom:6px;padding-left:18px;position:relative}.skills-list li::before{content:"\f00c";font-family:"Font Awesome 6 Free";font-weight:900;color:var(--gold);font-size:10px;position:absolute;left:0;top:5px}.welcome-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px}.meta-item{background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:14px;padding:16px 18px}.meta-item.num{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--gold);line-height:1}.meta-item.lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-top:6px;font-weight:500}.form-group{margin-bottom:24px;max-width:520px}.form-group label{display:block;font-size:12px;font-weight:600;color:var(--forest);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}.form-group input{width:100%;padding:16px 18px;font-family:'Outfit',sans-serif;font-size:17px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color.2s, box-shadow.2s}.form-group input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,132,42,.15)}.name-error{color:var(--error);font-size:13px;margin-top:8px;display:none;align-items:center;gap:6px}.name-error.show{display:flex}.btn{display:inline-flex;align-items:center;gap:12px;font-family:'Outfit',sans-serif;font-weight:600;font-size:16px;padding:16px 30px;border-radius:12px;cursor:pointer;border:none;transition:transform.2s, box-shadow.2s, background.2s;letter-spacing:.01em}.btn-primary{background:linear-gradient(135deg, var(--forest), var(--forest-deep));color:#fbf6ea;box-shadow:0 12px 28px -10px rgba(15,42,35,.6)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px -12px rgba(15,42,35,.7)}.btn-primary:active{transform:translateY(0)}.btn-primary i{transition:transform.25s}.btn-primary:hover i{transform:translateX(4px)}.btn-ghost{background:transparent;color:var(--forest);border:1.5px solid var(--border)}.btn-ghost:hover{background:rgba(31,74,61,.06);border-color:var(--forest)}.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:14px}.student-tag{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--border);padding:8px 16px;border-radius:999px;font-size:14px}.student-tag i{color:var(--gold)}.student-tag strong{color:var(--forest-deep);font-weight:600}.progress-wrap{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted);font-weight:500}.progress-bar{width:200px;height:8px;background:var(--bg-2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}.progress-fill{height:100%;background:linear-gradient(90deg, var(--gold), var(--gold-bright));width:0;transition:width.5s cubic-bezier(.2,.7,.2,1);border-radius:999px}.question-card{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:38px 38px 32px;box-shadow:var(--shadow);position:relative}.q-topic{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}.scenario{background:linear-gradient(135deg, rgba(31,74,61,.06), rgba(184,132,42,.05));border-left:3px solid var(--gold);padding:14px 22px;border-radius:0 12px 12px 0;margin-bottom:22px;font-size:15px;color:var(--ink-soft);font-style:italic}.scenario-label{display:block;font-style:normal;font-weight:600;color:var(--forest);font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:6px}.question-text{font-family:'Fraunces',serif;font-size:22px;font-weight:600;line-height:1.35;color:var(--forest-deep);margin-bottom:26px;letter-spacing:-.01em}.options{display:grid;gap:12px}.option{display:flex;align-items:center;gap:16px;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:16px 20px;cursor:pointer;transition:all.2s;font-size:15.5px;text-align:left;font-family:'Outfit',sans-serif;color:var(--ink);width:100%}.option:hover:not(:disabled){border-color:var(--gold);background:#fffdf6;transform:translateX(4px)}.option:disabled{cursor:not-allowed}.option-letter{width:32px;height:32px;border-radius:50%;background:var(--bg-2);color:var(--forest);display:grid;place-items:center;font-weight:700;font-family:'Fraunces',serif;font-size:15px;flex-shrink:0;transition:all.2s;border:1px solid var(--border)}.option.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--forest-deep)}.option.correct.option-letter{background:var(--ok);color:#fff;border-color:var(--ok)}.option.incorrect{background:var(--error-soft);border-color:var(--error);color:#5e2018}.option.incorrect.option-letter{background:var(--error);color:#fff;border-color:var(--error)}.feedback{margin-top:22px;padding:18px 22px;border-radius:14px;display:none;animation:fadeUp.4s both}.feedback.show{display:block}.feedback.ok{background:rgba(61,122,79,.1);border:1px solid var(--ok)}.feedback.bad{background:rgba(181,69,58,.1);border:1px solid var(--error)}.feedback-head{display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:8px;font-size:15px}.feedback.ok.feedback-head{color:var(--ok)}.feedback.bad.feedback-head{color:var(--error)}.feedback-body{font-size:14.5px;color:var(--ink-soft);line-height:1.6}.actions{margin-top:24px;display:flex;justify-content:space-between;align-items:center}.actions.btn:disabled{opacity:.4;cursor:not-allowed}.results-card{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:48px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}.results-eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:8px}.results-name{font-family:'Fraunces',serif;font-weight:700;font-size:24px;color:var(--forest);margin-bottom:30px}.score-circle{width:220px;height:220px;margin:0 auto 24px;position:relative}.score-circle svg{width:100%;height:100%;transform:rotate(-90deg)}.score-circle.track{stroke:var(--bg-2);stroke-width:14;fill:none}.score-circle.fill{stroke:url(#scoreGrad);stroke-width:14;fill:none;stroke-linecap:round;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.7,.2,1)}.score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#7d5a50,#4a3a35);border:8px solid rgba(30,74,90,0.6);border-radius:50%;box-shadow:0 0 20px rgba(0,0,0,0.2)}.score-value{font-family:'Fraunces',serif;font-weight:900;font-size:72px;line-height:1;color:#ffffff;letter-spacing:-.04em;text-shadow:0 1px 2px rgba(0,0,0,0.5)}.score-value.slash{color:#ffffff;font-weight:400}.score-value.max{font-size:38px;color:#ffffff}.grade-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:999px;font-weight:600;font-size:15px;margin-bottom:24px}.grade-excellent{background:rgba(61,122,79,.25);color:#1c2b27;border:1px solid var(--ok)}.grade-good{background:rgba(184,132,42,.25);color:#1c2b27;border:1px solid var(--gold)}.grade-fair{background:rgba(217,162,62,.30);color:#1c2b27;border:1px solid var(--gold-bright)}.grade-poor{background:rgba(181,69,58,.12);color:#2c1a0a;font-weight:600;border:1px solid var(--error)}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 32px}.stat{background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:14px;padding:18px 12px}.stat-num{font-family:'Fraunces',serif;font-weight:700;font-size:30px;color:var(--forest);line-height:1}.stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-top:6px;font-weight:500}.unit-analysis{text-align:left;background:rgba(255,255,255,.5);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:30px}.unit-analysis h3{font-family:'Fraunces',serif;font-size:18px;color:var(--forest-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}.unit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border);font-size:14px}.unit-row:last-child{border-bottom:none}.unit-name{color:var(--ink-soft);font-weight:500}.unit-score{font-weight:700;color:var(--forest)}.unit-score.weak{color:var(--error)}.results-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}.review-section{margin-top:36px;text-align:left}.review-title{font-family:'Fraunces',serif;font-weight:700;font-size:20px;color:var(--forest-deep);margin-bottom:16px;display:flex;align-items:center;gap:10px}.review-item{background:rgba(255,255,255,.55);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:10px;font-size:14px}.review-item.ri-q{color:var(--ink-soft);margin-bottom:6px;line-height:1.4}.review-item.ri-a{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}.syllabus-tag{display:inline-block;font-size:11px;background:var(--bg-2);color:var(--forest);padding:2px 8px;border-radius:4px;font-weight:600;margin-top:4px}.badge{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:600}.badge.ok{background:var(--ok-soft);color:var(--ok)}.badge.bad{background:var(--error-soft);color:var(--error)}
+ @media (max-width:720px){.container{padding:20px 14px 60px}.welcome-card,.results-card{padding:32px 22px}.welcome-meta,.stats-grid{grid-template-columns:1fr;gap:8px}.question-card{padding:26px 22px}.question-text{font-size:19px}.quiz-header{flex-direction:column;align-items:flex-start}.brand-right{display:none}.actions{flex-direction:column-reverse;gap:10px}.actions.btn{width:100%;justify-content:center}
+ }
+ 
+  /* === CRITICAL PRINT FIXES === */
+  
+  /* Force SVG circle fills in print/PDF mode */
+  @media print {
+    .score-circle circle.base-circle,
+    .score-circle circle {
+      fill: #7d5a50 !important;
+    }
+    .score-circle circle.track {
+      fill: #f4f1ea !important;
+      stroke: #f4f1ea !important;
+    }
+    .score-circle circle.fill,
+    #scoreRing {
+      fill: #4a3a35 !important;
+    }
+  }
+@media print {
+    /* Override all backgrounds */
+    .score-circle,
+    .score-circle *,
+    .score-inner,
+    .score-inner *,
+    .score-value,
+    .score-value *,
+    .score-circle track,
+    .score-circle fill,
+    .score-circle .fill,
+    .score-circle .base-circle,
+    .score-circle svg {
+      background: #f4f1ea !important;
+      color: #2c1a0a !important;
+      fill: #2c1a0a !important;  /* SVG fill override */
+      stroke: #2c1a0a !important;
+      opacity: 1 !important;
+      background-blend-mode: normal !important;
+      background-image: none !important;
+    }
+    .score-circle svg {
+      background: #f4f1ea !important;
+    }
+    .score-inner {
+      background: #f4f1ea !important;
+      border: 2px solid #2c1a0a !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
+    .score-value {
+      color: #2c1a0a !important;
+      font-weight: 700 !important;
+      text-shadow: none !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .score-value.slash { color: #2c1a0a !important; }
+    .score-value.max { color: #2c1a0a !important; }
+    
+    /* Force page to render backgrounds */
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+@media print {
+ body { background: #fff; }
+ body::before { display: none; }.brand,.welcome-screen,.quiz-screen,.results-actions,.review-section { display: none !important; }.results-card { box-shadow: none; border: none; padding: 0; }.container { max-width: 100%; padding: 0; }
+ }
+
+ /* === PANEL DOCENTE === */.teacher-panel-opener {
+ position: fixed;
+ right: 20px;
+ bottom: 20px;
+ width: 44px;
+ height: 44px;
+ border-radius: 50%;
+ background: var(--forest);
+ color: #fff;
+ border: none;
+ box-shadow: 0 6px 20px -6px rgba(15,42,35,.5);
+ cursor: pointer;
+ z-index: 999;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 16px;
+ opacity: 0.6;
+ transition: opacity.2s, transform.2s;
+ }.teacher-panel-opener:hover { opacity: 1; transform: scale(1.08); }.teacher-panel-opener.active { background: var(--error); }.teacher-panel-overlay {
+ position: fixed;
+ inset: 0;
+ background: rgba(0,0,0,.5);
+ z-index: 2000;
+ display: none;
+ align-items: flex-start;
+ padding: 30px 20px;
+ overflow-y: auto;
+ }.teacher-panel-overlay.active { display: flex; }.teacher-panel {
+ background: var(--paper);
+ border-radius: 20px;
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 32px;
+ box-shadow: var(--shadow);
+ position: relative;
+ }.teacher-panel h2 {
+ font-family: 'Fraunces', serif;
+ font-size: 24px;
+ color: var(--forest-deep);
+ margin-bottom: 18px;
+ }.teacher-panel.tp-meta {
+ display: flex;
+ gap: 14px;
+ margin-bottom: 22px;
+ flex-wrap: wrap;
+ align-items: center;
+ }.teacher-panel.tp-code {
+ font-family: 'Outfit', sans-serif;
+ padding: 10px 16px;
+ border: 1.5px solid var(--border);
+ border-radius: 10px;
+ font-size: 14px;
+ background: #fff;
+ }.teacher-panel.tp-btn {
+ font-family: 'Outfit', sans-serif;
+ font-weight: 600;
+ font-size: 14px;
+ padding: 10px 18px;
+ border-radius: 10px;
+ border: none;
+ cursor: pointer;
+ transition: background.2s;
+ display: inline-flex;
+ align-items: center;
+ gap: 8px;
+ }.tp-btn-primary { background: var(--forest); color: #fbf6ea; }.tp-btn-primary:hover { background: var(--forest-deep); }.tp-btn-danger { background: var(--error); color: #fff; }.tp-btn-danger:hover { background: #8a3a2d; }.tp-btn-ghost { background: transparent; color: var(--forest); border: 1.5px solid var(--border); }.tp-btn-ghost:hover { background: rgba(31,74,61,.06); }.teacher-panel.tp-close {
+ position: absolute;
+ top: 14px;
+ right: 18px;
+ background: none;
+ border: none;
+ font-size: 22px;
+ color: var(--muted);
+ cursor: pointer;
+ }.tp-results { margin-top: 20px; }.tp-result-item {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 12px 16px;
+ border-bottom: 1px solid var(--border);
+ font-size: 14px;
+ }.tp-result-item:last-child { border-bottom: none; }.tp-result-item.tp-student { font-weight: 600; color: var(--forest-deep); }.tp-result-item.tp-info { color: var(--ink-soft); font-size: 13px; }.tp-result-item.tp-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--gold); }.tp-empty { text-align: center; color: var(--muted); padding: 30px; font-style: italic; }
+.tp-ranking-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.tp-ranking-item:last-child { border-bottom: none; }
+.tp-rank { font-weight: 700; color: var(--gold); min-width: 40px; }
+.tp-student { font-weight: 600; color: var(--forest-deep); flex-grow: 1; }
+.tp-score-rank { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--forest); }
+.tp-time-rank { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; }
+.student-select {
+ width: 100%;
+ padding: 16px 18px;
+ font-family: 'Outfit', sans-serif;
+ font-size: 17px;
+ color: var(--ink);
+ background: #fff;
+ border: 1.5px solid var(--border);
+ border-radius: 12px;
+ outline: none;
+ transition: border-color.2s, box-shadow.2s;
+ cursor: pointer;
+ max-width: 520px;
+ }.student-select:focus {
+ border-color: var(--gold);
+ box-shadow: 0 0 0 4px rgba(184,132,42,.15);
+ }
+
+
+  /* Café crema para 'Calificación final' */
+  .tp-results-title {
+    color: #D4B483 !important;
+    font-weight: 600;
+  }
+
+
+  @media print {
+    .score-circle {
+      background: #f4f1ea !important;  /* Light cream background for PDF */
+      box-shadow: 0 0 0 2px #333 !important;
+    }
+    .score-inner,
+    .score-value,
+    .score-value * {
+      background: #f4f1ea !important;
+      color: #333333 !important;
+      text-shadow: none !important;
+    }
+    .score-value {
+      color: #2c1a0a !important;
+      font-size: 48px !important;
+      font-weight: 900 !important;
+      text-shadow: none !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .score-value.slash,
+    .score-value.max {
+      color: #2c1a0a !important;
+    }
+    .grade-excellent, .grade-good, .grade-fair, .grade-poor {
+      filter: grayscale(50%) !important;
+    }
+    .results-card {
+      border: 2px solid #333 !important;
+      page-break-inside: avoid !important;
+    }
+
+    
+    /* Make grade feedback visible in PDF */
+    .grade-pill, #gradePill { display: block !important; visibility: visible !important; }
+    .grade-pill .fa-book, .grade-pill i { color: #2c1a0a !important; }
+    .grade-pill { 
+      background: #f4f1ea !important; 
+      color: #2c1a0a !important; 
+      border: 1px solid #2c1a0a !important; 
+      padding: 12px 18px !important; 
+      border-radius: 10px !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 600 !important;
+      margin: 12px 0 !important;
+      text-align: center !important;
+      page-break-inside: avoid !important;
+    }
+    .grade-excerpt { 
+      background: #f4f1ea !important; 
+      color: #2c1a0a !important; 
+      padding: 10px 14px !important; 
+      border-radius: 8px !important; 
+      margin-top: 8px !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 14px !important;
+      page-break-inside: avoid !important;
+    }
+/* === ESTILOS CASO EPO AGUACATE === */
+.item-card{background:rgba(255,255,255,.55);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.item-card .item-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.item-card .item-title{font-weight:700;color:var(--forest-deep);font-size:15px}
+.item-card .item-pts{font-family:'Fraunces',serif;font-weight:700;color:var(--gold);font-size:13px;white-space:nowrap}
+.q-number{width:100%;max-width:340px;padding:14px 16px;font-family:'Outfit',sans-serif;font-size:18px;font-weight:600;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color.2s, box-shadow.2s}
+.q-number:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,132,42,.15)}
+.q-number-hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+.q-textarea{width:100%;padding:14px 16px;font-family:'Outfit',sans-serif;font-size:15.5px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;resize:vertical;min-height:150px;line-height:1.55;transition:border-color.2s, box-shadow.2s}
+.q-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,132,42,.15)}
+.ta-counter{font-size:12px;color:var(--muted);margin-top:6px;text-align:right}
+.ta-counter.ok{color:var(--ok);font-weight:600}
+.option.selected{background:rgba(184,132,42,.16);border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,132,42,.12)}
+.pending-note{background:rgba(31,74,61,.06);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--ink-soft);margin:16px 0;text-align:center}
+.save-status{font-size:13px;text-align:center;margin-top:6px;color:var(--muted)}
+.save-status.save-ok{color:var(--ok);font-weight:600}
+.save-status.save-warn{color:var(--gold);font-weight:600}
+.one-attempt-note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:18px}
+.one-attempt-note i{color:var(--forest)}
+.tp-detail{background:rgba(31,74,61,.04);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;color:var(--ink-soft)}
+.tp-detail .d-label{font-weight:700;color:var(--forest);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:10px 0 3px}
+.tp-detail .d-label:first-child{margin-top:0}
+.tp-detail .d-ok{color:var(--ok);font-weight:700}
+.tp-detail .d-bad{color:var(--error);font-weight:700}
+.tp-detail .d-text{white-space:pre-wrap;background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px;line-height:1.5}
+.tp-status-pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.tp-status-pill.open{background:var(--ok-soft);color:var(--ok)}
+.tp-status-pill.closed{background:var(--error-soft);color:var(--error)}
+.tp-expand:hover{background:rgba(31,74,61,.1)}
+/* Anillo de puntaje: arco de progreso */
+#scoreRing{fill:none;stroke:var(--gold);stroke-width:14;stroke-linecap:round;stroke-dasharray:628.32;stroke-dashoffset:628.32;transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset 1.2s ease}
+</style>
+</head>
+<body>
+
+<div class="container">
+ <header class="brand">
+ <div class="brand-left">
+ <div class="brand-mark">A</div>
+ <div class="brand-text">
+ <div class="t1">Programa del Diploma · IB · NM</div>
+ <div class="t2">Economía — Elasticidad precio de la oferta</div>
+ </div>
+ </div>
+ <div class="brand-right"><strong>Análisis de caso</strong><br>Aguacate hass, México 2025</div>
+ </header>
+
+ <section id="welcome-screen" class="screen active">
+ <div class="welcome-card">
+ <span class="eyebrow"><i class="fa-solid fa-seedling"></i> Taller calificado · Microeconomía · 2BGU</span>
+ <h1 class="welcome-title">El mercado del <em>aguacate hass</em></h1>
+ <p class="welcome-sub">Caso de elasticidad precio de la oferta (México, 2025). Resuelve el taller impreso en tu hoja de carpeta con el procedimiento completo y registra aquí tus respuestas: el valor de la EPO, la clasificación e interpretación, y tus análisis de las preguntas 2, 3 y 4.</p>
+
+ <div class="skills-box">
+ <div class="skills-title"><i class="fa-solid fa-brain"></i> Habilidades IB (AO1-AO4) que desarrollarás</div>
+ <ul class="skills-list">
+ <li><strong>Conocimiento y comprensión (AO1-AO2):</strong> Aplicar la fórmula de la elasticidad precio de la oferta, distinguir oferta elástica, inelástica y unitaria, y usar terminología económica con precisión.</li>
+ <li><strong>Aplicación y análisis (AO2-AO3):</strong> Calcular la EPO entre junio y julio con los datos del grupo de productores de Michoacán, interpretar el valor y analizar ganadores y perdedores con evidencia de la noticia.</li>
+ <li><strong>Síntesis y evaluación (AO3-AO4):</strong> Recomendar una estrategia para noviembre justificada en la EPO obtenida, y evaluar subsidio vs apertura a importaciones contrastando corto y largo plazo con sus efectos sobre productores y consumidores.</li>
+ </ul>
+ </div>
+
+ <div class="welcome-meta">
+ <div class="meta-item"><div class="num">4</div><div class="lbl">Preguntas</div></div>
+ <div class="meta-item"><div class="num">1</div><div class="lbl">Intento por estudiante</div></div>
+ <div class="meta-item"><div class="num">/10</div><div class="lbl">Nota final (4 automáticos + 6 docente)</div></div>
+ </div>
+ <div class="form-group">
+ <label for="studentName">Selecciona tu nombre — 2BGU Economía</label>
+ <select id="studentName" class="student-select">
+ <option value="" disabled selected>— Tu nombre —</option>
+ <option value="ALBAN ALTAMIRANO, GIANELLA">ALBAN ALTAMIRANO, GIANELLA</option>
+ <option value="ASPIAZU SOTOMAYOR, CAMILA">ASPIAZU SOTOMAYOR, CAMILA</option>
+ <option value="BARON MEJIA, JULIAN">BARON MEJIA, JULIAN</option>
+ <option value="CAMPUZANO SALAZAR, JUANJOSE">CAMPUZANO SALAZAR, JUANJOSE</option>
+ <option value="CHALEN HERRERA, VICENTE">CHALEN HERRERA, VICENTE</option>
+ <option value="DE LA CRUZ NARANJO, MATEO">DE LA CRUZ NARANJO, MATEO</option>
+ <option value="FLOR LEON, JACINTO">FLOR LEON, JACINTO</option>
+ <option value="GRANDA CONSTANTINE, XAVIER">GRANDA CONSTANTINE, XAVIER</option>
+ <option value="GUERRERO HERDOIZA, IVANNA">GUERRERO HERDOIZA, IVANNA</option>
+ <option value="MARTINEZ LUNA, MATIAS">MARTINEZ LUNA, MATIAS</option>
+ <option value="MENDIBURO CEDEÑO, ADRIAN">MENDIBURO CEDEÑO, ADRIAN</option>
+ <option value="MOLANO CASTRO, EMMANUEL">MOLANO CASTRO, EMMANUEL</option>
+ <option value="MURILLO CHÁVEZ, SERGIO">MURILLO CHÁVEZ, SERGIO</option>
+ <option value="ORTIZ EGAS, SEBASTIAN">ORTIZ EGAS, SEBASTIAN</option>
+ <option value="ORTIZ MONTENEGRO, CARLOS">ORTIZ MONTENEGRO, CARLOS</option>
+ <option value="PABON RENGIFO, VALESKA">PABON RENGIFO, VALESKA</option>
+ <option value="ROMERO MONCADA, JUAN MARTIN">ROMERO MONCADA, JUAN MARTIN</option>
+ <option value="SIERRA TOALA, ERNESTO">SIERRA TOALA, ERNESTO</option>
+ <option value="STARK ROMAN, ALEJANDRA">STARK ROMAN, ALEJANDRA</option>
+ <option value="TAMAYO BONILLA, DOMENICA">TAMAYO BONILLA, DOMENICA</option>
+ <option value="VIZCAINO BONILLA, JULIO">VIZCAINO BONILLA, JULIO</option>
+ <option value="VIZHÑAY VELEZ, VALERIA">VIZHÑAY VELEZ, VALERIA</option>
+ </select>
+ <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.</div>
+ </div>
+ <button class="btn btn-primary" id="startBtn">Comenzar evaluación <i class="fa-solid fa-arrow-right"></i></button>
+ </div>
+ </section>
+
+ <section id="quiz-screen" class="screen">
+ <div class="quiz-header">
+ <div class="student-tag"><i class="fa-solid fa-user-graduate"></i><span>Alumno:</span><strong id="studentDisplay">—</strong></div>
+ <div class="progress-wrap">
+ <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+ <div class="progress-text"><strong id="qCurrent">1</strong> / <span id="qTotal">4</span></div>
+ </div>
+ </div>
+ <div class="question-card" id="questionCard"></div>
+ <div class="actions">
+ <button class="btn btn-ghost" id="quitBtn"><i class="fa-solid fa-door-open"></i> Salir</button>
+ <button class="btn btn-primary" id="nextBtn" disabled>Siguiente pregunta <i class="fa-solid fa-arrow-right"></i></button>
+ </div>
+ </section>
+
+ <section id="results-screen" class="screen">
+ <div class="results-card">
+ <div class="results-eyebrow">Evaluación completada</div>
+ <div class="results-name" id="resultsName">—</div>
+ <div class="score-circle">
+ <svg viewBox="0 0 220 220" style="-webkit-print-color-adjust:exact;print-color-adjust:exact">
+ <circle class="track" cx="110" cy="110" r="100" style="fill:#f4f1ea;stroke:#e4d9bd;stroke-width:14"/>
+ <circle class="fill" id="scoreRing" cx="110" cy="110" r="100"/>
+ </svg>
+ <div class="score-inner">
+ <div class="score-value"><span id="scoreNum">0</span><span class="slash">/</span><span class="max">4</span></div>
+ <div class="score-label">Pregunta 1 · automático</div>
+ </div>
+ </div>
+ <div class="grade-pill" id="gradePill"></div>
+ <div class="pending-note" id="pendingNote"><i class="fa-solid fa-user-check"></i> <strong>Respuestas guardadas.</strong> Las preguntas 2, 3 y 4 quedaron registradas para revisión docente.</div>
+
+ <div class="stats-grid">
+ <div class="stat"><div class="stat-num" id="statEPO">—</div><div class="stat-lbl">EPO registrada</div></div>
+ <div class="stat"><div class="stat-num" id="statClasif">—</div><div class="stat-lbl">Clasificación</div></div>
+ <div class="stat"><div class="stat-num" id="statInterp">—</div><div class="stat-lbl">Interpretación</div></div>
+ </div>
+ <div class="save-status" id="saveStatus">Guardando respuestas…</div>
+ <div class="results-actions">
+ <button class="btn btn-ghost" id="reviewBtn"><i class="fa-solid fa-list-check"></i> Revisar Pregunta 1</button>
+ <button class="btn btn-ghost" onclick="printPDF()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+ </div>
+ <div class="review-section" id="reviewSection" style="display:none;">
+ <div class="review-title"><i class="fa-solid fa-clipboard-list"></i> Revisión de la Pregunta 1</div>
+ <div id="reviewList"></div>
+ </div>
+ <div class="one-attempt-note"><i class="fa-solid fa-lock"></i> Evaluación finalizada: un solo intento por estudiante. Tu nota final sobre 10 puntos (4 de la Pregunta 1 + 6 de revisión docente) la completará tu profesor según la rúbrica del taller.</div>
+ </div>
+ </section>
+</div>
+
+<script>
+/* ============================================================
+ CASO EPO — MERCADO DEL AGUACATE HASS (MÉXICO, 2025)
+ Evaluación 2BGU · Economía IB NM · Logos Academy
+ Flujo: el estudiante resuelve el taller en hoja (procedimiento
+ visible) y registra aquí sus respuestas. La Pregunta 1 se
+ califica automáticamente (4 puntos); las preguntas 2, 3 y 4 se
+ guardan para revisión docente (6 puntos).
+ ============================================================ */
+const QUESTION_BANK = [
+ {id:"p1", type:"block", title:"Pregunta 1 · Cálculo e interpretación (4 puntos)",
+  prompt:"Entre junio y julio de 2025 el precio mayorista promedio del aguacate pasó de MXN 100 a MXN 120 por kilogramo. El grupo de productores de Michoacán con inventario en frío y lotes adelantados elevó la cantidad colocada de 2.500 a 2.575 toneladas. Resuelve el procedimiento en tu hoja (fórmula, variaciones porcentuales y resultado redondeado a dos decimales) y registra aquí tu resultado.",
+  items:[
+   {id:"p1a", type:"number", pts:2, label:"Valor de la elasticidad precio de la oferta (EPO), redondeado a dos decimales", placeholder:"Ej.: 0,15", correct:0.15, tol:0.02,
+    hint:"EPO = variación porcentual de la cantidad ofrecida entre variación porcentual del precio."},
+   {id:"p1b", type:"mcq", pts:1, question:"Con el valor obtenido, la oferta del grupo de productores se clasifica como:",
+    options:["Elástica: la cantidad ofrecida responde con fuerza al precio.",
+             "Inelástica: la cantidad ofrecida responde poco al precio.",
+             "Unitaria: la cantidad ofrecida responde en la misma proporción.",
+             "Perfectamente elástica: cualquier variación del precio altera la oferta."], answer:1},
+   {id:"p1c", type:"mcq", pts:1, question:"El valor revela que la capacidad de respuesta de esos productores fue:",
+    options:["Amplia: la cantidad ofrecida creció más que el precio y aprovechó el alza para vender más fruta.",
+             "Proporcional: la cantidad ofrecida subió en la misma medida que el precio, sin más.",
+             "Nula: la cantidad ofrecida no cambió pese al alza, porque no había fruta disponible.",
+             "Limitada: solo pudieron ofrecer más porque tenían inventario en frío y lotes adelantados."], answer:3}
+  ]},
+ {id:"p2", type:"textarea", title:"Pregunta 2 · Ganadores y perdedores con el alza de julio",
+  prompt:"Analiza quién gana y quién pierde con el alza de julio. Considera al menos a los consumidores mexicanos, a los productores con inventario disponible, a los productores cuyo huerto ya terminó el corte, a los exportadores y al gobierno. Fundamenta cada caso con datos de la noticia.", min:40},
+ {id:"p3", type:"textarea", title:"Pregunta 3 · Estrategia para noviembre",
+  prompt:"En noviembre se reabre la temporada fuerte de cosecha y el precio mayorista cae 25 % respecto del pico de julio. Recomienda a los productores de Michoacán una estrategia frente a ese escenario y justifícala con el valor de elasticidad que obtuviste en la pregunta 1. Indica además una limitación de la estrategia que propones.", min:40},
+ {id:"p4", type:"textarea", title:"Pregunta 4 · Subsidio a la producción vs apertura a importaciones",
+  prompt:"Evalúa cuál de estas dos medidas resulta más adecuada para contener el precio del aguacate durante los meses de temporada baja: un subsidio a la producción nacional o la apertura a las importaciones. Contrasta el corto y el largo plazo, considera los efectos sobre productores y consumidores, y emite un juicio final fundamentado.", min:40}
+];
+const TOTAL_QUESTIONS = 4;
+const AUTO_MAX = 4;
+const EXAM_ID = 'epo-aguacate-2bgu';
+const API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/' + EXAM_ID;
+const LOCAL_KEY = 'aguacate_quiz_results';
+const TEACHER_CODE = 'DOCENTE2026';
+
+const STATE = { studentName:'', currentIndex:0, answers:{p1a:'',p1b:null,p1c:null,p2:'',p3:'',p4:''}, shuffled:{}, startTime:null };
+
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function shuffleWithOptions(opts, correctIdx){ const indexed = opts.map((opt,i)=>({text:opt, originalIdx:i})); const shuffled = shuffle([...indexed]); const newCorrectIdx = shuffled.findIndex(item=>item.originalIdx===correctIdx); return { options: shuffled.map(item=>item.text), answerIdx: newCorrectIdx }; }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+function escapeHtml(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function parseNumber(s){ const t = String(s==null?'':s).trim().replace(',', '.'); const v = parseFloat(t); return isNaN(v) ? null : v; }
+
+function printPDF(){
+ const studentName = document.getElementById('resultsName').textContent.trim();
+ document.title = 'El mercado del aguacate hass — EPO — ' + studentName + '.pdf';
+ window.print();
+}
+
+function startQuiz(){
+ const nameSelect = document.getElementById('studentName');
+ const errorEl = document.getElementById('nameError');
+ const name = nameSelect.value.trim();
+ if(!name){ errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.'; errorEl.classList.add('show'); nameSelect.focus(); return; }
+ errorEl.classList.remove('show');
+ checkQuizOpen().then(open => {
+  if(open === false){
+   errorEl.innerHTML = '<i class="fa-solid fa-lock"></i> La evaluación está cerrada. Tu docente debe abrirla desde el panel docente para que puedas comenzar.';
+   errorEl.classList.add('show');
+   return;
+  }
+  hasCompletedAttempt(name).then(alreadyDone => {
+   if (alreadyDone) {
+    errorEl.innerHTML = '<i class="fa-solid fa-lock"></i> <strong>' + name + '</strong> ya completó esta evaluación. Solo se permite un intento por estudiante; tu docente debe eliminar tu registro para habilitar un nuevo intento.';
+    errorEl.classList.add('show');
+    return;
+   }
+   STATE.studentName = name;
+   STATE.currentIndex = 0;
+   STATE.answers = {p1a:'',p1b:null,p1c:null,p2:'',p3:'',p4:''};
+   STATE.shuffled = {};
+   STATE.startTime = new Date().toISOString();
+   document.getElementById('studentDisplay').textContent = name;
+   document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
+   showScreen('quiz-screen'); renderQuestion();
+  });
+ });
+}
+
+async function checkQuizOpen(){
+ try {
+  const res = await fetch(API_BASE + '/status');
+  if (res.ok) { const s = await res.json(); return s ? !!s.open : true; }
+ } catch(e) {}
+ return true; // sin API disponible, permitir (respaldo local)
+}
+
+// Verificación de intento único: bloquea si el estudiante ya tiene un registro
+// (en la API o en localStorage). El docente desbloquea eliminando el registro.
+async function hasCompletedAttempt(name) {
+ const normalized = name.trim().toUpperCase();
+ try {
+  const res = await fetch(API_BASE + '/grades');
+  if (res.ok) {
+   const grades = await res.json();
+   const found = (grades || []).some(g => {
+    const gn = String(g.studentName || g.name || '').trim().toUpperCase();
+    return gn === normalized;
+   });
+   return found;
+  }
+ } catch(e) {}
+ try {
+  const saved = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+  return saved.some(r => String(r.studentName || '').trim().toUpperCase() === normalized);
+ } catch(e) { return false; }
+}
+
+function renderItem(it){
+ if (it.type === 'number'){
+  const val = STATE.answers[it.id] || '';
+  return '<div class="item-card">' +
+   '<div class="item-head"><span class="item-title">' + it.label + '</span><span class="item-pts">' + it.pts + ' pt' + (it.pts>1?'s':'') + '</span></div>' +
+   '<input type="text" inputmode="decimal" class="q-number" id="num-' + it.id + '" placeholder="' + it.placeholder + '" value="' + escapeHtml(val) + '">' +
+   '<div class="q-number-hint"><i class="fa-solid fa-lightbulb"></i> ' + it.hint + '</div>' +
+   '</div>';
+ }
+ if (it.type === 'mcq'){
+  const sh = STATE.shuffled[it.id] || shuffleWithOptions(it.options, it.answer);
+  STATE.shuffled[it.id] = sh;
+  const sel = STATE.answers[it.id];
+  return '<div class="item-card">' +
+   '<div class="item-head"><span class="item-title">' + it.question + '</span><span class="item-pts">' + it.pts + ' pt' + (it.pts>1?'s':'') + '</span></div>' +
+   '<div class="options">' +
+   sh.options.map((opt,i)=>'<button class="option' + (sel===i?' selected':'') + '" data-item="' + it.id + '" data-idx="' + i + '"><span class="option-letter">' + String.fromCharCode(65+i) + '</span><span class="option-text">' + opt + '</span></button>').join('') +
+   '</div></div>';
+ }
+ return '';
+}
+
+function renderQuestion(){
+ const q = QUESTION_BANK[STATE.currentIndex];
+ const card = document.getElementById('questionCard');
+ const num = STATE.currentIndex + 1;
+ let html = '<div class="q-topic"><span class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block"></span> ' + q.title + '</div>';
+ if (q.type === 'block'){
+  html += '<div class="scenario"><span class="scenario-label">Datos del caso</span>' + q.prompt + '</div>';
+  html += q.items.map(renderItem).join('');
+ } else {
+  html += '<div class="scenario"><span class="scenario-label">Enunciado</span>' + q.prompt + '</div>';
+  const cur = STATE.answers[q.id] || '';
+  html += '<div class="textarea-wrap"><textarea class="q-textarea" id="ta-' + q.id + '" rows="8" placeholder="Escribe aquí tu respuesta. Organiza tus ideas en la hoja antes de responder.">' + escapeHtml(cur) + '</textarea>' +
+   '<div class="ta-counter' + (cur.length >= q.min ? ' ok' : '') + '" id="ta-count-' + q.id + '">' + cur.length + ' caracteres (mínimo ' + q.min + ')</div></div>';
+ }
+ card.innerHTML = html;
+
+ if (q.type === 'block'){
+  q.items.forEach(it => {
+   if (it.type === 'number'){
+    const inp = document.getElementById('num-' + it.id);
+    inp.addEventListener('input', () => { STATE.answers[it.id] = inp.value; updateNext(); });
+   } else if (it.type === 'mcq'){
+    document.querySelectorAll('.option[data-item="' + it.id + '"]').forEach(btn => btn.addEventListener('click', () => selectMcq(it.id, parseInt(btn.dataset.idx))));
+   }
+  });
+ } else {
+  const ta = document.getElementById('ta-' + q.id);
+  ta.addEventListener('input', () => {
+   STATE.answers[q.id] = ta.value;
+   const c = document.getElementById('ta-count-' + q.id);
+   c.textContent = ta.value.length + ' caracteres (mínimo ' + q.min + ')';
+   c.classList.toggle('ok', ta.value.length >= q.min);
+   updateNext();
+  });
+ }
+ document.getElementById('progressFill').style.width = ((STATE.currentIndex / TOTAL_QUESTIONS) * 100) + '%';
+ document.getElementById('qCurrent').textContent = num;
+ const nextBtn = document.getElementById('nextBtn');
+ nextBtn.innerHTML = (num === TOTAL_QUESTIONS) ? 'Finalizar y guardar <i class="fa-solid fa-flag-checkered"></i>' : 'Siguiente pregunta <i class="fa-solid fa-arrow-right"></i>';
+ updateNext();
+}
+
+function selectMcq(itemId, idx){
+ const btns = document.querySelectorAll('.option[data-item="' + itemId + '"]');
+ btns.forEach(b => b.classList.remove('selected'));
+ const chosen = document.querySelector('.option[data-item="' + itemId + '"][data-idx="' + idx + '"]');
+ if (chosen) chosen.classList.add('selected');
+ STATE.answers[itemId] = idx;
+ updateNext();
+}
+
+function updateNext(){
+ const q = QUESTION_BANK[STATE.currentIndex];
+ const nextBtn = document.getElementById('nextBtn');
+ let ready = false;
+ if (q.type === 'block'){
+  ready = q.items.every(it => {
+   if (it.type === 'number') return parseNumber(STATE.answers[it.id]) !== null;
+   return STATE.answers[it.id] !== null;
+  });
+ } else {
+  ready = (STATE.answers[q.id] || '').length >= q.min;
+ }
+ nextBtn.disabled = !ready;
+}
+
+function nextQuestion(){
+ if (STATE.currentIndex < TOTAL_QUESTIONS - 1){ STATE.currentIndex++; renderQuestion(); }
+ else { showResults(); }
+}
+
+function computeAutoScore(){
+ const items = QUESTION_BANK[0].items;
+ const val = parseNumber(STATE.answers.p1a);
+ const p1aOK = val !== null && Math.abs(val - items[0].correct) <= items[0].tol;
+ const p1bSh = STATE.shuffled.p1b; const p1bOK = p1bSh ? STATE.answers.p1b === p1bSh.answerIdx : false;
+ const p1cSh = STATE.shuffled.p1c; const p1cOK = p1cSh ? STATE.answers.p1c === p1cSh.answerIdx : false;
+ const score = (p1aOK?2:0) + (p1bOK?1:0) + (p1cOK?1:0);
+ return { p1aOK: p1aOK, p1bOK: p1bOK, p1cOK: p1cOK, score: score, val: val };
+}
+
+function showResults(){
+ const res = computeAutoScore();
+ const p1aOK = res.p1aOK, p1bOK = res.p1bOK, p1cOK = res.p1cOK, score = res.score, val = res.val;
+ document.getElementById('resultsName').textContent = STATE.studentName;
+ document.getElementById('statEPO').textContent = (val !== null ? val.toFixed(2).replace('.', ',') : '—') + (p1aOK ? ' ✓' : '');
+ document.getElementById('statClasif').textContent = p1bOK ? '✓ Correcta' : '✗ Revisar';
+ document.getElementById('statInterp').textContent = p1cOK ? '✓ Correcta' : '✗ Revisar';
+
+ const scoreNum = document.getElementById('scoreNum');
+ let current = 0; const target = score; const step = Math.max(target / 30, 0.1);
+ const interval = setInterval(()=>{ current += step; if(current >= target){ current = target; clearInterval(interval); } scoreNum.textContent = current.toFixed(0); }, 30);
+
+ const circumference = 2 * Math.PI * 100;
+ setTimeout(()=>{ document.getElementById('scoreRing').style.strokeDashoffset = circumference * (1 - score/AUTO_MAX); }, 150);
+
+ const pill = document.getElementById('gradePill');
+ let grade, icon, cls;
+ if(score === 4){ grade='Cálculo e interpretación perfectos'; icon='fa-trophy'; cls='grade-excellent'; }
+ else if(score === 3){ grade='Buen trabajo: revisa un detalle en la revisión de abajo'; icon='fa-thumbs-up'; cls='grade-good'; }
+ else if(score === 2){ grade='Mitad de la Pregunta 1: repasa fórmula o clasificación'; icon='fa-circle-check'; cls='grade-fair'; }
+ else { grade='Repasa la fórmula de la EPO y la clasificación elástica/inelástica'; icon='fa-book'; cls='grade-poor'; }
+ pill.className = 'grade-pill ' + cls;
+ pill.innerHTML = '<i class="fa-solid ' + icon + '"></i> ' + grade;
+
+ document.getElementById('pendingNote').innerHTML = '<i class="fa-solid fa-user-check"></i> <strong>Respuestas guardadas.</strong> Las preguntas 2, 3 y 4 quedaron registradas para revisión docente. Tu nota final sobre 10 puntos (4 de la Pregunta 1 + 6 de revisión) la completará tu profesor según la rúbrica del taller.';
+
+ document.getElementById('reviewSection').style.display = 'none';
+ document.getElementById('reviewList').innerHTML = '';
+ showScreen('results-screen');
+ saveResultToAPI();
+}
+
+function toggleReview(){
+ const section = document.getElementById('reviewSection');
+ const list = document.getElementById('reviewList');
+ const visible = section.style.display === 'block';
+ if(!visible){
+  if(list.children.length === 0){
+   const items = QUESTION_BANK[0].items;
+   const res = computeAutoScore();
+   const rows = [];
+   rows.push({ q: items[0].label, ok: res.p1aOK, yours: (res.val !== null ? res.val.toFixed(2).replace('.', ',') : '—'), correct: '0,15' });
+   const shB = STATE.shuffled.p1b; const optB = shB ? shB.options[STATE.answers.p1b] : ''; const corrB = shB ? shB.options[shB.answerIdx] : '';
+   rows.push({ q: items[1].question, ok: res.p1bOK, yours: optB, correct: corrB });
+   const shC = STATE.shuffled.p1c; const optC = shC ? shC.options[STATE.answers.p1c] : ''; const corrC = shC ? shC.options[shC.answerIdx] : '';
+   rows.push({ q: items[2].question, ok: res.p1cOK, yours: optC, correct: corrC });
+   list.innerHTML = rows.map((r, i) =>
+    '<div class="review-item">' +
+    '<div class="ri-q"><strong>' + (i+1) + '.</strong> ' + r.q + '</div>' +
+    '<div class="ri-a"><span class="badge ' + (r.ok?'ok':'bad') + '">' + (r.ok?'Correcta':'Incorrecta') + '</span> Tu respuesta: ' + escapeHtml(r.yours) +
+    (!r.ok ? ' &nbsp;·&nbsp; <span style="color:var(--ok);font-weight:600">Correcta: ' + escapeHtml(r.correct) + '</span>' : '') +
+    '</div></div>'
+   ).join('');
+  }
+  section.style.display = 'block';
+ } else { section.style.display = 'none'; }
+}
+
+function saveResultToAPI(){
+ const res = computeAutoScore();
+ const shB = STATE.shuffled.p1b; const shC = STATE.shuffled.p1c;
+ const payload = {
+  name: STATE.studentName,
+  cls: '2BGU Economía',
+  score: res.score,
+  scoreAuto: res.score,
+  p1a: { value: (res.val !== null ? res.val.toFixed(2) : null), ok: res.p1aOK },
+  p1b: { sel: shB ? shB.options[STATE.answers.p1b] : null, ok: res.p1bOK },
+  p1c: { sel: shC ? shC.options[STATE.answers.p1c] : null, ok: res.p1cOK },
+  p2: STATE.answers.p2, p3: STATE.answers.p3, p4: STATE.answers.p4,
+  timestamp: new Date().toLocaleString('es-EC', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false }),
+  startTimestamp: STATE.startTime,
+  endTimestamp: new Date().toISOString(),
+  totalDurationSeconds: Math.round((Date.now() - new Date(STATE.startTime).getTime()) / 1000)
+ };
+ fetch(API_BASE + '/grades', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify(payload)
+ }).then(r => { if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+   .then(() => { const el = document.getElementById('saveStatus'); el.textContent = '✓ Guardado en la nube'; el.className = 'save-status save-ok'; })
+   .catch(e => { console.warn('API save failed, fallback localStorage:', e); const el = document.getElementById('saveStatus'); el.textContent = '⚠ Guardado local (sin conexión a la nube)'; el.className = 'save-status save-warn'; });
+ try {
+  const saved = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+  saved.push(payload);
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(saved));
+ } catch(e) { console.warn('localStorage save failed:', e); }
+}
+
+/* === PANEL DOCENTE === */
+function loadResultsFromAPI(){
+ try {
+  return fetch(API_BASE + '/grades').then(r => r.ok ? r.json() : []).catch(() => []);
+ } catch(e){ return Promise.resolve([]); }
+}
+async function loadAllResults(){
+ let localResults = [];
+ try { localResults = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); } catch(e) {}
+ const apiResults = await loadResultsFromAPI();
+ const apiNames = new Set(apiResults.map(r => r.name || r.studentName));
+ const localOnly = localResults.filter(r => !apiNames.has(r.studentName));
+ return [...apiResults, ...localOnly];
+}
+function clearResultsFromLocalStorage(){ localStorage.removeItem(LOCAL_KEY); }
+
+function tpDetailHtml(r){
+ const p1a = r.p1a || {};
+ const p1b = r.p1b || {};
+ const p1c = r.p1c || {};
+ let h = '<div class="d-label">Pregunta 1 · Cálculo (EPO)</div>';
+ h += '<div class="d-text">EPO registrada: <strong>' + escapeHtml(p1a.value != null ? p1a.value.replace('.', ',') : '—') + '</strong> <span class="' + (p1a.ok ? 'd-ok' : 'd-bad') + '">' + (p1a.ok ? 'CORRECTA (0,15)' : 'INCORRECTA (correcta: 0,15)') + '</span></div>';
+ h += '<div class="d-label">Pregunta 1 · Clasificación</div>';
+ h += '<div class="d-text">' + escapeHtml(p1b.sel || '—') + ' <span class="' + (p1b.ok ? 'd-ok' : 'd-bad') + '">' + (p1b.ok ? 'CORRECTA' : 'INCORRECTA') + '</span></div>';
+ h += '<div class="d-label">Pregunta 1 · Interpretación</div>';
+ h += '<div class="d-text">' + escapeHtml(p1c.sel || '—') + ' <span class="' + (p1c.ok ? 'd-ok' : 'd-bad') + '">' + (p1c.ok ? 'CORRECTA' : 'INCORRECTA') + '</span></div>';
+ h += '<div class="d-label">Pregunta 2 · Ganadores y perdedores</div><div class="d-text">' + escapeHtml(r.p2 || '—') + '</div>';
+ h += '<div class="d-label">Pregunta 3 · Estrategia para noviembre</div><div class="d-text">' + escapeHtml(r.p3 || '—') + '</div>';
+ h += '<div class="d-label">Pregunta 4 · Subsidio vs importaciones</div><div class="d-text">' + escapeHtml(r.p4 || '—') + '</div>';
+ return h;
+}
+
+function renderTpResults(results){
+ const wrap = document.getElementById('tpResults');
+ if (!results || results.length === 0){ wrap.innerHTML = '<div class="tp-empty">No hay respuestas guardadas aún.</div>'; document.getElementById('tpCount').textContent = ''; return; }
+ document.getElementById('tpCount').textContent = results.length + ' registro(s)';
+ wrap.innerHTML = results.map((r, i) => {
+  const name = escapeHtml(r.name || r.studentName || 'Sin nombre');
+  const date = r.timestamp || (r.savedAt ? new Date(r.savedAt).toLocaleString('es-EC') : 'N/A');
+  const score = (r.scoreAuto != null ? r.scoreAuto : (r.score != null ? r.score : '—'));
+  return '<div class="tp-result-item" style="flex-direction:column;align-items:stretch;">' +
+   '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;">' +
+    '<div><div class="tp-student">' + name + '</div><div class="tp-info">' + date + '</div></div>' +
+    '<div style="display:flex;align-items:center;gap:12px;"><div class="tp-score">' + score + '/4</div>' +
+    '<button class="tp-btn tp-btn-ghost tp-expand" data-expand="' + i + '" style="padding:6px 10px;font-size:12px;"><i class="fa-solid fa-eye"></i> Ver respuestas</button></div>' +
+   '</div>' +
+   '<div class="tp-detail" id="tp-detail-' + i + '" style="display:none;">' + tpDetailHtml(r) + '</div>' +
+  '</div>';
+ }).join('');
+}
+
+async function exportResultsCSV(){
+ const results = await loadAllResults();
+ if (results.length === 0){ alert('No hay respuestas para exportar.'); return; }
+ const header = 'Nombre,Curso,EPO calculada,Clasificacion,Interpretacion,P1 automatico /4,Pregunta 2,Pregunta 3,Pregunta 4,Fecha,Duración (s)';
+ const esc = (v) => { const s = String(v == null ? '' : v); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+ const rows = results.map(r => {
+  const name = r.name || r.studentName || 'Sin nombre';
+  const date = r.timestamp || (r.savedAt ? new Date(r.savedAt).toLocaleString('es-EC') : 'N/A');
+  const p1a = (r.p1a && r.p1a.value != null) ? r.p1a.value : '';
+  const p1b = (r.p1b && r.p1b.sel) || '';
+  const p1c = (r.p1c && r.p1c.sel) || '';
+  const auto = (r.scoreAuto != null ? r.scoreAuto : (r.score != null ? r.score : ''));
+  const dur = r.totalDurationSeconds || '';
+  return [name, r.cls || '2BGU Economía', p1a, p1b, p1c, auto, r.p2 || '', r.p3 || '', r.p4 || '', date, dur].map(esc).join(',');
+ });
+ const csv = '\ufeff' + [header, ...rows].join('\r\n');
+ const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = 'notas_epo_aguacate_2bgu.csv';
+ a.click();
+ URL.revokeObjectURL(url);
+}
+
+/* === PANEL DOCENTE: eventos === */
+document.addEventListener('DOMContentLoaded', function() {
+ const tpOpener = document.getElementById('tpOpener');
+ const tpOverlay = document.getElementById('tpOverlay');
+ if (!tpOpener || !tpOverlay) return;
+
+ document.addEventListener('keydown', e => {
+  if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd'){ e.preventDefault(); tpOpener.classList.toggle('active'); tpOverlay.classList.toggle('active'); }
+ });
+ tpOpener.addEventListener('click', () => { tpOpener.classList.add('active'); tpOverlay.classList.add('active'); });
+ document.getElementById('tpClose').addEventListener('click', () => { tpOverlay.classList.remove('active'); tpOpener.classList.remove('active'); });
+
+ let quizOpen = true;
+ async function refreshStatus(){
+  try {
+   const res = await fetch(API_BASE + '/status');
+   if (res.ok){ const s = await res.json(); quizOpen = !!s.open; }
+  } catch(e) {}
+  document.getElementById('tpStatusLabel').textContent = quizOpen ? 'Cerrar evaluación' : 'Abrir evaluación';
+  const pill = document.getElementById('tpStatusPill');
+  pill.className = 'tp-status-pill ' + (quizOpen ? 'open' : 'closed');
+  pill.textContent = quizOpen ? 'Abierta' : 'Cerrada';
+ }
+
+ document.getElementById('tpLoginBtn').addEventListener('click', async () => {
+  const code = document.getElementById('tpCode').value.trim();
+  if (code !== TEACHER_CODE){ alert('Código incorrecto. Intenta nuevamente.'); return; }
+  document.getElementById('tpActions').style.display = 'flex';
+  refreshStatus();
+  document.getElementById('tpResults').innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-soft);">Cargando respuestas...</div>';
+  try {
+   const results = await loadAllResults();
+   renderTpResults(results);
+  } catch(e) {
+   console.error('Error loading results:', e);
+   document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Error al cargar respuestas.</div>';
+  }
+ });
+
+ document.getElementById('tpToggleStatus').addEventListener('click', async () => {
+  try {
+   await fetch(API_BASE + '/status', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ open: !quizOpen })
+   });
+  } catch(e) { console.warn('Status toggle failed:', e); }
+  await refreshStatus();
+ });
+ refreshStatus();
+
+ document.getElementById('tpResults').addEventListener('click', e => {
+  const btn = e.target.closest('[data-expand]');
+  if (!btn) return;
+  const i = btn.dataset.expand;
+  const d = document.getElementById('tp-detail-' + i);
+  if (d) d.style.display = d.style.display === 'none' ? 'block' : 'none';
+ });
+
+ document.getElementById('tpExportCsv').addEventListener('click', () => exportResultsCSV());
+
+ document.getElementById('tpClear').addEventListener('click', async () => {
+  if (confirm('¿Borrar TODAS las respuestas? Esta acción no se puede deshacer.')) {
+   clearResultsFromLocalStorage();
+   try {
+    await fetch(API_BASE + '/clear', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ action:'clear_all', examId: EXAM_ID }) });
+   } catch(e) { console.warn('API clear failed (grades may persist on server):', e); }
+   document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Respuestas borradas.</div>';
+   document.getElementById('tpCount').textContent = '';
+  }
+ });
+});
+
+/* === Listeners principales === */
+function safeListener(id, event, handler, ctx){
+ try {
+  const el = typeof id === 'string' ? document.getElementById(id) : id;
+  if (el) el.addEventListener(ctx || event, handler);
+  else console.warn('[Quiz] Element not found:', id);
+ } catch (e) { console.error('[Quiz] Listener error:', e); }
+}
+safeListener('startBtn', 'click', startQuiz);
+safeListener('studentName', 'change', startQuiz, 'change');
+safeListener('nextBtn', 'click', nextQuestion);
+safeListener('quitBtn', 'click', () => { if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ showScreen('welcome-screen'); } });
+safeListener('reviewBtn', 'click', toggleReview);
+
+document.addEventListener('keydown', e => {
+ if (!document.getElementById('quiz-screen').classList.contains('active')) return;
+ const tag = (e.target.tagName || '').toLowerCase();
+ if (tag === 'textarea' || tag === 'input') return;
+ const nextBtn = document.getElementById('nextBtn');
+ if (!nextBtn.disabled && (e.key === 'Enter' || e.key === ' ')) {
+  e.preventDefault();
+  nextQuestion();
+ }
+});
+</script>
+
+<!-- PANEL DOCENTE -->
+<button class="teacher-panel-opener" id="tpOpener" title="Panel docente (ALT+SHIFT+D)">
+ <i class="fa-solid fa-chalkboard-user"></i>
+</button>
+<div class="teacher-panel-overlay" id="tpOverlay">
+ <div class="teacher-panel">
+ <button class="tp-close" id="tpClose">&times;</button>
+ <h2><i class="fa-solid fa-clipboard-list"></i> Panel Docente</h2>
+ <p style="font-size:14px;color:var(--ink-soft);margin-bottom:18px;">
+ Accede con el código para abrir/cerrar la evaluación, consultar las respuestas de cada estudiante y exportar las notas.
+ </p>
+ <div class="tp-meta" style="margin-bottom:20px;">
+ <input type="password" id="tpCode" class="tp-code" placeholder="Código docente (ALT+SHIFT+D)" style="flex:1;min-width:200px;">
+ <button class="tp-btn tp-btn-primary" id="tpLoginBtn"><i class="fa-solid fa-unlock"></i> Acceder</button>
+ </div>
+ <div class="tp-meta" id="tpActions" style="display:none;">
+ <button class="tp-btn tp-btn-ghost" id="tpToggleStatus"><i class="fa-solid fa-power-off"></i> <span id="tpStatusLabel">Estado…</span> <span id="tpStatusPill" class="tp-status-pill closed">Cerrada</span></button>
+ <button class="tp-btn tp-btn-ghost" id="tpExportCsv"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+ <button class="tp-btn tp-btn-danger" id="tpClear"><i class="fa-solid fa-trash"></i> Limpiar notas</button>
+ <span class="tp-count" id="tpCount" style="font-size:13px;color:var(--muted);"></span>
+ </div>
+ <div class="tp-results" id="tpResults">
+ <div class="tp-empty">Ingresa el código para ver las respuestas de los estudiantes.</div>
+ </div>
+ </div>
+</div>
+</body>

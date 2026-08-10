@@ -1,8 +1,18 @@
 #!/bin/bash
 # hermes-auto-qc-hook v1
+# Valida todos los quizzes del repo antes de cada commit.
 echo "🔍 Running Auto-QC Loop..."
-python3 .githooks/qc-validate.py quiz_macroeconomia_ib_nm.html
-if [ $? -ne 0 ]; then
+FAILED=0
+for f in quiz_*.html; do
+  [ -e "$f" ] || continue
+  echo "── $f"
+  python3 .githooks/qc-validate.py "$f"
+  if [ $? -ne 0 ]; then
+    echo "❌ QC FAILED — $f"
+    FAILED=1
+  fi
+done
+if [ $FAILED -ne 0 ]; then
   echo "❌ QC FAILED — Commit bloqueado. Arregla antes de hacer commit."
   exit 1
 fi

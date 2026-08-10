@@ -90,14 +90,17 @@ def validate(html_path):
     else:
         print(f"✅ Parenthetical_explanations: Clean")
 
-    # 5. Score visibility
-    has_white_text = re.search(r'\.score-value\{[^}]*color:#ffffff', html)
-    has_brown_bg = re.search(r'\.score-inner\{[^}]*background:[^}]*#[4-7][da5a][0-9a-f]', html)
-    if not (has_white_text and has_brown_bg):
-        print(f"❌ score_visibility: Low contrast detected")
-        passed = False
+    # 5. Score visibility (solo aplica si el quiz tiene anillo de puntaje)
+    if 'score-circle' in html:
+        has_white_text = re.search(r'\.score-value\{[^}]*color:#ffffff', html)
+        has_brown_bg = re.search(r'\.score-inner\{[^}]*background:[^}]*#[4-7][da5a][0-9a-f]', html)
+        if not (has_white_text and has_brown_bg):
+            print(f"❌ score_visibility: Low contrast detected")
+            passed = False
+        else:
+            print(f"✅ score_visibility: Visible on brown background")
     else:
-        print(f"✅ score_visibility: Visible on brown background")
+        print(f"✅ score_visibility: Sin anillo de puntaje (check omitido)")
 
     return passed
 
