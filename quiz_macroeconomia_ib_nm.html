@@ -473,15 +473,45 @@ function startQuiz(){
  const nameSelect = document.getElementById('studentName');
  const errorEl = document.getElementById('nameError');
  const name = nameSelect.value.trim();
- if(!name){ errorEl.classList.add('show'); nameSelect.focus(); return; }
+ if(!name){ errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.'; errorEl.classList.add('show'); nameSelect.focus(); return; }
  errorEl.classList.remove('show');
- STATE.studentName = name;
- STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
- STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
- STATE.startTime = new Date().toISOString();  // ← Capture start timestamp
- document.getElementById('studentDisplay').textContent = name;
- document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
- showScreen('quiz-screen'); renderQuestion();
+ hasCompletedAttempt(name).then(alreadyDone => {
+  if (alreadyDone) {
+   errorEl.innerHTML = '<i class="fa-solid fa-lock"></i> <strong>' + name + '</strong> ya completó esta evaluación. Solo se permite un intento por estudiante; tu docente debe eliminar tu registro para habilitar un nuevo intento.';
+   errorEl.classList.add('show');
+   return;
+  }
+  STATE.studentName = name;
+  STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
+  STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
+  STATE.startTime = new Date().toISOString();  // ← Capture start timestamp
+  document.getElementById('studentDisplay').textContent = name;
+  document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
+  showScreen('quiz-screen'); renderQuestion();
+ });
+}
+
+// ⏱️ Verificación de intento único: bloquea si el estudiante ya tiene un registro
+// (en la API o en localStorage). El docente desbloquea eliminando el registro.
+async function hasCompletedAttempt(name) {
+ const normalized = name.trim().toUpperCase();
+ // 1) Fuente autoritativa: API (compartida entre dispositivos)
+ try {
+  const res = await fetch(API_BASE + '/grades');
+  if (res.ok) {
+   const grades = await res.json();
+   const found = (grades || []).some(g => {
+    const gn = String(g.studentName || g.name || '').trim().toUpperCase();
+    return gn === normalized;
+   });
+   return found; // si la API responde, es la verdad (docente borró → permite)
+  }
+ } catch(e) { /* API no disponible → usar localStorage */ }
+ // 2) Respaldo: localStorage del dispositivo
+ try {
+  const saved = JSON.parse(localStorage.getItem('macro_quiz_results') || '[]');
+  return saved.some(r => String(r.studentName || '').trim().toUpperCase() === normalized);
+ } catch(e) { return false; }
 }
 
 function renderQuestion(){
