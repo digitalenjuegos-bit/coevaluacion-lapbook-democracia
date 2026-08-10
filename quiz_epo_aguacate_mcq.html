@@ -287,7 +287,7 @@
  <div class="welcome-card">
  <span class="eyebrow"><i class="fa-solid fa-seedling"></i> Práctica de repaso · Microeconomía · 2BGU</span>
  <h1 class="welcome-title">El mercado del <em>aguacate hass</em></h1>
- <p class="welcome-sub">Cuestionario de repaso sobre elasticidad precio de la oferta. Relaciona la teoría de la presentación (fórmula, determinantes, diagrama), los conceptos clave del programa y los datos del caso: el precio pasó de MXN 100 a MXN 120 y un grupo de productores elevó su oferta de 2.500 a 2.575 toneladas. Cada pregunta muestra la explicación al final; puedes intentarlo todas las veces que quieras.</p>
+ <p class="welcome-sub">Cuestionario de repaso sobre elasticidad precio de la oferta. <strong>Lee primero el caso impreso</strong> del aguacate hass (México, 2025): el precio pasó de MXN 100 a MXN 120 y un grupo de productores elevó su oferta de 2.500 a 2.575 toneladas. Luego responde las 20 preguntas aleatorias, que relacionan la teoría de la presentación, los conceptos clave del programa y los datos del caso. <strong>Solo tienes un intento</strong>; al final verás la explicación de cada pregunta.</p>
  
  <div class="skills-box">
  <div class="skills-title"><i class="fa-solid fa-brain"></i> Habilidades IB (AO1-AO4) que desarrollarás</div>
@@ -299,9 +299,9 @@
  </div>
 
  <div class="welcome-meta">
- <div class="meta-item"><div class="num">10</div><div class="lbl">Preguntas por intento</div></div>
- <div class="meta-item"><div class="num">22</div><div class="lbl">Banco de casos</div></div>
- <div class="meta-item"><div class="num">/10</div><div class="lbl">Nota referencial</div></div>
+ <div class="meta-item"><div class="num">20</div><div class="lbl">Preguntas por intento</div></div>
+ <div class="meta-item"><div class="num">31</div><div class="lbl">Banco de casos</div></div>
+ <div class="meta-item"><div class="num">1</div><div class="lbl">Intento por estudiante</div></div>
  </div>
  <div class="form-group">
  <label for="studentName">Selecciona tu nombre — 2BGU Economía</label>
@@ -382,7 +382,7 @@
  <div class="results-actions">
  <button class="btn btn-ghost" id="reviewBtn"><i class="fa-solid fa-list-check"></i> Revisar respuestas</button>
  <button class="btn btn-ghost" onclick="printPDF()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
- <button class="btn btn-primary" id="retryBtn"><i class="fa-solid fa-rotate-right"></i> Intentar de nuevo</button>
+ <p style="font-size:12.5px;color:var(--muted);text-align:center;margin-top:14px;"><i class="fa-solid fa-lock"></i> Práctica finalizada: un solo intento por estudiante. Tu docente puede eliminar tu registro para habilitar un nuevo intento.</p>
  </div>
  <div class="review-section" id="reviewSection" style="display:none;">
  <div class="review-title"><i class="fa-solid fa-clipboard-list"></i> Revisión detallada de casos</div>
@@ -605,12 +605,95 @@ const QUESTION_BANK = [
            "Intervención: el Estado participa para corregir fallas del mercado.",
            "Bienestar económico: los hogares mantienen su poder de compra."],
   answer:0,
-  explanation:"Los precios transmiten información: el alza indica que conviene producir más, y solo quienes pueden responder lo hacen. Esa función de señal orienta la asignación de recursos (eficiencia)."}
+  explanation:"Los precios transmiten información: el alza indica que conviene producir más, y solo quienes pueden responder lo hacen. Esa función de señal orienta la asignación de recursos (eficiencia)."},
+ // ========== AMPLIACIÓN DEL BANCO (31 preguntas) ==========
+ {topic:"P1 · Cálculo", unit:"Taller P1", concept:"—", syllabus:"Método del punto medio",
+  scenario:"Entre junio y julio de 2025 el precio del aguacate pasó de MXN 100 a MXN 120 y el grupo de Michoacán elevó su cantidad colocada de 2.500 a 2.575 toneladas.",
+  question:"Usando el método del punto medio que recomienda la presentación, la elasticidad precio de la oferta del grupo es:",
+  options:["0,16: se usa el promedio de los valores inicial y final como base.",
+           "0,15: se usan los valores iniciales de junio como base del cálculo.",
+           "0,17: se usan los valores finales de julio como base del cálculo.",
+           "6,67: se invierte la fórmula: cambio del precio entre cambio de cantidad."],
+  answer:0,
+  explanation:"Punto medio: variación de la cantidad = 75 / 2.537,5 = 2,96 %; variación del precio = 20 / 110 = 18,18 %. EPO = 2,96 / 18,18 = 0,16. El taller pide base inicial (0,15); la presentación recomienda el punto medio."},
+ {topic:"P1 · Cálculo", unit:"Taller P1", concept:"—", syllabus:"Variación porcentual",
+  scenario:"El grupo de productores de Michoacán elevó su cantidad colocada de 2.500 a 2.575 toneladas entre junio y julio de 2025.",
+  question:"La variación porcentual de la cantidad ofrecida del grupo fue:",
+  options:["3 %: el aumento de 75 toneladas se divide entre las 2.500 iniciales.",
+           "2,9 %: el aumento se divide entre las 2.575 toneladas finales del mes.",
+           "20 %: es la misma variación porcentual del precio del aguacate.",
+           "75 %: el aumento se expresa en toneladas, no en porcentaje."],
+  answer:0,
+  explanation:"Variación porcentual sobre el valor inicial: 75 / 2.500 = 3 %. Si se usara la base final daría 2,9 %, y el 20 % corresponde al precio, no a la cantidad."},
+ {topic:"Determinante · Complejidad", unit:"Presentación", concept:"—", syllabus:"Complejidad del proceso productivo",
+  scenario:"En la presentación, un avión comercial tarda unos 18 meses en producirse y el pan fresco se elabora en horas.",
+  question:"¿Qué determinante de la EPO explica la diferencia de respuesta entre ambos bienes?",
+  options:["La complejidad del proceso: el avión exige producción larga, especializada y de capital intensivo.",
+           "La disponibilidad de inventarios: el pan se almacena meses y el avión no se puede guardar.",
+           "La movilidad de los factores: los trabajadores del pan son más difíciles de contratar.",
+           "El tiempo de respuesta: el avión se produce en pocas horas y el pan tarda 18 meses en estar listo."],
+  answer:0,
+  explanation:"Los bienes con procesos largos, tecnología especializada y capital intensivo tienen oferta inelástica (aviones); los de producción sencilla y rápida, oferta elástica (pan). Es el determinante de la complejidad del proceso."},
+ {topic:"Determinante · Inventarios", unit:"Taller P2", concept:"—", syllabus:"Bienes perecederos",
+  scenario:"El aguacate fresco madura rápido y, sin frío, se echa a perder en pocos días. En temporada baja, la mayoría de los productores no puede guardar fruta para venderla después.",
+  question:"¿Cómo afecta esta característica a la elasticidad precio de la oferta del aguacate en el corto plazo?",
+  options:["La reduce: sin posibilidad de almacenar, la cantidad ofrecida apenas responde al precio.",
+           "La aumenta: los productores guardan fruta en cámaras para venderla cuando el precio suba.",
+           "No la afecta: la elasticidad depende solo del nivel del precio del bien.",
+           "La vuelve infinita: el producto se vende al precio que sea con tal de no perderlo."],
+  answer:0,
+  explanation:"Los bienes perecederos ofrecen poca posibilidad de almacenaje, así que la oferta responde poco al precio: EPO baja. El grupo del caso pudo responder justamente porque tenía cámaras de frío (inventario)."},
+ {topic:"Determinante · Tiempo (LP)", unit:"Presentación", concept:"Cambio", syllabus:"Largo plazo estructural",
+  scenario:"En el largo plazo, los productores de aguacate pueden plantar más árboles, ampliar sus huertos y construir más cámaras de frío.",
+  question:"Por eso, la elasticidad precio de la oferta del aguacate en el largo plazo:",
+  options:["Es mayor que en el corto plazo, porque los productores ajustan todos sus factores.",
+           "Es menor que en el corto plazo, porque los árboles tardan varios años en producir.",
+           "Es igual, porque la elasticidad no cambia con el paso del tiempo.",
+           "Depende solo del precio internacional del aguacate en los mercados de exportación."],
+  answer:0,
+  explanation:"En el largo plazo todos los factores se pueden ajustar (plantar, ampliar, almacenar), así que la oferta se vuelve más elástica. En el corto plazo la fruta ya está cortada y no hay nada que hacer."},
+ {topic:"Análisis · Diagrama", unit:"Presentación", concept:"—", syllabus:"Lectura de pendiente",
+  scenario:"En el diagrama de la presentación, la curva de oferta inelástica se dibuja empinada (casi vertical) y la elástica plana (casi horizontal).",
+  question:"La pendiente empinada de la curva inelástica representa que:",
+  options:["Un cambio grande del precio produce un cambio pequeño en la cantidad ofrecida.",
+           "Un cambio pequeño del precio produce un cambio grande en la cantidad ofrecida.",
+           "El precio no cambia aunque la cantidad ofrecida aumente o disminuya.",
+           "La cantidad ofrecida no depende del precio en ningún horizonte de tiempo."],
+  answer:0,
+  explanation:"Una curva empinada muestra poca respuesta de la cantidad ofrecida ante cambios del precio: por eso su EPO es menor que 1. La curva plana (elástica) muestra lo contrario."},
+ {topic:"Análisis · Precio máximo", unit:"Presentación", concept:"Intervención", syllabus:"Intervención del gobierno",
+  scenario:"La presentación menciona que el gobierno puede intervenir con precios máximos. En plena temporada baja, fija un precio máximo por debajo del equilibrio del mercado del aguacate.",
+  question:"El resultado esperado de esa medida es:",
+  options:["Escasez: la cantidad demandada supera a la cantidad ofrecida al precio fijado.",
+           "Excedente: la cantidad ofrecida supera a la cantidad demandada al precio fijado.",
+           "Equilibrio: el precio máximo coincide con el precio de equilibrio del mercado.",
+           "Más producción: los productores aumentan su oferta para vender al precio fijado."],
+  answer:0,
+  explanation:"Con un precio máximo por debajo del equilibrio, la cantidad demandada aumenta y la ofrecida disminuye: se genera escasez. Es una intervención con efectos secundarios, como advierte la presentación."},
+ {topic:"Ventaja o vulnerabilidad · Consumidor", unit:"Presentación", concept:"Bienestar económico", syllabus:"Evidencia numérica",
+  scenario:"Según la presentación, durante la pandemia las vacunas tuvieron una EPO de aproximadamente 0,2: la producción no pudo crecer con rapidez ante la demanda global.",
+  question:"Con esa oferta inelástica, ¿qué consecuencia se observó para los consumidores?",
+  options:["Precios altos y acceso limitado, sobre todo en los países en desarrollo.",
+           "Precios bajos y oferta abundante en todos los mercados del mundo entero.",
+           "Producción inmediata suficiente para toda la población mundial.",
+           "Precios estables porque la oferta no respondió a la demanda."],
+  answer:0,
+  explanation:"Con EPO 0,2 el ajuste recayó en el precio (hasta USD 40 por dosis) y el acceso fue desigual: los países en desarrollo esperaron más. Es la vulnerabilidad del consumidor ante oferta inelástica."},
+ {topic:"Ventaja o vulnerabilidad · Productor", unit:"Presentación", concept:"—", syllabus:"Evidencia numérica",
+  scenario:"En 2020 el precio del barril de petróleo cayó 65 % y la oferta mundial solo se redujo 8 % (EPO aproximada de 0,12), según la presentación.",
+  question:"Para los países productores de petróleo, esa situación representó:",
+  options:["Una caída fuerte de ingresos sin poder reducir la producción con rapidez.",
+           "Una ganancia extra, porque vendieron más barriles al precio más alto del mercado.",
+           "Un aumento de la producción para compensar el precio bajo con volumen.",
+           "Un mercado estable, porque la oferta apenas cambió con el precio del barril."],
+  answer:0,
+  explanation:"Con oferta inelástica, los productores no pueden reducir su producción ante la caída del precio: sus ingresos cayeron con el precio. Es la vulnerabilidad del productor (la contracara de la ventaja de julio)."}
 ];
 
 
+
 const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false, shuffledAnswers: [] };
-const TOTAL_QUESTIONS = 10;
+const TOTAL_QUESTIONS = 20;
 
 // === API CONFIG (Railway backend) ===
 const EXAM_ID = 'epo-aguacate-practica';
@@ -641,13 +724,20 @@ function startQuiz(){
  const name = nameSelect.value.trim();
  if(!name){ errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.'; errorEl.classList.add('show'); nameSelect.focus(); return; }
  errorEl.classList.remove('show');
- STATE.studentName = name;
- STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
- STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
- STATE.startTime = new Date().toISOString();
- document.getElementById('studentDisplay').textContent = name;
- document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
- showScreen('quiz-screen'); renderQuestion();
+ hasCompletedAttempt(name).then(alreadyDone => {
+  if (alreadyDone) {
+   errorEl.innerHTML = '<i class="fa-solid fa-lock"></i> <strong>' + name + '</strong> ya completó esta práctica. Solo se permite un intento por estudiante; tu docente debe eliminar tu registro para habilitar un nuevo intento.';
+   errorEl.classList.add('show');
+   return;
+  }
+  STATE.studentName = name;
+  STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
+  STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
+  STATE.startTime = new Date().toISOString();
+  document.getElementById('studentDisplay').textContent = name;
+  document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
+  showScreen('quiz-screen'); renderQuestion();
+ });
 }
 
 // ⏱️ Verificación de intento único: bloquea si el estudiante ya tiene un registro
@@ -840,7 +930,7 @@ safeListener('startBtn', 'click', startQuiz);
 safeListener('studentName', 'change', startQuiz, 'change');
 safeListener('nextBtn', 'click', nextQuestion);
 safeListener('quitBtn', 'click', () => { if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ showScreen('welcome-screen'); } });
-safeListener('retryBtn', 'click', () => { showScreen('welcome-screen'); });
+
 safeListener('reviewBtn', 'click', toggleReview);
 
 document.addEventListener('keydown', e => {
