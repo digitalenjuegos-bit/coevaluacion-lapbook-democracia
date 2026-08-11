@@ -200,6 +200,13 @@
  border-color: var(--gold);
  box-shadow: 0 0 0 4px rgba(184,132,42,.15);
  }
+.timer-wrap{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--border);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--forest-deep);font-variant-numeric:tabular-nums;transition:background.3s,border-color.3s}
+.timer-wrap i{color:var(--gold)}
+.timer-wrap .timer-num{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--forest);min-width:30px;text-align:center}
+.timer-wrap .timer-unit{color:var(--muted);font-size:12px;font-weight:600}
+.timer-wrap.warn{background:rgba(181,69,58,.12);border-color:var(--error)}
+.timer-wrap.warn .timer-num{color:var(--error)}
+.timer-wrap.warn i{color:var(--error)}
 
 
   /* Café crema para 'Calificación final' */
@@ -334,6 +341,16 @@
  </select>
  <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.</div>
  </div>
+ <div class="form-group">
+ <label for="timePerQuestion"><i class="fa-solid fa-hourglass-half"></i> Tiempo por pregunta — indícalo según la instrucción de tu docente</label>
+ <select id="timePerQuestion" class="student-select">
+ <option value="10">10 segundos</option>
+ <option value="20">20 segundos</option>
+ <option value="30" selected>30 segundos</option>
+ <option value="40">40 segundos</option>
+ <option value="60">1 minuto</option>
+ </select>
+ </div>
  <button class="btn btn-primary" id="startBtn">Comenzar análisis de casos <i class="fa-solid fa-arrow-right"></i></button>
  </div>
  </section>
@@ -345,6 +362,7 @@
  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
  <div class="progress-text"><strong id="qCurrent">1</strong> / <span id="qTotal">20</span></div>
  </div>
+ <div class="timer-wrap" id="timerWrap" title="Tiempo restante para responder"><i class="fa-solid fa-hourglass-half"></i><span class="timer-num" id="timerDisplay">30</span><span class="timer-unit" id="timerUnit">s</span></div>
  </div>
  <div class="question-card" id="questionCard"></div>
  <div class="actions">
@@ -443,7 +461,7 @@ const QUESTION_BANK = [
  {topic:"Integración 3.5-3.7",unit:"Cálculo integrado",syllabus:"Tasa real + brecha producto",scenario:"Tasa nominal = 7 %, inflación esperada = 4 %. Producto actual = $900 mm, producto potencial (PIB potencial) = $1.000 mm. Brecha deflacionaria = $100 mm.",question:"La tasa real esperada y la brecha de producto (en %) son:",options:["tasa real = 3 %; brecha = 10 % del PIB potencial.", "tasa real = 11 %: se suma la tasa nominal con la inflación; brecha = 10 % sobre PIB potencial.", "tasa real = 3 %; brecha = 11 %: usa producción real actual en lugar de PIB potencial en el cálculo.", "tasa real = 4 %; brecha = 9 %: debería ser 10 % sobre PIB potencial según modelo."],answer:0,explanation:"tasa real = tasa de interés menos inflación esperada = 7 % - 4 % = 3 %. Brecha % = (PIB potencial - producción real)/PIB potencial × 100 = (1000-900)/1000 × 100 = 10 %."},
 ];
 
-const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false, shuffledAnswers: [] };
+const STATE = { studentName:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false, shuffledAnswers: [], timePerQuestion:30, timer:null, timerSeconds:0 };
 const TOTAL_QUESTIONS = 20;
 
 // === API CONFIG (Railway backend) ===
@@ -482,6 +500,10 @@ function startQuiz(){
    return;
   }
   STATE.studentName = name;
+  const timeSel = document.getElementById('timePerQuestion');
+  STATE.timePerQuestion = timeSel && timeSel.value ? parseInt(timeSel.value, 10) : 30;
+  if(!STATE.timePerQuestion || STATE.timePerQuestion < 1) STATE.timePerQuestion = 30;
+  clearInterval(STATE.timer); STATE.timer = null;
   STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
   STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
   STATE.startTime = new Date().toISOString();  // ← Capture start timestamp
@@ -535,19 +557,62 @@ function renderQuestion(){
  nextBtn.disabled = true;
  nextBtn.innerHTML = (num === TOTAL_QUESTIONS) ? 'Ver resultados <i class="fa-solid fa-flag-checkered"></i>' : 'Siguiente caso <i class="fa-solid fa-arrow-right"></i>';
  document.querySelectorAll('.option').forEach(btn=>btn.addEventListener('click', handleAnswer));
+ clearInterval(STATE.timer);
+ startTimer();
+}
+
+// ⏱️ Temporizador por pregunta (parametrizable en la pantalla de acceso: 10s–1m).
+// Si el alumno no responde antes de llegar a 0, la pregunta cuenta como error
+// y se marca automáticamente la respuesta correcta.
+function startTimer(){
+ const total = STATE.timePerQuestion;
+ STATE.timerSeconds = total;
+ const disp = document.getElementById('timerDisplay');
+ const unit = document.getElementById('timerUnit');
+ const wrap = document.getElementById('timerWrap');
+ if(!disp || !wrap) return;
+ if(total >= 60){ disp.textContent = '1:00'; if(unit) unit.textContent = ''; }
+ else { disp.textContent = total; if(unit) unit.textContent = 's'; }
+ wrap.classList.remove('warn');
+ clearInterval(STATE.timer);
+ STATE.timer = setInterval(() => {
+  STATE.timerSeconds--;
+  const s = STATE.timerSeconds;
+  if(total >= 60){
+   const m = Math.floor(s / 60);
+   const sec = String(s % 60).padStart(2, '0');
+   disp.textContent = m + ':' + sec;
+  } else {
+   disp.textContent = s;
+  }
+  if(s <= 5) wrap.classList.add('warn');
+  if(s <= 0){
+   clearInterval(STATE.timer); STATE.timer = null;
+   const q = STATE.selectedQuestions[STATE.currentIndex];
+   const correct = (STATE.shuffledAnswers[STATE.currentIndex] !== undefined && STATE.shuffledAnswers[STATE.currentIndex] !== null) ? STATE.shuffledAnswers[STATE.currentIndex] : q.answer;
+   submitAnswer(correct, true);
+  }
+ }, 1000);
 }
 
 function handleAnswer(e){
+ if(STATE.answered) return;
+ submitAnswer(parseInt(e.currentTarget.dataset.idx), false);
+}
+
+function submitAnswer(selected, timedOut){
  if(STATE.answered) return; STATE.answered = true;
- const selected = parseInt(e.currentTarget.dataset.idx);
+ clearInterval(STATE.timer); STATE.timer = null;
  const q = STATE.selectedQuestions[STATE.currentIndex];
  const correct = (STATE.shuffledAnswers[STATE.currentIndex] !== undefined && STATE.shuffledAnswers[STATE.currentIndex] !== null) ? STATE.shuffledAnswers[STATE.currentIndex] : q.answer;
+ const isCorrect = !timedOut && selected === correct;
  const options = document.querySelectorAll('.option');
- options.forEach((btn,i)=>{ btn.disabled=true; if(i===correct) btn.classList.add('correct'); else if(i===selected) btn.classList.add('incorrect'); });
- STATE.userAnswers.push({ selected, correct, isCorrect: selected === correct, question: q });
+ options.forEach((btn,i)=>{ btn.disabled=true; if(i===correct) btn.classList.add('correct'); else if(i===selected && !timedOut) btn.classList.add('incorrect'); });
+ STATE.userAnswers.push({ selected: timedOut ? -1 : selected, correct, isCorrect, question: q, timedOut: !!timedOut });
  const fb = document.getElementById('feedback');
- fb.className = 'feedback show ' + (selected === correct ? 'ok' : 'bad');
- fb.innerHTML = `<div class="feedback-head"><i class="fa-solid ${selected===correct ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>${selected === correct ? '¡Análisis correcto!' : 'Análisis '}</div><div class="feedback-body">${q.explanation}</div>`;
+ fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+ const head = timedOut ? '⏱️ Tiempo agotado — sin respuesta' : (isCorrect ? '¡Análisis correcto!' : 'Análisis incorrecto');
+ fb.innerHTML = `<div class="feedback-head"><i class="fa-solid ${isCorrect ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>${head}</div><div class="feedback-body">${q.explanation}</div>`;
  document.getElementById('nextBtn').disabled = false;
 }
 
@@ -647,13 +712,14 @@ function toggleReview(){
     STATE.userAnswers.forEach((a, i)=>{
      const item = document.createElement('div');
      item.className = 'review-item';
-     const letter = String.fromCharCode(65 + a.selected);
+     const letter = a.timedOut ? '—' : String.fromCharCode(65 + a.selected);
      const correctLetter = String.fromCharCode(65 + a.correct);
+     const yourAnswer = a.timedOut ? 'Sin respuesta (tiempo agotado)' : (letter + '. ' + a.question.options[a.selected]);
      item.innerHTML = `
      <div class="ri-q"><strong>${i+1}.</strong> ${a.question.question}</div>
      <div class="ri-a">
      <span class="badge ${a.isCorrect?'ok':'bad'}">${a.isCorrect ? 'Correcta' : 'Incorrecta'}</span> 
-     Tu respuesta: ${letter}. ${a.question.options[a.selected]} 
+     Tu respuesta: ${yourAnswer} 
      ${!a.isCorrect ? ` &nbsp;·&nbsp; <span style="color:var(--ok);font-weight:600">Correcta: ${correctLetter}. ${a.question.options[a.correct]}</span>` : ''}
      </div>
      <span class="syllabus-tag"><i class="fa-solid fa-book"></i> ${a.question.syllabus}</span>
@@ -679,8 +745,8 @@ function safeListener(id, event, handler, ctx = 'click') {
 safeListener('startBtn', 'click', startQuiz);
 safeListener('studentName', 'change', startQuiz, 'change');
 safeListener('nextBtn', 'click', nextQuestion);
-safeListener('quitBtn', 'click', () => { if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ showScreen('welcome-screen'); } });
-safeListener('retryBtn', 'click', () => { showScreen('welcome-screen'); });
+safeListener('quitBtn', 'click', () => { if(confirm('¿Salir de la evaluación? Tu progreso se perderá.')){ clearInterval(STATE.timer); STATE.timer = null; showScreen('welcome-screen'); } });
+safeListener('retryBtn', 'click', () => { clearInterval(STATE.timer); STATE.timer = null; showScreen('welcome-screen'); });
 safeListener('reviewBtn', 'click', toggleReview);
 
 document.addEventListener('keydown', e => {
