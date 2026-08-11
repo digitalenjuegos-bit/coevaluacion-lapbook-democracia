@@ -341,16 +341,6 @@
  </select>
  <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.</div>
  </div>
- <div class="form-group">
- <label for="timePerQuestion"><i class="fa-solid fa-hourglass-half"></i> Tiempo por pregunta — indícalo según la instrucción de tu docente</label>
- <select id="timePerQuestion" class="student-select">
- <option value="10">10 segundos</option>
- <option value="20">20 segundos</option>
- <option value="30" selected>30 segundos</option>
- <option value="40">40 segundos</option>
- <option value="60">1 minuto</option>
- </select>
- </div>
  <button class="btn btn-primary" id="startBtn">Comenzar análisis de casos <i class="fa-solid fa-arrow-right"></i></button>
  </div>
  </section>
@@ -493,17 +483,15 @@ function startQuiz(){
  const name = nameSelect.value.trim();
  if(!name){ errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.'; errorEl.classList.add('show'); nameSelect.focus(); return; }
  errorEl.classList.remove('show');
- hasCompletedAttempt(name).then(alreadyDone => {
+ clearInterval(STATE.timer); STATE.timer = null;
+ Promise.all([hasCompletedAttempt(name), fetchQuizConfig()]).then(([alreadyDone, cfg]) => {
   if (alreadyDone) {
    errorEl.innerHTML = '<i class="fa-solid fa-lock"></i> <strong>' + name + '</strong> ya completó esta evaluación. Solo se permite un intento por estudiante; tu docente debe eliminar tu registro para habilitar un nuevo intento.';
    errorEl.classList.add('show');
    return;
   }
+  STATE.timePerQuestion = cfg;
   STATE.studentName = name;
-  const timeSel = document.getElementById('timePerQuestion');
-  STATE.timePerQuestion = timeSel && timeSel.value ? parseInt(timeSel.value, 10) : 30;
-  if(!STATE.timePerQuestion || STATE.timePerQuestion < 1) STATE.timePerQuestion = 30;
-  clearInterval(STATE.timer); STATE.timer = null;
   STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
   STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
   STATE.startTime = new Date().toISOString();  // ← Capture start timestamp
@@ -511,6 +499,29 @@ function startQuiz(){
   document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
   showScreen('quiz-screen'); renderQuestion();
  });
+}
+
+// ⏱️ Tiempo por pregunta definido por el docente desde el Panel Docente:
+// 1) config del backend (autoritativa, compartida entre dispositivos),
+// 2) respaldo localStorage del dispositivo, 3) default 30s.
+async function fetchQuizConfig(){
+ const valid = [10, 20, 30, 40, 60];
+ const controller = new AbortController();
+ const to = setTimeout(() => controller.abort(), 3000);
+ try {
+  const res = await fetch(API_BASE + '/config', { signal: controller.signal, cache: 'no-store' });
+  if (res.ok) {
+   const cfg = await res.json();
+   const t = parseInt(cfg && cfg.timePerQuestion, 10);
+   if (valid.includes(t)) return t;
+  }
+ } catch(e) { /* backend no disponible → respaldo */ }
+ finally { clearTimeout(to); }
+ try {
+  const local = parseInt(localStorage.getItem('macro_time_per_question'), 10);
+  if (valid.includes(local)) return local;
+ } catch(e) { /* ignore */ }
+ return 30;
 }
 
 // ⏱️ Verificación de intento único: bloquea si el estudiante ya tiene un registro
@@ -923,6 +934,8 @@ document.addEventListener('keydown', e => {
  const code = document.getElementById('tpCode').value.trim();
  if (code === TEACHER_CODE) {
  document.getElementById('tpActions').style.display = 'flex';
+ document.getElementById('tpTimeRow').style.display = 'flex';
+ loadTeacherTimeConfig();
  document.getElementById('tpResults').innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-soft);">Cargando notas...</div>';
  try {
  const results = await loadResultsFromLocalStorage();
@@ -948,6 +961,44 @@ document.addEventListener('keydown', e => {
  }
  });
  
+// Tiempo por pregunta — config del docente (backend compartido + respaldo local)
+function loadTeacherTimeConfig() {
+ const sel = document.getElementById('tpTimeSelect');
+ const status = document.getElementById('tpTimeStatus');
+ const valid = [10, 20, 30, 40, 60];
+ if (!sel || !status) return;
+ try {
+  const local = parseInt(localStorage.getItem('macro_time_per_question'), 10);
+  if (valid.includes(local)) sel.value = String(local);
+ } catch(e) { /* ignore */ }
+ fetch(API_BASE + '/config', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(cfg => {
+  const t = cfg && parseInt(cfg.timePerQuestion, 10);
+  if (valid.includes(t)) sel.value = String(t);
+  status.textContent = 'Vigente: ' + sel.options[sel.selectedIndex].text.toLowerCase() + ' por pregunta.';
+ }).catch(() => {
+  status.textContent = 'Sin conexión al servidor; se usará la configuración local.';
+ });
+}
+
+document.getElementById('tpSaveTime').addEventListener('click', async () => {
+ const sel = document.getElementById('tpTimeSelect');
+ const status = document.getElementById('tpTimeStatus');
+ const t = parseInt(sel.value, 10);
+ try { localStorage.setItem('macro_time_per_question', String(t)); } catch(e) { /* ignore */ }
+ status.textContent = 'Guardando...';
+ try {
+  const res = await fetch(API_BASE + '/config', {
+   method: 'PUT',
+   headers: {'Content-Type': 'application/json'},
+   body: JSON.stringify({ timePerQuestion: t })
+  });
+  if (res.ok) { status.textContent = '✓ Aplicado: ' + sel.options[sel.selectedIndex].text.toLowerCase() + ' por pregunta.'; }
+  else { status.textContent = '⚠ Error del servidor (' + res.status + '); se usará la configuración local.'; }
+ } catch(e) {
+  status.textContent = '⚠ Sin conexión; se usará la configuración local.';
+ }
+});
+
 // Ranking button
 document.getElementById('tpRankings').addEventListener('click', async () => {
  try {
@@ -1019,6 +1070,18 @@ document.getElementById('tpRankings').addEventListener('click', async () => {
  <button class="tp-btn tp-btn-ghost" id="tpRankings"><i class="fa-solid fa-rank-rank"></i> Ver Ranking</button>
  <button class="tp-btn tp-btn-danger" id="tpClear"><i class="fa-solid fa-trash"></i> Limpiar notas</button>
  <span class="tp-count" id="tpCount" style="font-size:13px;color:var(--muted);"></span>
+ </div>
+ <div class="tp-meta" id="tpTimeRow" style="display:none;margin-top:4px;align-items:center;gap:10px;width:100%;">
+ <label for="tpTimeSelect" style="font-size:13px;font-weight:600;color:var(--forest);white-space:nowrap;"><i class="fa-solid fa-hourglass-half"></i> Tiempo por pregunta:</label>
+ <select id="tpTimeSelect" class="tp-code" style="flex:1;min-width:130px;cursor:pointer;">
+ <option value="10">10 segundos</option>
+ <option value="20">20 segundos</option>
+ <option value="30">30 segundos</option>
+ <option value="40">40 segundos</option>
+ <option value="60">1 minuto</option>
+ </select>
+ <button class="tp-btn tp-btn-primary" id="tpSaveTime"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+ <span id="tpTimeStatus" style="font-size:12px;color:var(--muted);"></span>
  </div>
  <div class="tp-results" id="tpResults">
  <div class="tp-empty">Ingresa el código para ver las notas de los estudiantes.</div>

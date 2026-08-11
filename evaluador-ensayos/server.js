@@ -425,6 +425,39 @@ app.post('/api/quiz/:examId/status', (req, res) => {
   }
 });
 
+function getQuizConfig(examId) {
+  const record = quizStore.get(quizKey(examId));
+  return (record && record.config) || {};
+}
+
+function setQuizConfig(examId, config) {
+  const key = quizKey(examId);
+  const record = quizStore.get(key) || { grades: [] };
+  record.config = Object.assign({}, config, { updatedAt: new Date().toISOString() });
+  quizStore.set(key, record);
+}
+
+app.get('/api/quiz/:examId/config', (req, res) => {
+  const examId = resolveExamId(req.params.examId);
+  if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.end(JSON.stringify(getQuizConfig(examId)));
+});
+
+app.put('/api/quiz/:examId/config', (req, res) => {
+  const examId = resolveExamId(req.params.examId);
+  if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
+  const timePerQuestion = parseInt(req.body && req.body.timePerQuestion, 10);
+  if (![10, 20, 30, 40, 60].includes(timePerQuestion)) {
+    return res.status(400).json({ error: 'invalid_time_per_question' });
+  }
+  setQuizConfig(examId, { timePerQuestion });
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.end(JSON.stringify(getQuizConfig(examId)));
+});
+
 app.get('/api/quiz/:examId/grades/csv', (req, res) => {
   const examId = resolveExamId(req.params.examId);
   if (!examId) return res.status(400).json({ error: 'invalid_exam_id' });
