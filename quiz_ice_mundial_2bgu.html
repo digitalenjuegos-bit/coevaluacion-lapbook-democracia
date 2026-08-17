@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Razones por las cuales los gobiernos intervienen en los mercados — Evaluación IB NM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+ :root{
+ --bg:#eef2f7; --bg-2:#e2e8f0; --paper:#ffffff; --ink:#12263a; --ink-soft:#2d4a66;
+ --muted:#6b7c93; --gold:#c9a227; --gold-bright:#e0b63e; --navy:#1b3a5c;
+ --navy-deep:#0c2240; --navy-soft:#234c75; --error:#b5453a; --error-soft:#f3d9d6;
+ --ok:#2e7d5b; --ok-soft:#d6eadf; --border:#c7d3e0; --shadow:0 18px 50px -20px rgba(12,34,64,.35);
+ }
+ *{box-sizing:border-box;margin:0;padding:0}
+ html,body{height:100%}
+ body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--bg);
+ background-image:radial-gradient(circle at 12% 18%, rgba(201,162,39,.10), transparent 45%),radial-gradient(circle at 88% 82%, rgba(27,58,92,.12), transparent 50%);min-height:100vh;overflow-x:hidden;line-height:1.55}
+ .container{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:32px 24px 80px}
+ .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+ .brand-left{display:flex;align-items:center;gap:14px}
+ .brand-mark{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 30% 30%, var(--gold-bright), var(--gold) 70%, #6b4a16);display:grid;place-items:center;color:#fff;font-family:'Fraunces',serif;font-weight:900;font-size:20px;box-shadow:0 6px 18px -6px rgba(201,162,39,.55), inset 0 -3px 8px rgba(0,0,0,.2)}
+ .brand-text{font-family:'Fraunces',serif;line-height:1.1}
+ .brand-text.t1{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:500}
+ .brand-text.t2{font-size:20px;font-weight:700;color:var(--navy-deep)}
+ .brand-right{font-size:12px;color:var(--muted);text-align:right;font-family:'Outfit',sans-serif;letter-spacing:.05em}
+ .brand-right strong{color:var(--navy);font-weight:600}
+ .screen{display:none;animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both}
+ .screen.active{display:block}
+ @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+ .welcome-card{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:54px 48px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+ .welcome-card::before{content:"";position:absolute;top:-120px;right:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle, rgba(224,182,62,.22), transparent 70%);pointer-events:none}
+ .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(27,58,92,.08);border:1px solid rgba(27,58,92,.18);color:var(--navy);padding:6px 14px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin-bottom:24px}
+ .welcome-title{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(34px,4.6vw,52px);line-height:1.04;color:var(--navy-deep);letter-spacing:-.02em;margin-bottom:18px}
+ .welcome-title em{font-style:italic;color:var(--gold);font-weight:700}
+ .welcome-sub{font-size:17px;color:var(--ink-soft);max-width:640px;margin-bottom:22px}
+ .news-card{background:rgba(27,58,92,.05);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:14px;padding:16px 18px;margin-bottom:24px;max-width:680px}
+ .news-title{font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+ .news-card p{font-size:14.5px;color:var(--ink-soft)}
+ .skills-box{background:rgba(27,58,92,.05);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:28px;max-width:680px}
+ .skills-title{font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+ .skills-list{list-style:none;font-size:14px;color:var(--ink-soft)}
+ .skills-list li{margin-bottom:6px;padding-left:18px;position:relative}
+ .skills-list li::before{content:"\f00c";font-family:"Font Awesome 6 Free";font-weight:900;color:var(--gold);font-size:10px;position:absolute;left:0;top:5px}
+ .welcome-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+ .meta-item{background:rgba(255,255,255,.6);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+ .meta-item .num{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--gold);line-height:1}
+ .meta-item .lbl{font-size:12px;color:var(--muted);margin-top:6px;font-weight:500}
+ .form-group{margin-bottom:20px;max-width:680px}
+ .form-group label{display:block;font-size:13px;font-weight:600;color:var(--navy);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+ .form-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+ .student-input{width:100%;padding:14px 16px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color .2s, box-shadow .2s}
+ .student-input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,39,.15)}
+ .student-input::placeholder{color:var(--muted)}
+ .name-error{display:none;align-items:center;gap:8px;background:var(--error-soft);border:1px solid var(--error);color:var(--error);padding:12px 16px;border-radius:12px;font-size:14px;font-weight:500;margin-top:4px}
+ .name-error.show{display:flex}
+ .btn{font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;border:none;cursor:pointer;transition:background .2s, transform .15s;display:inline-flex;align-items:center;gap:10px}
+ .btn:active{transform:scale(.98)}
+ .btn-primary{background:var(--navy);color:#fff;box-shadow:0 8px 22px -8px rgba(27,58,92,.6)}
+ .btn-primary:hover{background:var(--navy-deep)}
+ .btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--border)}
+ .btn-ghost:hover{background:rgba(27,58,92,.06)}
+ .btn-danger{background:var(--error);color:#fff}
+ .btn-danger:hover{background:#8a3a2d}
+ .quiz-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+ .student-tag{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--border);padding:8px 14px;border-radius:999px;font-size:13px;color:var(--ink-soft)}
+ .student-tag i{color:var(--gold)}
+ .student-tag strong{color:var(--navy-deep);font-weight:600;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .progress-wrap{display:flex;align-items:center;gap:10px;flex:1;min-width:160px}
+ .progress-bar{flex:1;height:8px;background:rgba(27,58,92,.12);border-radius:999px;overflow:hidden}
+ .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-bright));border-radius:999px;transition:width .4s}
+ .progress-text{font-size:13px;font-weight:600;color:var(--navy);font-variant-numeric:tabular-nums}
+ .timer-wrap{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--border);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--navy-deep);font-variant-numeric:tabular-nums;transition:background .3s,border-color .3s}
+ .timer-wrap i{color:var(--gold)}
+ .timer-wrap .timer-num{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--navy);min-width:34px;text-align:center}
+ .timer-wrap .timer-unit{color:var(--muted);font-size:12px;font-weight:600}
+ .timer-wrap.warn{background:rgba(181,69,58,.12);border-color:var(--error)}
+ .timer-wrap.warn .timer-num{color:var(--error)}
+ .timer-wrap.warn i{color:var(--error)}
+ .question-card{background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:36px 38px;box-shadow:var(--shadow)}
+ .q-topic{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);background:rgba(27,58,92,.06);border:1px solid rgba(27,58,92,.14);padding:6px 12px;border-radius:999px;margin-bottom:16px}
+ .q-topic .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block}
+ .question-text{font-family:'Fraunces',serif;font-weight:700;font-size:24px;line-height:1.3;color:var(--ink);margin-bottom:24px}
+ .options{display:grid;gap:12px}
+ .option{display:flex;align-items:flex-start;gap:14px;text-align:left;width:100%;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:15px;color:var(--ink);transition:border-color .2s, background .2s, transform .15s}
+ .option:hover:not(:disabled){border-color:var(--gold);background:rgba(201,162,39,.05);transform:translateX(4px)}
+ .option:disabled{cursor:default}
+ .option .option-letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(27,58,92,.08);color:var(--navy);font-weight:700;font-size:13px;display:grid;place-items:center;margin-top:1px}
+ .option .option-text{flex:1}
+ .option.correct{border-color:var(--ok);background:var(--ok-soft)}
+ .option.correct .option-letter{background:var(--ok);color:#fff}
+ .option.incorrect{border-color:var(--error);background:var(--error-soft)}
+ .option.incorrect .option-letter{background:var(--error);color:#fff}
+ .feedback{display:none;margin-top:18px;padding:16px 18px;border-radius:14px;font-size:14.5px}
+ .feedback.show{display:block;animation:fadeUp .4s ease both}
+ .feedback.ok{background:var(--ok-soft);border:1px solid var(--ok);color:#1d4a35}
+ .feedback.bad{background:var(--error-soft);border:1px solid var(--error);color:#7c2d24}
+ .feedback-head{display:flex;align-items:center;gap:8px;font-weight:700;margin-bottom:6px}
+ .feedback-body{font-size:14px}
+ .actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+ .results-card{background:var(--paper);border:1px solid var(--border);border-radius:22px;padding:44px 48px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+ .results-card::before{content:"";position:absolute;top:-140px;left:-140px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle, rgba(224,182,62,.18), transparent 70%);pointer-events:none}
+ .results-eyebrow{font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+ .results-name{font-family:'Fraunces',serif;font-weight:900;font-size:26px;color:var(--navy-deep);margin-bottom:2px}
+ .results-course{font-size:14px;color:var(--muted);margin-bottom:22px}
+ .score-circle{position:relative;width:220px;height:220px;margin:0 auto 8px}
+ .score-circle svg{width:100%;height:100%;transform:rotate(-90deg)}
+ .score-circle circle{fill:none;stroke-width:16;stroke-linecap:round}
+ .score-circle .track{stroke:#e6eaf0}
+ .score-circle .fill{stroke:url(#scoreGrad);stroke-dasharray:628.3;stroke-dashoffset:628.3;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+ .score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#7d5a50,#4a3a35);border:8px solid rgba(30,74,90,.6);border-radius:50%;box-shadow:0 0 20px rgba(0,0,0,.2)}
+ .score-value{font-family:'Fraunces',serif;font-weight:900;font-size:52px;color:#ffffff;line-height:1;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+ .score-value .slash{color:#ffffff;font-size:30px;margin:0 4px}
+ .score-value .max{color:#ffffff;font-size:30px}
+ .score-label{font-size:12px;color:var(--muted);margin-top:6px;letter-spacing:.1em;text-transform:uppercase}
+ .grade-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(27,58,92,.06);border:1px solid var(--border);color:var(--navy);padding:12px 20px;border-radius:999px;font-size:15px;font-weight:600;margin:18px 0 6px;max-width:100%}
+ .grade-pill.grade-excellent{background:rgba(46,125,91,.1);border-color:var(--ok);color:#1d4a35}
+ .grade-pill.grade-good{background:rgba(46,125,91,.08);border-color:var(--ok);color:#1d4a35}
+ .grade-pill.grade-fair{background:rgba(201,162,39,.1);border-color:var(--gold);color:#6b4a16}
+ .grade-pill.grade-poor{background:var(--error-soft);border-color:var(--error);color:#7c2d24}
+ .unit-analysis{text-align:left;background:rgba(27,58,92,.04);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:20px 0 6px}
+ .unit-analysis h3{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+ .unit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border);font-size:14px}
+ .unit-row:last-child{border-bottom:none}
+ .unit-name{color:var(--ink-soft);font-weight:500}
+ .unit-score{font-weight:600;color:var(--navy)}
+ .unit-score.weak{color:var(--error)}
+ .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0 26px}
+ .stat{background:rgba(27,58,92,.04);border:1px solid var(--border);border-radius:14px;padding:18px}
+ .stat-num{font-family:'Fraunces',serif;font-weight:700;font-size:26px;color:var(--navy-deep)}
+ .stat-lbl{font-size:12px;color:var(--muted);margin-top:4px}
+ .results-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+ .review-section{text-align:left;margin-top:26px}
+ .review-title{font-size:15px;font-weight:700;color:var(--navy-deep);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+ .review-item{background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+ .ri-q{font-weight:600;color:var(--ink);margin-bottom:8px}
+ .ri-a{font-size:14px;color:var(--ink-soft);line-height:1.6}
+ .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;margin-right:6px}
+ .badge.ok{background:var(--ok-soft);color:#1d4a35}
+ .badge.bad{background:var(--error-soft);color:#7c2d24}
+ .syllabus-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--navy);background:rgba(27,58,92,.06);border:1px solid rgba(27,58,92,.14);padding:4px 10px;border-radius:999px;margin-top:8px}
+ .confirm-overlay{position:fixed;inset:0;background:rgba(10,20,35,.55);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
+ .confirm-overlay.active{display:flex}
+ .confirm-dialog{background:var(--paper);border-radius:18px;max-width:420px;width:100%;padding:28px;box-shadow:var(--shadow);text-align:center}
+ .confirm-msg{font-size:15.5px;color:var(--ink);margin-bottom:20px;line-height:1.5}
+ .confirm-actions{display:flex;gap:10px;justify-content:center}
+ /* === PANEL DOCENTE === */
+ .teacher-panel-opener{position:fixed;right:20px;bottom:20px;width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;border:none;box-shadow:0 6px 20px -6px rgba(12,34,64,.5);cursor:pointer;z-index:999;display:flex;align-items:center;justify-content:center;font-size:16px;opacity:.6;transition:opacity .2s, transform .2s}
+ .teacher-panel-opener:hover{opacity:1;transform:scale(1.08)}
+ .teacher-panel-opener.active{background:var(--error)}
+ .teacher-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:none;align-items:flex-start;padding:30px 20px;overflow-y:auto}
+ .teacher-panel-overlay.active{display:flex}
+ .teacher-panel{background:var(--paper);border-radius:20px;max-width:800px;margin:0 auto;padding:32px;box-shadow:var(--shadow);position:relative;width:100%}
+ .teacher-panel h2{font-family:'Fraunces',serif;font-size:24px;color:var(--navy-deep);margin-bottom:18px}
+ .tp-meta{display:flex;gap:14px;margin-bottom:22px;flex-wrap:wrap;align-items:center}
+ .tp-code{font-family:'Outfit',sans-serif;padding:10px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:#fff}
+ .tp-btn{font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:8px}
+ .tp-btn-primary{background:var(--navy);color:#fff}
+ .tp-btn-primary:hover{background:var(--navy-deep)}
+ .tp-btn-danger{background:var(--error);color:#fff}
+ .tp-btn-danger:hover{background:#8a3a2d}
+ .tp-btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--border)}
+ .tp-btn-ghost:hover{background:rgba(27,58,92,.06)}
+ .tp-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:22px;color:var(--muted);cursor:pointer}
+ .tp-msg{display:none;align-items:center;gap:8px;background:var(--error-soft);border:1px solid var(--error);color:var(--error);padding:10px 14px;border-radius:10px;font-size:13.5px;font-weight:500;margin-bottom:14px}
+ .tp-msg.show{display:flex}
+ .tp-msg.ok{background:var(--ok-soft);border-color:var(--ok);color:#1d4a35}
+ .tp-results{margin-top:10px}
+ .tp-result-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px}
+ .tp-result-item:last-child{border-bottom:none}
+ .tp-student{font-weight:600;color:var(--navy-deep)}
+ .tp-info{color:var(--ink-soft);font-size:13px}
+ .tp-score{font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--gold)}
+ .tp-empty{text-align:center;color:var(--muted);padding:30px;font-style:italic}
+ .tp-ranking-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+ .tp-ranking-item:last-child{border-bottom:none}
+ .tp-rank{font-weight:700;color:var(--gold);min-width:40px}
+ .tp-score-rank{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--navy)}
+ .tp-time-rank{color:var(--ink-soft);font-size:13px;font-variant-numeric:tabular-nums}
+ @media (max-width:720px){
+ .container{padding:20px 14px 60px}
+ .welcome-card,.results-card{padding:32px 22px}
+ .welcome-meta,.stats-grid{grid-template-columns:1fr;gap:8px}
+ .form-row{grid-template-columns:1fr;gap:10px}
+ .question-card{padding:26px 22px}
+ .question-text{font-size:19px}
+ .quiz-header{flex-direction:column;align-items:flex-start}
+ .brand-right{display:none}
+ .actions{flex-direction:column-reverse;gap:10px}
+ .actions .btn{width:100%;justify-content:center}
+ }
+ @media print{
+ body{background:#fff}
+ .brand,.welcome-screen,.quiz-screen,.results-actions,.review-section{display:none!important}
+ .results-card{box-shadow:none;border:none;padding:0}
+ .container{max-width:100%;padding:0}
+ .score-circle circle.track{stroke:#e6eaf0!important}
+ .score-circle circle.fill{stroke:#1b3a5c!important}
+ body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ }
+</style>
+</head>
+<body>
+
+<div class="container">
+ <header class="brand">
+ <div class="brand-left">
+ <div class="brand-mark">E</div>
+ <div class="brand-text">
+ <div class="t1">Programa del Diploma · IB · NM</div>
+ <div class="t2">Economía — Microeconomía: Intervención del gobierno</div>
+ </div>
+ </div>
+ <div class="brand-right"><strong>Guía de Estudio</strong><br>Razones de intervención en los mercados</div>
+ </header>
+
+ <section id="welcome-screen" class="screen active">
+ <div class="welcome-card">
+ <span class="eyebrow"><i class="fa-solid fa-chart-line"></i> Evaluación de Microeconomía</span>
+ <h1 class="welcome-title">Razones por las cuales los <em>gobiernos</em> intervienen en los mercados</h1>
+ <p class="welcome-sub">Cuestionario de refuerzo sobre la intervención del Estado en los mercados (Nivel Medio). Analiza un caso real de política tributaria, aplica los conceptos de oferta y demanda, eficiencia, equidad y costo de oportunidad, y evalúa los efectos de la medida sobre los distintos agentes.</p>
+
+ <div class="news-card">
+ <div class="news-title"><i class="fa-solid fa-newspaper"></i> Noticia de contexto</div>
+ <p>El presidente Noboa eliminó temporalmente el Impuesto a los Consumos Especiales (ICE) a las bebidas alcohólicas de moderación entre el 11 de junio y el 19 de julio de 2026, durante el Mundial de Fútbol. El ICE de la cerveza industrial era de 13,62 dólares por litro de alcohol puro y el mandatario aseguró que el precio de la cerveza bajaría más de un 20 %. El Gobierno presentó la medida como un "apoyo extra" a la Selección Nacional de Ecuador. Usa esta noticia como base para responder las preguntas del quiz.</p>
+ </div>
+
+ <div class="skills-box">
+ <div class="skills-title"><i class="fa-solid fa-brain"></i> Habilidades IB (AO1-AO4) que desarrollarás</div>
+ <ul class="skills-list">
+ <li><strong>Conocimiento y comprensión (AO1-AO2):</strong> Identificar las razones por las cuales los gobiernos intervienen en los mercados y reconocer los instrumentos que usan para hacerlo.</li>
+ <li><strong>Aplicación y análisis (AO2-AO3):</strong> Aplicar los conceptos de oferta y demanda, elasticidad y excedente del consumidor al caso del ICE, y analizar los efectos de la medida sobre los agentes.</li>
+ <li><strong>Síntesis y evaluación (AO3-AO4):</strong> Evaluar la medida en términos de eficiencia y equidad, reconocer su costo de oportunidad y juzgar los trade-offs de la intervención del gobierno.</li>
+ </ul>
+ </div>
+
+ <div class="welcome-meta">
+ <div class="meta-item"><div class="num">20</div><div class="lbl">Preguntas por intento</div></div>
+ <div class="meta-item"><div class="num">50</div><div class="lbl">Banco de preguntas</div></div>
+ <div class="meta-item"><div class="num">/10</div><div class="lbl">Calificación final</div></div>
+ </div>
+
+ <div class="form-group">
+ <label for="firstName">Tus datos para comenzar</label>
+ <div class="form-row">
+ <input type="text" id="firstName" class="student-input" placeholder="Nombre" autocomplete="off">
+ <input type="text" id="lastName" class="student-input" placeholder="Apellido" autocomplete="off">
+ <input type="text" id="cursoInput" class="student-input" placeholder="Curso (ej.: 2BGU A)" autocomplete="off">
+ </div>
+ <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre, tu apellido y tu curso para comenzar.</div>
+ </div>
+ <button class="btn btn-primary" id="startBtn">Comenzar la evaluación <i class="fa-solid fa-pen-to-square"></i></button>
+ </div>
+ </section>
+
+ <section id="quiz-screen" class="screen">
+ <div class="quiz-header">
+ <div class="student-tag"><i class="fa-solid fa-user-graduate"></i><span>Alumno:</span><strong id="studentDisplay">—</strong></div>
+ <div class="progress-wrap">
+ <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+ <div class="progress-text"><strong id="qCurrent">1</strong> / <span id="qTotal">20</span></div>
+ </div>
+ <div class="timer-wrap" id="timerWrap" title="Tiempo restante para responder"><i class="fa-solid fa-hourglass-half"></i><span class="timer-num" id="timerDisplay">1:15</span><span class="timer-unit" id="timerUnit"></span></div>
+ </div>
+ <div class="question-card" id="questionCard"></div>
+ <div class="actions">
+ <button class="btn btn-ghost" id="quitBtn"><i class="fa-solid fa-door-open"></i> Salir</button>
+ <button class="btn btn-primary" id="nextBtn" disabled>Siguiente pregunta <i class="fa-solid fa-arrow-right"></i></button>
+ </div>
+ </section>
+
+ <section id="results-screen" class="screen">
+ <div class="results-card">
+ <div class="results-eyebrow">Evaluación completada</div>
+ <div class="results-name" id="resultsName">—</div>
+ <div class="results-course" id="resultsCourse">—</div>
+ <div class="score-circle">
+ <svg viewBox="0 0 220 220" style="-webkit-print-color-adjust:exact;print-color-adjust:exact">
+ <defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c9a227"/><stop offset="100%" stop-color="#1b3a5c"/></linearGradient></defs>
+ <circle class="track" cx="110" cy="110" r="100"/>
+ <circle class="fill" id="scoreRing" cx="110" cy="110" r="100"/>
+ </svg>
+ <div class="score-inner">
+ <div class="score-value"><span id="scoreNum">0</span><span class="slash">/</span><span class="max">10</span></div>
+ <div class="score-label">Calificación final</div>
+ </div>
+ </div>
+ <div class="grade-pill" id="gradePill"></div>
+
+ <div class="unit-analysis" id="unitAnalysis">
+ <h3><i class="fa-solid fa-chart-pie"></i> Desglose por Tema</h3>
+ <div id="unitList"></div>
+ </div>
+
+ <div class="stats-grid">
+ <div class="stat"><div class="stat-num" id="statCorrect">0</div><div class="stat-lbl">Correctas</div></div>
+ <div class="stat"><div class="stat-num" id="statWrong">0</div><div class="stat-lbl">Incorrectas</div></div>
+ <div class="stat"><div class="stat-num" id="statPct">0%</div><div class="stat-lbl">Rendimiento</div></div>
+ </div>
+ <div class="results-actions">
+ <button class="btn btn-ghost" id="reviewBtn"><i class="fa-solid fa-list-check"></i> Revisar respuestas</button>
+ <button class="btn btn-ghost" onclick="printPDF()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+ <button class="btn btn-primary" id="retryBtn"><i class="fa-solid fa-house"></i> Volver al inicio</button>
+ </div>
+ <div class="review-section" id="reviewSection" style="display:none;">
+ <div class="review-title"><i class="fa-solid fa-clipboard-list"></i> Revisión detallada de preguntas</div>
+ <div id="reviewList"></div>
+ </div>
+ </div>
+ </section>
+</div>
+
+<!-- Cuadro de confirmación inline (los iframes de Moodle/Hyperclass bloquean alert y confirm) -->
+<div class="confirm-overlay" id="confirmBox">
+ <div class="confirm-dialog">
+ <div class="confirm-msg" id="confirmMsg"></div>
+ <div class="confirm-actions">
+ <button class="btn btn-ghost" id="confirmNo">Cancelar</button>
+ <button class="btn btn-danger" id="confirmYes">Sí, continuar</button>
+ </div>
+ </div>
+</div>
+
+<script>
+/* ============================================================
+ BANCO DE 50 PREGUNTAS — ECONOMÍA IB NM
+ "Razones por las cuales los gobiernos intervienen en los mercados"
+ Caso real: eliminación temporal del ICE a bebidas alcohólicas
+ (Noboa, Mundial 2026). Cada pregunta: texto, 4 opciones, clave.
+ ============================================================ */
+const QUESTION_BANK = [
+  {topic:"razón de intervención",q:"¿Cuál fue la razón principal para eliminar el ICE?",options:["Aumentar la recaudación fiscal del Estado","Otorgar subsidios directos a los productores","Incentivar el nivel de consumo de bebidas","Corregir una externalidad negativa del alcohol"],answer:2},
+  {topic:"razón de intervención",q:"Esta medida corresponde a la razón de intervención de:",options:["Influir en el nivel de consumo","Obtener ingresos para el Estado","Apoyar a los hogares de bajos ingresos","Corregir fallas del mercado"],answer:0},
+  {topic:"razón de intervención",q:"¿En qué se diferencia eliminar un impuesto de aumentarlo?",options:["Ambos reducen por igual el consumo","Ambos generan la misma recaudación","Solo el aumento afecta a los productores","Generan efectos opuestos en el consumo"],answer:3},
+  {topic:"instrumentos de política",q:"¿Qué instrumento usa el gobierno para influir en la producción?",options:["Impuestos indirectos al consumidor final","Subsidios y cuotas de producción","Transferencias directas a los hogares","Controles sobre los precios máximos"],answer:1},
+  {topic:"instrumentos de política",q:"El crédito subsidiado a empresas busca principalmente:",options:["Aumentar la recaudación fiscal del Estado","Proteger al consumidor de precios altos","Reducir los costos de producción","Desincentivar el consumo de un bien"],answer:2},
+  {topic:"eficiencia y equidad",q:"¿Quién se beneficia más con la eliminación del ICE?",options:["Urbanos con mayor ingreso disponible","Los hogares que nunca compran cerveza","El Estado, por su mayor recaudación","Los productores de bebidas sin alcohol"],answer:0},
+  {topic:"impacto fiscal",q:"¿Cuál es el costo fiscal directo de esta medida?",options:["Un mayor desempleo en el sector cervecero","Un aumento en el gasto de salud pública","La necesidad de subsidiar a productores","La pérdida de recaudación del ICE"],answer:3},
+  {topic:"razón de intervención",q:"¿Por qué el gobierno incentiva el alcohol pero grava el azúcar?",options:["Por coherencia con la política sanitaria","Por motivos políticos del Mundial","Porque el alcohol genera menor daño social","Para maximizar la equidad del sistema"],answer:1},
+  {topic:"impacto fiscal",q:"¿Por qué la medida tiene una fecha límite de vigencia?",options:["Porque la demanda cae tras el Mundial","Porque los productores no pueden abastecer","Para limitar la pérdida fiscal permanente","Para evitar un conflicto internacional"],answer:2},
+  {topic:"instrumentos de política",q:"El Estado obtiene ingresos fiscales principalmente mediante:",options:["Impuestos directos e indirectos","La eliminación de impuestos especiales","Subsidios a empresas estratégicas","La regulación de márgenes de ganancia"],answer:0},
+  {topic:"efectos en los agentes",q:"Al eliminar el impuesto, los costos de los productores:",options:["Aumentan porque pierden sus subsidios","Se mantienen iguales que antes","Suben solo hasta julio de 2026","Disminuyen porque ya no pagan el ICE"],answer:3},
+  {topic:"oferta y demanda",q:"¿Hacia dónde se desplaza la curva de oferta?",options:["Hacia la izquierda, porque la oferta cae","Hacia la derecha, porque la oferta sube","No se desplaza, solo cambia el precio","Se vuelve vertical por el cambio fiscal"],answer:1},
+  {topic:"oferta y demanda",q:"En el nuevo equilibrio de mercado se observa que:",options:["El precio sube y la cantidad baja","El precio y la cantidad no cambian","El precio baja y la cantidad sube","El precio baja más que la cantidad"],answer:2},
+  {topic:"elasticidad",q:"Para que la cantidad demandada aumente, la demanda debe ser:",options:["Elástica ante cambios en el precio","Perfectamente inelástica en ese tramo","Unitaria a lo largo de todo el rango","Perfectamente elástica en la teoría"],answer:0},
+  {topic:"competencia",q:"¿Por qué los productores bajan el precio al competir?",options:["Porque actúan de forma altruista","Porque el gobierno lo exige por ley","Porque los consumidores tienen poder","Porque compiten por una mayor cuota"],answer:3},
+  {topic:"efectos en los agentes",q:"¿Cómo cambian los ingresos totales de los productores?",options:["Disminuyen porque el precio cae","Aumentan porque venden más unidades","Se mantienen iguales por compensación","Bajan una vez terminado el Mundial"],answer:1},
+  {topic:"excedente del consumidor",q:"El excedente del consumidor, tras la medida:",options:["Disminuye porque el precio baja","No cambia, los efectos se anulan entre sí","Aumenta porque paga un precio menor","Solo aumenta durante el Mundial"],answer:2},
+  {topic:"fallas de mercado",q:"En un mercado monopólico, el productor probablemente:",options:["Retendría parte del beneficio fiscal","Bajaría el precio igual que en competencia","Bajaría el precio más del veinte por ciento","Sería regulado de inmediato por el Estado"],answer:0},
+  {topic:"elasticidad",q:"¿Cómo cambia la cantidad de equilibrio en el mercado?",options:["Se reduce por falta de demanda","Permanece igual en todo momento","Baja una vez que termine el Mundial","Sube porque la demanda es elástica"],answer:3},
+  {topic:"eficiencia y equidad",q:"La eliminación del impuesto, en términos de eficiencia:",options:["Genera una nueva pérdida de eficiencia","Reduce la pérdida fiscal anterior","Solo mejora si el impuesto era muy alto","No tiene ningún efecto sobre el mercado"],answer:1},
+  {topic:"efectos en los agentes",q:"En síntesis, el efecto neto sobre los productores es:",options:["Negativo, por la caída del precio","Neutro, porque los efectos se cancelan","Positivo, por vender más unidades","Negativo, porque reducen su producción"],answer:2},
+  {topic:"efectos en los agentes",q:"En síntesis, el efecto neto sobre los consumidores es:",options:["Positivo, pagan un precio más bajo","Negativo, pagan un impuesto indirecto","Neutro, por una redistribución interna","Positivo solo si consumen más cerveza"],answer:0},
+  {topic:"impacto fiscal",q:"En síntesis, el efecto neto sobre el gobierno es:",options:["Positivo, por el mayor volumen vendido","Neutro, se compensa con otros impuestos","Positivo, solo después del Mundial","Negativo, pierde recaudación del ICE"],answer:3},
+  {topic:"eficiencia y equidad",q:"Esta medida se considera regresiva porque:",options:["Beneficia principalmente a hogares pobres","Beneficia sobre todo a los urbanos","Reduce la capacidad de ayudar a los pobres","En realidad es una medida progresiva"],answer:1},
+  {topic:"efectos en los agentes",q:"El efecto esperado sobre el empleo del sector es:",options:["Una reducción por la menor demanda","Ningún cambio en el nivel de empleo","Un aumento por la mayor producción","Un aumento solo hasta julio de 2026"],answer:2},
+  {topic:"eficiencia y equidad",q:"¿Quién obtiene el mayor beneficio de la medida?",options:["Los productores y consumidores urbanos","Los hogares pobres que beben cerveza","Los trabajadores de otros sectores","El gobierno, al reducir su gasto público"],answer:0},
+  {topic:"efectos en los agentes",q:"Los proveedores de insumos para la cervecería:",options:["Verían caer la demanda de sus productos","No notarían ningún cambio relevante","Bajarían sus propios precios de venta","Verían subir la demanda de insumos"],answer:3},
+  {topic:"efectos en los agentes",q:"La mayor demanda de cerveza podría generar demanda adicional en:",options:["Solo en más cerveza de la misma marca","Transporte, comercio y servicios","Una reducción en otros bienes conexos","Ningún otro sector de la economía"],answer:1},
+  {topic:"competencia",q:"La competencia entre productores de cerveza probablemente:",options:["Disminuye por la menor presión fiscal","Desaparece al formarse un cartel","Se intensifica por ganar cuota","Aumenta recién después del Mundial"],answer:2},
+  {topic:"efectos en los agentes",q:"Los comerciantes minoristas de cerveza esperarían:",options:["Un aumento en sus ventas totales","Una reducción en sus ventas totales","Una fuerte presión sobre sus márgenes","El cierre de sus negocios a largo plazo"],answer:0},
+  {topic:"costo de oportunidad",q:"La decisión de eliminar el ICE refleja el concepto de:",options:["Abundancia de cerveza en el mercado","Recursos ilimitados para el productor","Ver a la cerveza como bien de lujo","Asignar recursos fiscales escasos"],answer:3},
+  {topic:"costo de oportunidad",q:"El costo de oportunidad fiscal de esta medida es:",options:["Cero, porque no existe alternativa","Lo no gastado en salud o educación","El mayor consumo de alcohol del país","La inflación esperada del período"],answer:1},
+  {topic:"externalidades",q:"Una posible externalidad negativa de la medida es:",options:["La caída en las ventas de refrescos","Una mayor competencia entre empresas","Un mayor costo de salud por el alcohol","Una mejora general del bienestar social"],answer:2},
+  {topic:"fallas de mercado",q:"Los ingresos del ICE se vinculan con los bienes públicos porque:",options:["Financian obras, escuelas y seguridad","No existe ninguna relación entre ambos","Solo los productores usan bienes públicos","Los bienes públicos no requieren fondos"],answer:0},
+  {topic:"eficiencia y equidad",q:"La eliminación del impuesto aumenta la eficiencia porque:",options:["Genera una mayor igualdad de ingresos","Beneficia a más personas que antes","Reduce el desempleo de forma total","Elimina la distorsión del impuesto"],answer:3},
+  {topic:"eficiencia y equidad",q:"Existe un trade-off entre eficiencia y equidad porque la medida:",options:["Beneficia a todos por igual, sin excepción","Es eficiente pero también regresiva","No genera ningún conflicto entre objetivos","Prioriza la equidad sobre la eficiencia"],answer:1},
+  {topic:"oferta y demanda",q:"En el nuevo punto de equilibrio se cumple que la cantidad:",options:["Demandada es menor que la ofrecida","Demandada es mayor que la ofrecida","Demandada es igual a la ofrecida","Nunca llega a igualarse en este mercado"],answer:2},
+  {topic:"oferta y demanda",q:"Sin el impuesto, el mecanismo de precios:",options:["Funciona de forma más eficiente","Se distorsiona todavía más que antes","Deja de funcionar por completo","Necesita más regulación del Estado"],answer:0},
+  {topic:"oferta y demanda",q:"Si la cerveza y las bebidas energéticas son sustitutos, la demanda de estas últimas:",options:["Aumentaría junto con la cerveza también","No se vería afectada en absoluto","Subiría en la misma proporción","Bajaría por sustitución con la cerveza"],answer:3},
+  {topic:"oferta y demanda",q:"Si la cerveza es un bien normal, un mayor ingreso disponible:",options:["Reduce la demanda de otros bienes","Aumenta la demanda de otros bienes","No modifica la demanda de otros bienes","Reduce la demanda de bienes bajos"],answer:1},
+  {topic:"AO2",q:"El Objetivo de Evaluación 2 pide a los estudiantes:",options:["Memorizar las seis razones de intervención","Criticar toda política económica del gobierno","Aplicar conceptos económicos a un caso real","Proponer una nueva política fiscal propia"],answer:2},
+  {topic:"AO2",q:"Al interpretar esta noticia, se debe considerar sobre todo:",options:["Precio, cantidad y quién se beneficia","Solo las cifras que menciona el texto","Las opiniones personales del presidente","La trayectoria de Ecuador en mundiales"],answer:0},
+  {topic:"AO2",q:"Aplicar un concepto económico a este caso significa:",options:["Repetir la definición exacta del libro","Memorizar los ejemplos de la presentación","Emitir un juicio sobre la política aplicada","Usar la teoría para explicar la realidad"],answer:3},
+  {topic:"AO2",q:"Analizar esta medida requiere, sobre todo:",options:["Describir lo ocurrido sin explicar el porqué","Examinar causas, efectos y consecuencias","Enumerar cifras sin relacionarlas entre sí","Decidir si la medida fue buena o mala"],answer:1},
+  {topic:"AO2",q:"Identificar la razón de intervención implica:",options:["Explicar las seis razones posibles","Enumerar intervenciones pasadas del país","Reconocer cuál razón aplica en este caso","Proponer una razón nueva, no vista en clase"],answer:2},
+  {topic:"razón de intervención",q:"¿Cuál de las siguientes NO es una razón de intervención?",options:["Maximizar el consumo de bienes de lujo","Influir en el nivel de consumo","Brindar apoyo a empresas estratégicas","Corregir fallas existentes en el mercado"],answer:0},
+  {topic:"datos de la noticia",q:"La eliminación del ICE estuvo vigente:",options:["Durante todo el año 2026","Solo durante los partidos de Ecuador","De forma permanente y total","Del 11 de junio al 19 de julio"],answer:3},
+  {topic:"datos de la noticia",q:"Antes de la medida, el ICE de la cerveza industrial era de:",options:["10,30 dólares por litro de alcohol puro","13,62 dólares por litro de alcohol puro","0,18 dólares por cada 100 gramos de azúcar","El 20 % del precio final de venta"],answer:1},
+  {topic:"datos de la noticia",q:"Según el presidente, el precio de la cerveza bajaría:",options:["Exactamente un 20 %","Menos de un 10 %","Más de un 20 %","Entre un 5 % y un 15 %"],answer:2},
+  {topic:"datos de la noticia",q:"El gobierno justificó la medida como:",options:["Un \"apoyo extra\" a la Selección Nacional","Una forma de equilibrar el presupuesto","Una política sanitaria permanente","Una respuesta a la presión de productores"],answer:0},
+
+];
+
+const TOTAL_QUESTIONS = 20;
+const TIME_PER_QUESTION = 75; // segundos por pregunta
+
+// === API CONFIG (backend Railway) ===
+const EXAM_ID = 'ice-mundial-2bgu';
+const API_BASE = 'https://evaluador-ensayos-production.up.railway.app/api/quiz/' + EXAM_ID;
+const TEACHER_CODE = 'DOCENTE2026';
+const LS_KEY = 'ice_quiz_results';
+
+const STATE = { studentName:"", curso:"", selectedQuestions:[], currentIndex:0, userAnswers:[], answered:false, shuffledAnswers:[], shuffledOptions:[], timer:null, timerSeconds:0, startTime:null };
+
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function shuffleWithOptions(opts, correctIdx) {
+  const indexed = opts.map((opt, i) => ({ text: opt, originalIdx: i }));
+  const shuffled = shuffle([...indexed]);
+  const newCorrectIdx = shuffled.findIndex(item => item.originalIdx === correctIdx);
+  return {
+    options: shuffled.map(item => item.text),
+    answerIdx: newCorrectIdx
+  };
+}
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+
+// Normaliza un nombre para comparar intentos: mayúsculas, sin comas,
+// espacios colapsados y palabras en orden alfabético (así "GARCIA, LUIS"
+// coincide con "luis garcia" en cualquier orden).
+function canonName(s){
+  return String(s||'').trim().toUpperCase().replace(/,/g,' ').replace(/\s+/g,' ').split(' ').sort().join(' ');
+}
+
+function printPDF() {
+  const studentName = document.getElementById('resultsName').textContent.trim();
+  document.title = 'Razones de intervención del gobierno — ' + studentName + '.pdf';
+  window.print();
+}
+
+// === Verificación de intento único ===
+// Fuente autoritativa: API de notas. Respaldo: localStorage.
+// Normaliza con canonName() en AMBOS lados.
+async function hasCompletedAttempt(name) {
+  const normalized = canonName(name);
+  try {
+    const res = await fetch(API_BASE + '/grades');
+    if (res.ok) {
+      const grades = await res.json();
+      const found = (grades || []).some(g => canonName(g.studentName || g.name) === normalized);
+      return found; // si la API responde, es la verdad (si el docente borró, permite)
+    }
+  } catch(e) { /* API no disponible, se usa el respaldo localStorage */ }
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    return saved.some(r => canonName(r.studentName) === normalized);
+  } catch(e) { return false; }
+}
+
+async function startQuiz(){
+  const firstNameEl = document.getElementById('firstName');
+  const lastNameEl = document.getElementById('lastName');
+  const cursoEl = document.getElementById('cursoInput');
+  const errorEl = document.getElementById('nameError');
+  const nombre = firstNameEl.value.trim();
+  const apellido = lastNameEl.value.trim();
+  const curso = cursoEl.value.trim();
+  if(!nombre || !apellido || !curso){
+    errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre, tu apellido y tu curso para comenzar.';
+    errorEl.classList.add('show');
+    (nombre ? (apellido ? cursoEl : lastNameEl) : firstNameEl).focus();
+    return;
+  }
+  errorEl.classList.remove('show');
+  const fullName = (apellido + ', ' + nombre).toUpperCase();
+  clearInterval(STATE.timer); STATE.timer = null;
+  try {
+    const alreadyDone = await hasCompletedAttempt(fullName);
+    if (alreadyDone) {
+      errorEl.innerHTML = '<i class="fa-solid fa-lock"></i> <strong>' + fullName + '</strong> ya completó esta evaluación. Solo se permite un intento por estudiante; tu docente debe eliminar tu registro para habilitar un nuevo intento.';
+      errorEl.classList.add('show');
+      return;
+    }
+  } catch(e) {
+    errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> No se pudo verificar tu registro. Revisa tu conexión e intenta de nuevo.';
+    errorEl.classList.add('show');
+    return;
+  }
+  STATE.studentName = fullName;
+  STATE.curso = curso;
+  STATE.selectedQuestions = shuffle(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
+  STATE.currentIndex = 0; STATE.userAnswers = []; STATE.answered = false;
+  STATE.shuffledAnswers = []; STATE.shuffledOptions = [];
+  STATE.startTime = new Date().toISOString();
+  document.getElementById('studentDisplay').textContent = fullName;
+  document.getElementById('qTotal').textContent = TOTAL_QUESTIONS;
+  showScreen('quiz-screen'); renderQuestion();
+}
+
+function renderQuestion(){
+  STATE.answered = false;
+  const q = STATE.selectedQuestions[STATE.currentIndex];
+  const shuffled = shuffleWithOptions(q.options, q.answer);
+  STATE.shuffledAnswers[STATE.currentIndex] = shuffled.answerIdx;
+  STATE.shuffledOptions[STATE.currentIndex] = shuffled.options;
+  const card = document.getElementById('questionCard');
+  const num = STATE.currentIndex + 1;
+  card.innerHTML = `
+ <div class="q-topic"><span class="dot"></span> ${q.topic}</div>
+ <h2 class="question-text">${q.q}</h2>
+ <div class="options" id="optionsList">
+ ${shuffled.options.map((opt,i)=>`<button class="option" data-idx="${i}"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${opt}</span></button>`).join('')}
+ </div>
+ <div class="feedback" id="feedback"></div>`;
+  document.getElementById('progressFill').style.width = ((STATE.currentIndex / TOTAL_QUESTIONS) * 100) + '%';
+  document.getElementById('qCurrent').textContent = num;
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.disabled = true;
+  nextBtn.innerHTML = (num === TOTAL_QUESTIONS) ? 'Ver resultados <i class="fa-solid fa-flag-checkered"></i>' : 'Siguiente pregunta <i class="fa-solid fa-arrow-right"></i>';
+  document.querySelectorAll('.option').forEach(btn=>btn.addEventListener('click', handleAnswer));
+  clearInterval(STATE.timer);
+  startTimer();
+}
+
+function startTimer(){
+  const total = TIME_PER_QUESTION;
+  STATE.timerSeconds = total;
+  const disp = document.getElementById('timerDisplay');
+  const wrap = document.getElementById('timerWrap');
+  if(!disp || !wrap) return;
+  disp.textContent = '1:15';
+  wrap.classList.remove('warn');
+  clearInterval(STATE.timer);
+  STATE.timer = setInterval(() => {
+    STATE.timerSeconds--;
+    const s = STATE.timerSeconds;
+    const m = Math.floor(s / 60);
+    disp.textContent = m + ':' + String(s % 60).padStart(2, '0');
+    if(s <= 5) wrap.classList.add('warn');
+    if(s <= 0){
+      clearInterval(STATE.timer); STATE.timer = null;
+      const q = STATE.selectedQuestions[STATE.currentIndex];
+      const correct = (STATE.shuffledAnswers[STATE.currentIndex] !== undefined) ? STATE.shuffledAnswers[STATE.currentIndex] : q.answer;
+      submitAnswer(correct, true);
+    }
+  }, 1000);
+}
+
+function handleAnswer(e){
+  if(STATE.answered) return;
+  submitAnswer(parseInt(e.currentTarget.dataset.idx, 10), false);
+}
+
+function submitAnswer(selected, timedOut){
+  if(STATE.answered) return; STATE.answered = true;
+  clearInterval(STATE.timer); STATE.timer = null;
+  const q = STATE.selectedQuestions[STATE.currentIndex];
+  const correct = (STATE.shuffledAnswers[STATE.currentIndex] !== undefined) ? STATE.shuffledAnswers[STATE.currentIndex] : q.answer;
+  const isCorrect = !timedOut && selected === correct;
+  const options = document.querySelectorAll('.option');
+  options.forEach((btn,i)=>{ btn.disabled=true; if(i===correct) btn.classList.add('correct'); else if(i===selected && !timedOut) btn.classList.add('incorrect'); });
+  STATE.userAnswers.push({ selected: timedOut ? -1 : selected, correct, isCorrect, question: q, timedOut: !!timedOut });
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'bad');
+  const head = timedOut ? 'Tiempo agotado, sin respuesta' : (isCorrect ? '¡Respuesta correcta!' : 'Respuesta incorrecta');
+  fb.innerHTML = `<div class="feedback-head"><i class="fa-solid ${isCorrect ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>${head}</div><div class="feedback-body">${timedOut || isCorrect ? 'Puedes continuar con la siguiente pregunta.' : 'Repasa el tema <strong>' + q.topic + '</strong> en tus apuntes de la Guía de Estudio.'}</div>`;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  if(STATE.currentIndex < TOTAL_QUESTIONS - 1){ STATE.currentIndex++; renderQuestion(); }
+  else { showResults(); }
+}
+
+const TOPIC_TIPS = {
+  'razón de intervención': 'repasa las razones por las cuales el gobierno interviene en los mercados (influir en el consumo, apoyar empresas, corregir fallas)',
+  'instrumentos de política': 'repasa los instrumentos del Estado: impuestos, subsidios, cuotas y controles',
+  'oferta y demanda': 'repasa el desplazamiento de la curva de oferta y el nuevo equilibrio de mercado',
+  'elasticidad': 'repasa la elasticidad precio de la demanda y su efecto sobre la cantidad demandada',
+  'competencia': 'repasa el comportamiento competitivo de los productores en el mercado',
+  'excedente del consumidor': 'repasa cómo cambia el excedente del consumidor cuando baja el precio',
+  'eficiencia y equidad': 'repasa el trade-off entre eficiencia y equidad y el carácter regresivo de la medida',
+  'costo de oportunidad': 'repasa el concepto de costo de oportunidad aplicado a los recursos fiscales',
+  'externalidades': 'repasa las externalidades negativas y sus costos sociales',
+  'fallas de mercado': 'repasa las fallas de mercado: monopolios y bienes públicos',
+  'impacto fiscal': 'repasa los efectos de la medida sobre la recaudación del Estado',
+  'efectos en los agentes': 'repasa los efectos de la medida sobre productores, consumidores y trabajadores',
+  'AO2': 'repasa cómo aplicar y analizar conceptos económicos frente a un caso real'
+};
+
+function getWeakTopics(userAnswers) {
+  const topicWrong = {};
+  userAnswers.forEach(a => {
+    if (!a.isCorrect) {
+      const t = a.question.topic;
+      topicWrong[t] = (topicWrong[t] || 0) + 1;
+    }
+  });
+  const weak = Object.entries(topicWrong).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  if (weak.length === 0) return 'No se identificaron temas débiles en este intento.';
+  return weak.map(([t, n]) => {
+    const tip = TOPIC_TIPS[t] || 'vuelve a revisar los apuntes de este tema en la Guía de Estudio';
+    return t + ' (' + n + ' error' + (n > 1 ? 'es' : '') + '): ' + tip;
+  }).join(' · ');
+}
+
+function showResults(){
+  const correct = STATE.userAnswers.filter(a=>a.isCorrect).length;
+  const wrong = TOTAL_QUESTIONS - correct;
+  const score10 = (correct / TOTAL_QUESTIONS) * 10;
+  const pct = Math.round((correct/TOTAL_QUESTIONS)*100);
+
+  document.getElementById('resultsName').textContent = STATE.studentName;
+  document.getElementById('resultsCourse').textContent = 'Curso: ' + STATE.curso;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('statPct').textContent = pct + '%';
+
+  const scoreNum = document.getElementById('scoreNum');
+  let current = 0; const target = Math.round(score10 * 10) / 10; const step = target / 40;
+  const interval = setInterval(()=>{ current += step; if(current >= target){ current = target; clearInterval(interval); } scoreNum.textContent = current.toFixed(1).replace('.0',''); }, 30);
+
+  const circumference = 2 * Math.PI * 100;
+  const offset = circumference * (1 - score10/10);
+  setTimeout(()=>{ document.getElementById('scoreRing').style.strokeDashoffset = offset; }, 100);
+
+  const pill = document.getElementById('gradePill');
+  let grade, icon, cls;
+  if(score10 >= 9){ grade='Excelente dominio'; icon='fa-trophy'; cls='grade-excellent'; }
+  else if(score10 >= 7){ grade='Buen desempeño'; icon='fa-thumbs-up'; cls='grade-good'; }
+  else if(score10 >= 5){ grade='Desempeño aceptable'; icon='fa-circle-check'; cls='grade-fair'; }
+  else {
+        grade='¡Buen intento, ' + STATE.studentName + '! Para mejorar, enfócate en: ' + getWeakTopics(STATE.userAnswers);
+        icon='fa-book';
+        cls='grade-poor';
+      }
+  pill.className = 'grade-pill ' + cls;
+  pill.innerHTML = `<i class="fa-solid ${icon}"></i> ${grade}`;
+
+  const topicCounts = {};
+  STATE.userAnswers.forEach(a => {
+    const t = a.question.topic;
+    if(!topicCounts[t]) topicCounts[t] = { correct: 0, total: 0 };
+    topicCounts[t].total++;
+    if(a.isCorrect) topicCounts[t].correct++;
+  });
+
+  const unitList = document.getElementById('unitList');
+  unitList.innerHTML = '';
+  Object.keys(topicCounts).forEach(t => {
+    const data = topicCounts[t];
+    const weak = (data.correct / data.total) < 0.6 ? 'weak' : '';
+    unitList.innerHTML += `
+ <div class="unit-row">
+ <span class="unit-name">${t}</span>
+ <span class="unit-score ${weak}">${data.correct} / ${data.total} correctas</span>
+ </div>
+ `;
+  });
+
+  document.getElementById('reviewSection').style.display = 'none';
+  document.getElementById('reviewList').innerHTML = '';
+  showScreen('results-screen');
+
+  // Guardado automático: localStorage PRIMERO, luego POST al backend
+  saveResultToAPI({
+    studentName: STATE.studentName,
+    curso: STATE.curso,
+    score: score10.toFixed(1),
+    pct: pct,
+    correct: correct,
+    wrong: wrong,
+    timestamp: new Date().toLocaleString('es-EC', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
+    weakestTopic: getWeakTopics(STATE.userAnswers).split(':')[0] || 'N/A'
+  });
+}
+
+function toggleReview(){
+  const section = document.getElementById('reviewSection');
+  const list = document.getElementById('reviewList');
+  const visible = section.style.display === 'block';
+  if(!visible){
+    if(list.children.length === 0){
+      if(STATE.userAnswers.length === 0){ list.innerHTML = '<div class="tp-empty">No hay respuestas para revisar.</div>'; }
+      else {
+        STATE.userAnswers.forEach((a, i)=>{
+          const item = document.createElement('div');
+          item.className = 'review-item';
+          const shownOptions = STATE.shuffledOptions[i] || a.question.options;
+          const letter = a.timedOut ? '—' : String.fromCharCode(65 + a.selected);
+          const correctLetter = String.fromCharCode(65 + a.correct);
+          const yourAnswer = a.timedOut ? 'Sin respuesta (tiempo agotado)' : (letter + '. ' + shownOptions[a.selected]);
+          item.innerHTML = `
+ <div class="ri-q"><strong>${i+1}.</strong> ${a.question.q}</div>
+ <div class="ri-a">
+ <span class="badge ${a.isCorrect?'ok':'bad'}">${a.isCorrect ? 'Correcta' : 'Incorrecta'}</span>
+ Tu respuesta: ${yourAnswer}
+ ${!a.isCorrect ? ` &nbsp;·&nbsp; <span style="color:var(--ok);font-weight:600">Correcta: ${correctLetter}. ${shownOptions[a.correct]}</span>` : ''}
+ </div>
+ <span class="syllabus-tag"><i class="fa-solid fa-tag"></i> ${a.question.topic}</span>
+ `;
+          list.appendChild(item);
+        });
+      }
+    }
+    section.style.display = 'block';
+  } else { section.style.display = 'none'; }
+}
+
+// ─── LISTENERS SEGUROS (un error no bloquea a los demás) ─────────
+function safeListener(id, event, handler) {
+  try {
+    const el = typeof id === 'string' ? document.getElementById(id) : id;
+    if (el) { el.addEventListener(event, handler); }
+    else { console.warn('[Quiz] Elemento no encontrado:', id); }
+  } catch (e) { console.error('[Quiz] Error de listener:', e); }
+}
+
+// Cuadro de confirmación inline (sin alert ni confirm)
+let pendingConfirm = null;
+function openConfirmBox(msg, onYes){
+  document.getElementById('confirmMsg').textContent = msg;
+  pendingConfirm = onYes;
+  document.getElementById('confirmBox').classList.add('active');
+}
+function closeConfirmBox(){
+  document.getElementById('confirmBox').classList.remove('active');
+  pendingConfirm = null;
+}
+safeListener('confirmYes', 'click', function(){ const fn = pendingConfirm; closeConfirmBox(); if(fn) fn(); });
+safeListener('confirmNo', 'click', closeConfirmBox);
+
+safeListener('startBtn', 'click', startQuiz);
+safeListener('nextBtn', 'click', nextQuestion);
+safeListener('quitBtn', 'click', function(){
+  openConfirmBox('¿Salir de la evaluación? Las respuestas de este intento se perderán.', function(){
+    clearInterval(STATE.timer); STATE.timer = null;
+    showScreen('welcome-screen');
+  });
+});
+safeListener('retryBtn', 'click', function(){ clearInterval(STATE.timer); STATE.timer = null; showScreen('welcome-screen'); });
+safeListener('reviewBtn', 'click', toggleReview);
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('quiz-screen').classList.contains('active')) return;
+  if (STATE.answered && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    nextQuestion();
+    return;
+  }
+  if (!STATE.answered) {
+    let idx = -1;
+    if (['1', '2', '3', '4'].includes(e.key)) idx = parseInt(e.key, 10) - 1;
+    if (['a', 'b', 'c', 'd'].includes(e.key.toLowerCase())) idx = e.key.toLowerCase().charCodeAt(0) - 97;
+    if (idx !== -1 && idx < 4) {
+      const btn = document.querySelector('.option[data-idx="' + idx + '"]');
+      if (btn) btn.click();
+    }
+  }
+});
+
+// === PANEL DOCENTE ===
+function saveResultToAPI(result) {
+  // 1) localStorage PRIMERO (siempre funciona)
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    saved.push(result);
+    localStorage.setItem(LS_KEY, JSON.stringify(saved));
+  } catch(e) { console.warn('Fallo al guardar en localStorage:', e); }
+  // 2) Luego POST al backend (si hay conexión y CORS lo permite)
+  const payload = {
+    name: result.studentName,
+    cls: result.curso,
+    score: parseFloat(Number(result.score).toFixed(1)),
+    pct: result.pct,
+    correct: result.correct,
+    wrong: result.wrong,
+    date: result.timestamp,
+    weakestTopic: result.weakestTopic,
+    startTimestamp: STATE.startTime || result.timestamp,
+    endTimestamp: new Date().toISOString(),
+    totalDurationSeconds: Math.round((Date.now() - new Date(STATE.startTime || result.timestamp).getTime()) / 1000)
+  };
+  fetch(API_BASE + '/grades', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(e => console.warn('No se pudo guardar en el servidor (queda en localStorage):', e));
+}
+
+async function loadResultsFromAPI() {
+  let localResults = [];
+  try {
+    localResults = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+  } catch(e) {}
+  try {
+    const res = await fetch(API_BASE + '/grades');
+    if (res.ok) {
+      const apiResults = await res.json();
+      // Mezcla: prioriza la API y agrega lo local que no esté en ella
+      const apiNames = new Set(apiResults.map(r => canonName(r.name || r.studentName)));
+      const localOnly = localResults.filter(r => !apiNames.has(canonName(r.studentName)));
+      return [...apiResults, ...localOnly];
+    }
+  } catch(e) {
+    console.warn('No se pudo cargar desde el servidor; se usan los registros locales:', e);
+  }
+  return localResults;
+}
+
+function clearResultsFromLocalStorage() {
+  try { localStorage.removeItem(LS_KEY); } catch(e) {}
+}
+
+async function exportResultsCSV() {
+  const results = await loadResultsFromAPI();
+  const msg = document.getElementById('tpMsg');
+  if (results.length === 0) {
+    msg.className = 'tp-msg show';
+    msg.innerHTML = '<i class="fa-solid fa-circle-info"></i> No hay notas para exportar.';
+    return;
+  }
+  const header = 'Nombre,Curso,Nota,/10,Porcentaje,Correctas,Incorrectas,Fecha';
+  const rows = results.map(r => {
+    const name = r.studentName || r.name || 'Sin nombre';
+    const curso = r.curso || r.cls || 'N/A';
+    const date = r.timestamp || r.date || 'N/A';
+    const score = r.score || 0;
+    const pct = r.pct ?? 'N/A';
+    const correct = r.correct ?? 0;
+    const wrong = r.wrong ?? 0;
+    return '"' + name + '","' + curso + '",' + score + ',/10,' + pct + ',' + correct + ',' + wrong + ',"' + date + '"';
+  });
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob(['\ufeff' + csv], {type: 'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'notas_ice_mundial_2bgu.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  msg.className = 'tp-msg show ok';
+  msg.innerHTML = '<i class="fa-solid fa-circle-check"></i> CSV exportado con ' + results.length + ' registro(s).';
+}
+
+async function renderTPResults() {
+  const resultsEl = document.getElementById('tpResults');
+  resultsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--ink-soft);">Cargando notas...</div>';
+  try {
+    const results = await loadResultsFromAPI();
+    if (results.length === 0) {
+      resultsEl.innerHTML = '<div class="tp-empty">No hay notas guardadas aún.</div>';
+      document.getElementById('tpCount').textContent = '';
+    } else {
+      document.getElementById('tpCount').textContent = results.length + ' registro(s)';
+      resultsEl.innerHTML = results.map(r => {
+        const name = r.studentName || r.name || 'Sin nombre';
+        const date = r.timestamp || r.date || 'N/A';
+        const score = r.score || '0';
+        const pct = r.pct ? ' (' + r.pct + '%)' : '';
+        const curso = r.curso || r.cls || '';
+        return '<div class="tp-result-item"><div><div class="tp-student">' + name + (curso ? ' · ' + curso : '') + '</div><div class="tp-info">' + date + '</div></div><div class="tp-score">' + score + '/10' + pct + '</div></div>';
+      }).join('');
+    }
+  } catch(e) {
+    console.error('Error al cargar notas:', e);
+    resultsEl.innerHTML = '<div class="tp-empty">Error al cargar notas.</div>';
+  }
+}
+
+// El panel docente se renderiza después del <script>, por eso se espera DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  const tpOpener = document.getElementById('tpOpener');
+  const tpOverlay = document.getElementById('tpOverlay');
+  if (!tpOpener || !tpOverlay) return;
+
+  document.addEventListener('keydown', e => {
+    if (e.altKey && e.shiftKey && e.key.toLowerCase() === 'd') {
+      e.preventDefault();
+      tpOpener.classList.toggle('active');
+      tpOverlay.classList.toggle('active');
+    }
+  });
+
+  tpOpener.addEventListener('click', () => {
+    tpOpener.classList.add('active');
+    tpOverlay.classList.add('active');
+  });
+
+  document.getElementById('tpClose').addEventListener('click', () => {
+    tpOverlay.classList.remove('active');
+    tpOpener.classList.remove('active');
+  });
+
+  document.getElementById('tpLoginBtn').addEventListener('click', async () => {
+    const code = document.getElementById('tpCode').value.trim();
+    const msg = document.getElementById('tpMsg');
+    if (code === TEACHER_CODE) {
+      msg.className = 'tp-msg';
+      document.getElementById('tpActions').style.display = 'flex';
+      renderTPResults();
+    } else {
+      msg.className = 'tp-msg show';
+      msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Código incorrecto. Intenta nuevamente.';
+    }
+  });
+
+  document.getElementById('tpExportCsv').addEventListener('click', () => exportResultsCSV());
+
+  document.getElementById('tpRankings').addEventListener('click', async () => {
+    const resultsEl = document.getElementById('tpResults');
+    const msg = document.getElementById('tpMsg');
+    msg.className = 'tp-msg';
+    try {
+      const res = await fetch(API_BASE + '/rankings');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const rankings = await res.json();
+      if (!rankings || rankings.length === 0) {
+        resultsEl.innerHTML = '<div class="tp-empty">No hay datos de ranking aún.</div>';
+        return;
+      }
+      resultsEl.innerHTML = rankings.map((r, i) => {
+        const medal = i < 3 ? ['🥇','🥈','🥉'][i] : '';
+        const safeName = (r.studentName || 'ANON').replace(/"/g, '&quot;');
+        return '<div class="tp-ranking-item"><span class="tp-rank">' + medal + (i+1) + '</span><span class="tp-student">' + safeName + '</span><span class="tp-score-rank">' + r.score + '/10 (' + r.percentage + '%)</span><span class="tp-time-rank">' + r.duration + 's</span></div>';
+      }).join('');
+      document.getElementById('tpCount').textContent = rankings.length + ' estudiantes rankeados';
+    } catch(e) {
+      resultsEl.innerHTML = '<div class="tp-empty">No se pudo cargar el ranking.</div>';
+    }
+  });
+
+  document.getElementById('tpClear').addEventListener('click', () => {
+    openConfirmBox('¿Borrar TODAS las notas? Esta acción no se puede deshacer.', async function(){
+      // 1) borra localStorage
+      clearResultsFromLocalStorage();
+      // 2) también pide el borrado al servidor (si no, los registros reaparecen)
+      try {
+        await fetch(API_BASE + '/clear', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ action: 'clear_all', examId: EXAM_ID })
+        });
+      } catch(e) {
+        console.warn('No se pudo borrar en el servidor (pueden quedar registros):', e);
+      }
+      document.getElementById('tpResults').innerHTML = '<div class="tp-empty">Notas borradas.</div>';
+      document.getElementById('tpCount').textContent = '';
+      const msg = document.getElementById('tpMsg');
+      msg.className = 'tp-msg show ok';
+      msg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Notas borradas (local y servidor).';
+    });
+  });
+});
+</script>
+
+<!-- PANEL DOCENTE -->
+<button class="teacher-panel-opener" id="tpOpener" title="Panel docente (ALT+SHIFT+D)">
+ <i class="fa-solid fa-chalkboard-user"></i>
+</button>
+<div class="teacher-panel-overlay" id="tpOverlay">
+ <div class="teacher-panel">
+ <button class="tp-close" id="tpClose">&times;</button>
+ <h2><i class="fa-solid fa-clipboard-list"></i> Panel Docente</h2>
+ <p style="font-size:14px;color:var(--ink-soft);margin-bottom:18px;">
+ Accede con el código para consultar todas las notas guardadas.
+ </p>
+ <div class="tp-msg" id="tpMsg"></div>
+ <div class="tp-meta" style="margin-bottom:16px;">
+ <input type="password" id="tpCode" class="tp-code" placeholder="Código docente (ALT+SHIFT+D)" style="flex:1;min-width:200px;">
+ <button class="tp-btn tp-btn-primary" id="tpLoginBtn"><i class="fa-solid fa-unlock"></i> Acceder</button>
+ </div>
+ <div class="tp-meta" id="tpActions" style="display:none;">
+ <button class="tp-btn tp-btn-ghost" id="tpExportCsv"><i class="fa-solid fa-file-csv"></i> Exportar CSV</button>
+ <button class="tp-btn tp-btn-ghost" id="tpRankings"><i class="fa-solid fa-ranking-star"></i> Ver Ranking</button>
+ <button class="tp-btn tp-btn-danger" id="tpClear"><i class="fa-solid fa-trash"></i> Limpiar notas</button>
+ <span id="tpCount" style="font-size:13px;color:var(--muted);"></span>
+ </div>
+ <div class="tp-results" id="tpResults">
+ <div class="tp-empty">Ingresa el código para ver las notas de los estudiantes.</div>
+ </div>
+ </div>
+</div>
+</body>
+</html>
