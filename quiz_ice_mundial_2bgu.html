@@ -55,6 +55,8 @@
  .student-input{width:100%;padding:14px 16px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color .2s, box-shadow .2s}
  .student-input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,39,.15)}
  .student-input::placeholder{color:var(--muted)}
+ .student-select{width:100%;padding:14px 16px;font-family:'Outfit',sans-serif;font-size:16px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:border-color .2s, box-shadow .2s;cursor:pointer;max-width:520px}
+ .student-select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,39,.15)}
  .name-error{display:none;align-items:center;gap:8px;background:var(--error-soft);border:1px solid var(--error);color:var(--error);padding:12px 16px;border-radius:12px;font-size:14px;font-weight:500;margin-top:4px}
  .name-error.show{display:flex}
  .btn{font-family:'Outfit',sans-serif;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;border:none;cursor:pointer;transition:background .2s, transform .15s;display:inline-flex;align-items:center;gap:10px}
@@ -214,14 +216,14 @@
  <div class="t2">Economía — Microeconomía: Intervención del gobierno</div>
  </div>
  </div>
- <div class="brand-right"><strong>Guía de Estudio</strong><br>Razones de intervención en los mercados</div>
+ <div class="brand-right"><strong>ADA 5 · Unidad 2</strong><br>Razones de intervención en los mercados</div>
  </header>
 
  <section id="welcome-screen" class="screen active">
  <div class="welcome-card">
- <span class="eyebrow"><i class="fa-solid fa-chart-line"></i> Evaluación de Microeconomía</span>
+ <span class="eyebrow"><i class="fa-solid fa-chart-line"></i> ADA 5 · Unidad 2 · Evaluación de Microeconomía</span>
  <h1 class="welcome-title">Razones por las cuales los <em>gobiernos</em> intervienen en los mercados</h1>
- <p class="welcome-sub">Cuestionario de refuerzo sobre la intervención del Estado en los mercados (Nivel Medio). Analiza un caso real de política tributaria, aplica los conceptos de oferta y demanda, eficiencia, equidad y costo de oportunidad, y evalúa los efectos de la medida sobre los distintos agentes.</p>
+ <p class="welcome-sub">Actividad de aplicación y análisis (ADA 5, Unidad 2) sobre la intervención del Estado en los mercados (Nivel Medio). Analiza un caso real de política tributaria, aplica los conceptos de oferta y demanda, eficiencia, equidad y costo de oportunidad, y evalúa los efectos de la medida sobre los distintos agentes.</p>
 
  <div class="news-card">
  <div class="news-title"><i class="fa-solid fa-newspaper"></i> Noticia de contexto</div>
@@ -244,13 +246,33 @@
  </div>
 
  <div class="form-group">
- <label for="firstName">Tus datos para comenzar</label>
- <div class="form-row">
- <input type="text" id="firstName" class="student-input" placeholder="Nombre" autocomplete="off">
- <input type="text" id="lastName" class="student-input" placeholder="Apellido" autocomplete="off">
- <input type="text" id="cursoInput" class="student-input" placeholder="Curso (ej.: 2BGU A)" autocomplete="off">
- </div>
- <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre, tu apellido y tu curso para comenzar.</div>
+ <label for="studentName">Selecciona tu nombre — 2BGU Economía</label>
+ <select id="studentName" class="student-select">
+ <option value="" disabled selected>— Tu nombre —</option>
+ <option value="ALBAN ALTAMIRANO, GIANELLA">ALBAN ALTAMIRANO, GIANELLA</option>
+ <option value="ASPIAZU SOTOMAYOR, CAMILA">ASPIAZU SOTOMAYOR, CAMILA</option>
+ <option value="BARON MEJIA, JULIAN">BARON MEJIA, JULIAN</option>
+ <option value="CAMPUZANO SALAZAR, JUANJOSE">CAMPUZANO SALAZAR, JUANJOSE</option>
+ <option value="CHALEN HERRERA, VICENTE">CHALEN HERRERA, VICENTE</option>
+ <option value="DE LA CRUZ NARANJO, MATEO">DE LA CRUZ NARANJO, MATEO</option>
+ <option value="FLOR LEON, JACINTO">FLOR LEON, JACINTO</option>
+ <option value="GRANDA CONSTANTINE, XAVIER">GRANDA CONSTANTINE, XAVIER</option>
+ <option value="GUERRERO HERDOIZA, IVANNA">GUERRERO HERDOIZA, IVANNA</option>
+ <option value="MARTINEZ LUNA, MATIAS">MARTINEZ LUNA, MATIAS</option>
+ <option value="MENDIBURO CEDEÑO, ADRIAN">MENDIBURO CEDEÑO, ADRIAN</option>
+ <option value="MOLANO CASTRO, EMMANUEL">MOLANO CASTRO, EMMANUEL</option>
+ <option value="MURILLO CHÁVEZ, SERGIO">MURILLO CHÁVEZ, SERGIO</option>
+ <option value="ORTIZ EGAS, SEBASTIAN">ORTIZ EGAS, SEBASTIAN</option>
+ <option value="ORTIZ MONTENEGRO, CARLOS">ORTIZ MONTENEGRO, CARLOS</option>
+ <option value="PABON RENGIFO, VALESKA">PABON RENGIFO, VALESKA</option>
+ <option value="ROMERO MONCADA, JUAN MARTIN">ROMERO MONCADA, JUAN MARTIN</option>
+ <option value="SIERRA TOALA, ERNESTO">SIERRA TOALA, ERNESTO</option>
+ <option value="STARK ROMAN, ALEJANDRA">STARK ROMAN, ALEJANDRA</option>
+ <option value="TAMAYO BONILLA, DOMENICA">TAMAYO BONILLA, DOMENICA</option>
+ <option value="VIZCAINO BONILLA, JULIO">VIZCAINO BONILLA, JULIO</option>
+ <option value="VIZHÑAY VELEZ, VALERIA">VIZHÑAY VELEZ, VALERIA</option>
+ </select>
+ <div class="name-error" id="nameError"><i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.</div>
  </div>
  <button class="btn btn-primary" id="startBtn">Comenzar la evaluación <i class="fa-solid fa-pen-to-square"></i></button>
  </div>
@@ -442,21 +464,18 @@ async function hasCompletedAttempt(name) {
 }
 
 async function startQuiz(){
-  const firstNameEl = document.getElementById('firstName');
-  const lastNameEl = document.getElementById('lastName');
-  const cursoEl = document.getElementById('cursoInput');
+  const nameSelect = document.getElementById('studentName');
   const errorEl = document.getElementById('nameError');
-  const nombre = firstNameEl.value.trim();
-  const apellido = lastNameEl.value.trim();
-  const curso = cursoEl.value.trim();
-  if(!nombre || !apellido || !curso){
-    errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Ingresa tu nombre, tu apellido y tu curso para comenzar.';
+  const name = nameSelect.value.trim();
+  if(!name){
+    errorEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Selecciona tu nombre de la lista para comenzar.';
     errorEl.classList.add('show');
-    (nombre ? (apellido ? cursoEl : lastNameEl) : firstNameEl).focus();
+    nameSelect.focus();
     return;
   }
   errorEl.classList.remove('show');
-  const fullName = (apellido + ', ' + nombre).toUpperCase();
+  const fullName = name.toUpperCase();
+  const curso = '2BGU Economía';
   clearInterval(STATE.timer); STATE.timer = null;
   try {
     const alreadyDone = await hasCompletedAttempt(fullName);
